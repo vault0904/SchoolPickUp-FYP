@@ -1,0 +1,52 @@
+// !Important! Import this at the start when creating new scss file
+// Note to self: check back if this import is important afterall, because base on current understanding, this import is for general website layout / wrappers styling, not sure what will happen if not imported. Technically has been imported once in App.js before already so not sure if it is needed here.
+@import 'defaultstyle';
+
+.maindiv {
+  // "min-vh-100 d-flex flex-row align-items-center"
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.crow {
+  // "justify-content-center"
+  justify-content: center;
+}
+
+.ccardgrp {
+  // style={{ transform: 'scale(1.2)' }}
+  transform: scale(1.2);
+}
+
+.ccard {
+  // style={{ borderWidth: 0 }}
+  // "p-4"
+  border-width: 0px;
+  padding: 16px;
+}
+
+.h1 {
+  // style={{ color: '#56844B', fontWeight: 'bold', textAlign: 'center' }}
+  color: #56844B;
+  font-weight: bold;
+  text-align: center;
+}
+
+.cinputgrp {
+  // "mb-3"
+  margin-bottom: 12px;
+  margin-top: 12px;
+}
+
+.cbtn {
+  // style={{ backgroundColor: '#56844B', fontWeight: 'bold' }}
+  // className="px-4 mt-5"
+  background-color: #56844B;
+  font-weight: bold;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-top: 20px;
+}
+
