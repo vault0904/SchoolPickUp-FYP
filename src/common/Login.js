@@ -15,6 +15,7 @@ import {
 } from '@coreui/react';
 import BrandImage from '../assets/images/logo1.jpg';
 import '../scss/login.scss'
+import axios from 'axios';
 
 
 export default function Login() {
@@ -29,36 +30,34 @@ export default function Login() {
   
   const handleLogin = async () => {
     try {
-      const response = await fetch(API_WEBLOGIN, {
-        method: 'POST',
+      const response = await axios.post(API_WEBLOGIN, {
+        userid: userid,
+        password: password,
+        usertype: usertype,
+      }, {
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          userid: userid,
-          password: password,
-          usertype: usertype,
-        })
+        }
       });
-      
+  
       if (response) {
         // Get response returned by API
         // Response returns either {success: true, userid: '123' usertype: 'sys-adm' etc} or {success: false}
-        const data = await response.json();
-        
+        const data = response.data;
+  
         // If API returns false, meaning authentication failed
         if (!data.success) {
           // Inform user wrong login credentials
           alert('Wrong userid or password')
-          window.location.reload(); 
+          window.location.reload();
         } else {
           // Else proceed to log user in to their dashboard
           // However before that, we store the relevant user details in local storage, such as their names, so that we can use it to display in their dashboard for example
-          
+  
           // Get usertype from API response, store in local storage
           const retrieve_usertype = data.usertype;
           localStorage.setItem('usertype', retrieve_usertype)
-
+  
           switch (data.usertype) {
             case "sys-adm":
               // Retrieve relevant details from API response
@@ -72,10 +71,10 @@ export default function Login() {
               // Navigate the user to their appropriate dashboard
               navigate('/system-admin/dashboard');
               break;
-
+  
             case "sch-adm":
               // Retrieve relevant details from API response
-              const retrieve_userid_schadm  = data.userid;
+              const retrieve_userid_schadm = data.userid;
               const retrieve_fname_schadm = data.firstName;
               const retrieve_lname_schadm = data.lastName;
               const retrieve_schid_schadm = data.school_ID;
@@ -86,11 +85,11 @@ export default function Login() {
               localStorage.setItem('schoolid', retrieve_schid_schadm)
               // Navigate the user to their appropriate dashboard
               navigate('/school-admin/dashboard');
-              break;   
-
-            case "bus-ven":
+              break;
+  
+            case "ven":
               // Retrieve relevant details from API response
-              const retrieve_userid_busven  = data.userid;
+              const retrieve_userid_busven = data.userid;
               const retrieve_vendorname_busven = data.vendor_Name;
               const retrieve_schoolID_busven = data.school_ID;
               // Store relevant details
@@ -99,15 +98,18 @@ export default function Login() {
               localStorage.setItem('school_ID_associated', retrieve_schoolID_busven)
               // Navigate the user to their appropriate dashboard
               navigate('/bus-vendor/dashboard');
-              break;       
-          }  
+              break;
+          }
         }
       }
     } catch (error) {
       // Handle any post request errors
       console.error('Error:', error);
     }
-  };
+  }
+
+
+
 
   return (
     <div className="maindiv">
@@ -132,7 +134,7 @@ export default function Login() {
                       >
                         <option value='sys-adm'>Log in as System Admin</option>
                         <option value='sch-adm'>Log in as School Admin</option>
-                        <option value='bus-ven'>Log in as Bus Vendor</option>
+                        <option value='ven'>Log in as Bus Vendor</option>
                       </CFormSelect>
                     </CInputGroup>
 
