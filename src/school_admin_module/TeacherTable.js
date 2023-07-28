@@ -42,7 +42,7 @@ export default function TeacherTable() {
   const school_ID = localStorage.getItem('schoolid');
 
   // API URL to get announcement data
-  const API_GETTEACHER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getteacher'
+  const API_GETTEACHER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getteacher'
 
   // Axios post request, which we will get all teacher data
   useEffect(() => {
@@ -98,7 +98,7 @@ export default function TeacherTable() {
   };
 
   // API URL to post input submitted by user in create teacher modal
-  const API_CREATETEACHER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createteacher'
+  const API_CREATETEACHER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createteacher'
 
   // Handle create teacher
   const handleCreateTeacher = async () => {
@@ -160,7 +160,7 @@ export default function TeacherTable() {
   };
 
   // API URL to update teacher account
-  const API_UPDATETEACHER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updateteacher'
+  const API_UPDATETEACHER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updateteacher'
   
   // Handle updating teacher details
   const handleUpdateTeacher = async () => {
@@ -216,7 +216,7 @@ export default function TeacherTable() {
   };
 
   // API URL to delete teacher account
-  const API_DELETETEACHER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deleteteacher'
+  const API_DELETETEACHER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deleteteacher'
 
   // Handle the deletion of an teacher account
   const handleDeleteTeacher = async () => {

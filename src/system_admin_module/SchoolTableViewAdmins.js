@@ -40,7 +40,7 @@ export default function SchoolTableViewAdmins() {
   const school_ID = searchParams.get('school_ID');
 
   // API URL to get school admin data
-  const API_GETSCHADM = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getschooladmins'
+  const API_GETSCHADM = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getschooladmins'
 
   // Axios post request, which we will get all the school admin data
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function SchoolTableViewAdmins() {
   };
 
   // API URL to post input submitted by user in create admin modal
-  const API_CREATESCHADM = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-createschooladmin'
+  const API_CREATESCHADM = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-createschooladmin'
 
   // 
   const handleCreateAdmin = async () => {
@@ -141,7 +141,7 @@ export default function SchoolTableViewAdmins() {
   };
 
   // API URL to delete school admin account
-  const API_DELETESCHADM = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deleteschooladmin'
+  const API_DELETESCHADM = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deleteschooladmin'
 
   // Handle the deletion of an admin
   // This const will be triggered when a user clicks on the confirm button in ConfirmationModal.js (it has the attribute 'onClick={onConfirm}')
@@ -199,7 +199,7 @@ export default function SchoolTableViewAdmins() {
   };
 
   // API URL to update school admin account
-  const API_UPDATESCHADM = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-updateschooladmin'
+  const API_UPDATESCHADM = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-updateschooladmin'
   
   // Handle updating admin details
   const handleUpdateAdmin = async () => {

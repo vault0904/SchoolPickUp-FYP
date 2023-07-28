@@ -23,7 +23,7 @@ export default function SchoolTable() {
   const [tableData, setTableData] = useState([]);
 
   // API to get all school data
-  const API_URL = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getallschool'
+  const API_URL = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getallschool'
 
   // Axios get request to get all school data from db
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function SchoolTable() {
   };
 
   // API URL to delete school account
-  const API_DELETESCH = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deleteschool'
+  const API_DELETESCH = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deleteschool'
 
   // Handle deletion of school,
   // Triggered when user clicks on 'confirm' in delete modal

@@ -43,7 +43,7 @@ export default function DriverTable() {
   const vendor_ID = localStorage.getItem('userid');
 
   // API URL to get driver data
-  const API_GETDRIVER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-getdriver'
+  const API_GETDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-getdriver'
 
   // Axios post request, which we will get all announcement data
   useEffect(() => {
@@ -99,7 +99,7 @@ export default function DriverTable() {
   };
 
   // API URL to post input submitted by user in create driver modal
-  const API_CREATEDRIVER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-createdriver'
+  const API_CREATEDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-createdriver'
 
   // Handle create driver
   const handleCreateDriver = async () => {
@@ -160,7 +160,7 @@ export default function DriverTable() {
   };
 
   // API URL to update driver account
-  const API_UPDATEDRIVER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-updatedriver'
+  const API_UPDATEDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-updatedriver'
   
   // Handle updating driver details
   const handleUpdateDriver = async () => {
@@ -216,7 +216,7 @@ export default function DriverTable() {
   };
 
   // API URL to delete driver account
-  const API_DELETEDRIVER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-deletedriver'
+  const API_DELETEDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-deletedriver'
 
   // Handle the deletion of an driver account
   const handleDeleteDriver = async () => {

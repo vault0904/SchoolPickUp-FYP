@@ -37,7 +37,7 @@ export default function AnnouncementTable() {
   const school_ID = localStorage.getItem('schoolid');
 
   // API URL to get announcement data
-  const API_GETSCHANNOUNCEMENT = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getschoolannouncement'
+  const API_GETSCHANNOUNCEMENT = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getschoolannouncement'
 
   // Axios post request, which we will get all announcement data
   useEffect(() => {
@@ -72,7 +72,7 @@ export default function AnnouncementTable() {
   };
 
   // API URL to post input submitted by user in create announcement modal
-  const API_CREATEANNOUNCEMENT = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createannouncement'
+  const API_CREATEANNOUNCEMENT = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createannouncement'
 
   // 
   const handleCreateAnnouncement = async () => {
@@ -141,7 +141,7 @@ export default function AnnouncementTable() {
   };
 
   // API URL to update announcement message
-  const API_UPDATEANNOUNCEMENT = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updateannouncement'
+  const API_UPDATEANNOUNCEMENT = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updateannouncement'
   
   // Handle updating announcement message
   const handleUpdateAnnouncement = async () => {
@@ -197,7 +197,7 @@ export default function AnnouncementTable() {
   };
 
   // API URL to delete announcement
-  const API_DELETEANNOUNCEMENT = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deleteannouncement'
+  const API_DELETEANNOUNCEMENT = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deleteannouncement'
 
   // Handle the deletion of an announcement
   const handleDeleteAnnouncement = async () => {

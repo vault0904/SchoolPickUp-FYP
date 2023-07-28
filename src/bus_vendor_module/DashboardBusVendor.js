@@ -36,7 +36,7 @@ export default function DashboardBusVendor() {
 
   // Need a 'get' method API that returns data from school table, 
   // Use the school ID stored in local storage to find the correct school to return the data
-  const API_URL = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/'
+  const API_URL = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/'
 
   // Need a 'get' method API that returns data from pickup table,
   

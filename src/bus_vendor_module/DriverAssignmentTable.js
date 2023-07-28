@@ -49,7 +49,7 @@ export default function DriverAssignmentTable() {
 
   // Next, API request to retrieve drivers associated with vendors
   // API
-  const API_GETDRIVER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-getdrivers'
+  const API_GETDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-getdrivers'
 
   // Declare state to store driver table data
   const [driverTableData, setDriverTableData] = useState([]);
@@ -72,7 +72,7 @@ export default function DriverAssignmentTable() {
 
   // Next, API request to retrieve assignments associated with the drivers/vendor (aka the vehicle_used table)
   // API
-  const API_GETASSIGNMENT = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-getassignment'
+  const API_GETASSIGNMENT = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-getassignment'
 
   // Declare state to store vehicle_used table data
   const [vehicleUsedTableData, setVehicleUsedTableData] = useState([]);
@@ -160,7 +160,7 @@ export default function DriverAssignmentTable() {
     
     // Next, API request to retrieve vehicles associated with vendors
     // API
-    const API_GETVEHICLE = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-getvehicles';
+    const API_GETVEHICLE = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-getvehicles';
 
     useEffect(() => {
       axios.post(API_GETVEHICLE, { vendorid })

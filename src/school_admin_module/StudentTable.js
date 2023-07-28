@@ -43,7 +43,7 @@ export default function StudentTable() {
   const school_ID = localStorage.getItem('schoolid');
 
   // API URL to get child data
-  const API_GETCHILD = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getchild'
+  const API_GETCHILD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getchild'
 
   // Axios post request, which we will get all child data related to the school
   useEffect(() => {
@@ -101,7 +101,7 @@ export default function StudentTable() {
   };
 
   // API URL to post input submitted by user in create student modal
-  const API_CREATECHILD = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createchild'
+  const API_CREATECHILD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createchild'
 
   // Handle create student
   const handleCreateChild = async () => {
@@ -168,7 +168,7 @@ export default function StudentTable() {
   };
 
   // API URL to update student account
-  const API_UPDATECHILD = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updatechild'
+  const API_UPDATECHILD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updatechild'
   
   // Handle updating driver details
   const handleUpdateChild = async () => {
@@ -229,7 +229,7 @@ export default function StudentTable() {
   };
 
   // API URL to delete student account
-  const API_DELETECHILD = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deletechild'
+  const API_DELETECHILD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deletechild'
 
   // Handle the deletion of an student account
   const handleDeleteChild = async () => {

@@ -16,7 +16,7 @@
 //         const name = file.name;
 //         const type = file.type;
         
-//         axios.post("https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/uploadfile", { file: base64String, name: name, type: type })
+//         axios.post("https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/uploadfile", { file: base64String, name: name, type: type })
 //           .then((res) => {
 //               alert(res);
 //               window.location.reload();
@@ -166,7 +166,7 @@ export default function SchoolSchedule() {
 
   // Axios post request
   useEffect(() => {
-    axios.get(`https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getschedule/${school_ID}`)
+    axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getschedule/${school_ID}`)
       .then(res => {
         // Set in the hook declared earlier
         // We can now use the scheduleTable.map function to map out the data
@@ -209,7 +209,7 @@ export default function SchoolSchedule() {
   const handleDeleteSchedule = async () => {
     try {
       
-      const res = await axios.delete('https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deleteschedule', { data: { id: deleteScheduleId }  } )
+      const res = await axios.delete('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deleteschedule', { data: { id: deleteScheduleId }  } )
       console.log(res.data)
       const apiResult = res.data;
       if (apiResult.success) {

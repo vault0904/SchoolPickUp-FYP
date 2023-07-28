@@ -43,7 +43,7 @@ export default function BusManagementTable() {
   const vendor_ID = localStorage.getItem('userid');
 
   // API URL to get vehicle data
-  const API_GETVEHICLE = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-getvehicle'
+  const API_GETVEHICLE = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-getvehicle'
 
   // Axios post request, which we will get all announcement data
   useEffect(() => {
@@ -93,7 +93,7 @@ export default function BusManagementTable() {
   };
 
   // API URL to post input submitted by user in create vehicle modal
-  const API_CREATEVEHICLE = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-createvehicle'
+  const API_CREATEVEHICLE = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-createvehicle'
 
   // Handle create vehicle
   const handleCreateVehicle = async () => {
@@ -150,7 +150,7 @@ export default function BusManagementTable() {
   };
 
   // API URL to update vehicle
-  const API_UPDATEVEHICLE = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-updatevehicle'
+  const API_UPDATEVEHICLE = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-updatevehicle'
   
   // Handle updating vehicle details
   const handleUpdateVehicle = async () => {
@@ -206,7 +206,7 @@ export default function BusManagementTable() {
   };
 
   // API URL to delete vehicle
-  const API_DELETEVEHICLE = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-deletevehicle'
+  const API_DELETEVEHICLE = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-deletevehicle'
 
   // Handle the deletion of an vehicle account
   const handleDeleteVehicle = async () => {

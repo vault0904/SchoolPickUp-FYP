@@ -40,7 +40,7 @@ export default function CompanyTableViewDrivers() {
   const vendor_ID = searchParams.get('vendor_ID');
 
   // API URL to get driver data
-  const API_GETDRIVER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getdrivers'
+  const API_GETDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getdrivers'
 
   // Axios post request, which we will get all driver data
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function CompanyTableViewDrivers() {
   };
 
   // API URL to post input submitted by user in create driver modal
-  const API_CREATEDRIVER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-createdriver'
+  const API_CREATEDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-createdriver'
 
   // 
   const handleCreateDriver = async () => {
@@ -143,7 +143,7 @@ export default function CompanyTableViewDrivers() {
   };
 
   // API URL to delete driver account
-  const API_DELETEDRIVER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deletedriver'
+  const API_DELETEDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deletedriver'
 
   // Handle the deletion of an driver
   // This const will be triggered when a user clicks on the confirm button in ConfirmationModal.js (it has the attribute 'onClick={onConfirm}')
@@ -203,7 +203,7 @@ export default function CompanyTableViewDrivers() {
   };
 
   // API URL to update driver account
-  const API_UPDATEDRIVER = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-updatedriver'
+  const API_UPDATEDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-updatedriver'
   
   // Handle updating driver details
   const handleUpdateDriver = async () => {

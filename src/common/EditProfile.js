@@ -23,7 +23,7 @@ export default function EditProfile() {
   const type = searchParams.get('type');
 
   // API to get back user details (id, f/l names, email)
-  const API_GETPROFILEDETAILS = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/webgetprofiledetails'
+  const API_GETPROFILEDETAILS = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/webgetprofiledetails'
 
   // Declare state for the details we would be receiving
   // Store state as array
@@ -86,7 +86,7 @@ export default function EditProfile() {
       return
     } else {
       // Else proceed to post changes to API
-      const API_EDITDETAILS = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/webeditprofiledetails'
+      const API_EDITDETAILS = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/webeditprofiledetails'
 
       axios.put(API_EDITDETAILS, { 
         type, 
@@ -134,7 +134,7 @@ export default function EditProfile() {
     } 
 
     // Proceed to send API to change pw
-    const API_CHANGEPASSWORD = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/webchangepassword'
+    const API_CHANGEPASSWORD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/webchangepassword'
 
     axios.put(API_CHANGEPASSWORD, {
      type,

@@ -23,7 +23,7 @@ export default function CompanyTable() {
   const [tableData, setTableData] = useState([]);
 
   // API to get all vendor data
-  const API_URL = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getallbusvendor'
+  const API_URL = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getallbusvendor'
 
   // Axios get request to get all vendor data from db
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function CompanyTable() {
   };
 
   // API URL to delete vendor account
-  const API_DELETEVEN = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deletevendor'
+  const API_DELETEVEN = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deletevendor'
 
   // Handle deletion of vendor,
   // Triggered when user clicks on 'confirm' in delete modal

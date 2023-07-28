@@ -25,7 +25,7 @@ export default function Login() {
   const navigate = useNavigate(); 
 
   // API URL for login
-  const API_WEBLOGIN = 'https://o92cl4kdw2.execute-api.ap-southeast-1.amazonaws.com/dev/api/weblogin';
+  const API_WEBLOGIN = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/weblogin';
   
   const handleLogin = async () => {
     try {
