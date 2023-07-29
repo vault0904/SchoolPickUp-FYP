@@ -26,22 +26,16 @@ import '../css/defaultstyle.css';
 import { useNavigate } from 'react-router';
 
 export default function AnnouncementTable() {  
-// RETRIEVE ANNOUNCEMENTS START //
+  // VIEW ANNOUNCEMENTS START //
   // Define table header
-  const TABLE_HEAD = ["POST ID", "MESSAGE", "POSTED BY", "LAST UPDATED", "DATE POSTED", "", ""];
+  const TABLE_HEAD = ["ANNOUNCEMENT ID", "MESSAGE", "POSTED BY", "DATE POSTED","LAST UPDATED", "", ""];
 
   // Declare hook, which will be used to set announcement data, after getting the data from API below
   const [tableData, setTableData] = useState([]);
 
-  // Retrieve school ID from localstorage, which should be set right before school admin successfully logs into the website
-  const school_ID = localStorage.getItem('schoolid');
-
-  // API URL to get announcement data
-  const API_GETSCHANNOUNCEMENT = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getschoolannouncement'
-
   // Axios post request, which we will get all announcement data
   useEffect(() => {
-    axios.post(API_GETSCHANNOUNCEMENT, {school_ID})
+    axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getschoolannouncement', { schadmid: localStorage.getItem('userid') })
       .then(res => {
         // Set in the hook declared earlier
         // We can now use the tableData.map function to map out the data
@@ -51,10 +45,10 @@ export default function AnnouncementTable() {
         console.error(err);
       })
   }, []);
-// RETRIEVE ANNOUNCEMENTS END //
+  // VIEW ANNOUNCEMENTS END //
 
 
-// CREATE FUNCTION START //
+  // CREATE FUNCTION START //
   // Hook to toggle visibility of create announcement modal
   const [visible, setVisible] = useState(false)
 
@@ -71,31 +65,21 @@ export default function AnnouncementTable() {
     setMessage('');
   };
 
-  // API URL to post input submitted by user in create announcement modal
-  const API_CREATEANNOUNCEMENT = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createannouncement'
-
-  // 
+  // Create announcement in database
   const handleCreateAnnouncement = async () => {
     try {
-      // Basic frontend validation first, before sending post request
-      // If message is empty, do not proceed with axios post req. 
+      // validation check if empty
       if (!message) {
         alert('Announcement message is empty! Write your message before posting')
         return;
       }
-      // Else proceed with post request, 
-      // Retrieve school admin ID from localstorage first so that can fulfil post request
-      // school_ID was retrieved previously, so we can use it again in the post request body below
-      const schooladmin_ID = localStorage.getItem('userid')
+      // get the userid of poster
+      const userid = localStorage.getItem('userid')
 
-      // Post the request to API
-      // Body contains the message, formatted current date, school id and sch admin id
-      const res = await axios.post(API_CREATEANNOUNCEMENT, { message, formattedCurrentDate, school_ID, schooladmin_ID });
+      // post request and send their userid and message
+      const res = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createannouncement', 
+      { message, formattedCurrentDate, userid });
 
-      // After API return a response
-      // We check whether the response returned is True or False
-      // Return True means API has successfully created the announcement in database
-      // Return False means API did not create the announcement in database
       const apiresult = res.data;
       if (apiresult.success) {
         // Announcement successfully created
@@ -104,8 +88,7 @@ export default function AnnouncementTable() {
         setVisible(false);
         window.location.reload();
       } else {
-        // Announcement was not created, 
-        // See the exact error in errlog, whether its error from query or stopped by validation that is in lambda function
+        // Announcement was not created
         alert(apiresult.errlog);
       }
     } catch (err) {
@@ -115,7 +98,7 @@ export default function AnnouncementTable() {
 // CREATE FUNCTION END //
 
 
-//  VIEW FUNCTION //
+  //  VIEW FUNCTION //
   const [ viewModalVisible, setViewModalVisible ] = useState(false);
   const [ viewMessage, setViewMessage ] = useState('');
 
@@ -123,48 +106,40 @@ export default function AnnouncementTable() {
     setViewMessage(message);
     setViewModalVisible(true);
   };
-// VIEW FUNCTION END //
+  // VIEW FUNCTION END //
 
 
-//  UPDATE FUNCTION START  //
+  //  UPDATE FUNCTION START  //
   // Variables that will be used in the update modal
   const [ updateModalVisible, setUpdateModalVisible ] = useState(false);
-  const [ postId, setPostId ] = useState('');
+  const [ annId, setAnnId ] = useState('');
   const [ updateMessage, setUpdateMessage ] = useState('');
 
   // Hook to toggle visibility of update modal,
   // The update modal will be populated with selected row's announcement message
-  const showUpdateModal = ( postid, message ) => {
-    setPostId(postid);
+  const showUpdateModal = ( annid, message ) => {
+    setAnnId(annid);
     setUpdateMessage(message);
     setUpdateModalVisible(true);
   };
 
-  // API URL to update announcement message
-  const API_UPDATEANNOUNCEMENT = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updateannouncement'
-  
-  // Handle updating announcement message
+  // Update announcement in DB
   const handleUpdateAnnouncement = async () => {
     try {
-      // Perform basic validation
-      // Check that atleast message inputs are different from table row data before proceeding with update query in axios put
-      // Find the specific row data based on the postid (which was set by state hook)
-      const rowData = tableData.find(data => data.post_ID === postId);
+      // validation check if message changed
+      const rowData = tableData.find(data => data.ann_ID === annId);
       const isUpdated = updateMessage !== rowData.message;
-
       if (!isUpdated) {
         alert('No changes made. Change the message first before updating');
         return;
       }
 
-      // Perform the update API request using axios
-      const res = await axios.put(API_UPDATEANNOUNCEMENT, {
-        postid: postId, 
+      const res = await axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updateannouncement', {
+        annid: annId, 
         updatemessage: updateMessage, 
         formattedCurrentDate: formattedCurrentDate,
       });
   
-      // Handle the response
       const apiResult = res.data;
       if (apiResult.success) {
         // Announcement message succesfully updated
@@ -180,35 +155,23 @@ export default function AnnouncementTable() {
       console.error(err);
     }
   };
-// UPDATE FUNCTION END  //
+  // UPDATE FUNCTION END  //
 
 
-//  DELETE FUNCTION START  //
-  // Hook to toggle visibility of delete announcement modal, and to store the post id that was selected by user
+  //  DELETE FUNCTION START  //
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [deletingPostId, setDeletingPostId] = useState('');   
+  const [deletingAnnId, setDeletingAnnId] = useState('');   
 
-  // Show the delete confirmation modal
-  // When user click on the delete button, they will trigger this const, and pass the post id in the parameter
-  const showDeleteConfirmation = (postid) => {
+  const showDeleteConfirmation = (annid) => {
     setDeleteModalVisible(true);
-    // store driver id, so that we can use it in the axios delete request body later should user confirm to delete
-    setDeletingPostId(postid);
+    setDeletingAnnId(annid);
   };
-
-  // API URL to delete announcement
-  const API_DELETEANNOUNCEMENT = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deleteannouncement'
 
   // Handle the deletion of an announcement
   const handleDeleteAnnouncement = async () => {
     try {
-      const res = await axios.delete(API_DELETEANNOUNCEMENT, { data: { deletingPostId } });
+      const res = await axios.delete('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deleteannouncement', { data: { deletingAnnId } });
 
-      // After API returns a response
-      // We check whether it returns True or False
-      // We can manipulate the kind of response we want in API lambda, for now it is set as response is either True or False
-      // Return True means announcement has been successfully deleted
-      // Return False means announcement was not deleted, view the errlog to find exact error
       const apiResult = res.data;
       if (apiResult.success) {
         // Announcement successfully deleted
@@ -305,12 +268,11 @@ export default function AnnouncementTable() {
                 {tableData.map(( data, index ) => {
                   const isLast = index === data.length - 1;
                   const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
-
                   return (
-                    <tr key={data.post_ID}>
+                    <tr key={data.ann_ID}>
                       <td className={classes}>
                         <Typography variant="small" color="blue-gray" className="font-normal">
-                          {data.post_ID}
+                          {data.ann_ID}
                         </Typography>
                       </td>
                       <td className={classes}>    
@@ -329,27 +291,23 @@ export default function AnnouncementTable() {
                       </td>
                       <td className={classes}>
                         <Typography variant="small" color="blue-gray" className="font-normal">
-                          {/* Check if lastUpdated is null or not, because it is null by default until the school admin updates the message */}
-                          {/* Returns Empty string if null (to prevent prop type warning) */}
-                          {data.lastUpdated ? data.lastUpdated : ''}
+                          {data.datePosted}
                         </Typography>
                       </td>
                       <td className={classes}>
                         <Typography variant="small" color="blue-gray" className="font-normal">
-                          {data.datePosted}
+                          {data.lastUpdated}
                         </Typography>
                       </td>
-
                       <td className={classes}>
                         <IconButton variant="text" color="blue-gray"
-                          onClick={() => showUpdateModal(data.post_ID, data.message)}>
+                          onClick={() => showUpdateModal(data.ann_ID, data.message)}>
                           <CIcon icon={cilPencil} />
                         </IconButton>
                       </td>
-
                       <td className={classes}>
                         <Tooltip content="Delete">
-                          <IconButton variant="text" color="blue-gray" onClick={() => showDeleteConfirmation(data.post_ID)}>
+                          <IconButton variant="text" color="blue-gray" onClick={() => showDeleteConfirmation(data.ann_ID)}>
                             <TrashIcon className="h-4 w-4" />
                           </IconButton>
                         </Tooltip>
