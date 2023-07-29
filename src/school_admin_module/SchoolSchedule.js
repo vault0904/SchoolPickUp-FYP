@@ -1,129 +1,3 @@
-// //  BEFORE INTEGRATING REX API (WORKING)
-//   import React, { useState } from 'react';
-//   import axios from 'axios';
-//   import '../css/defaultstyle.css'
-
-// const SchoolSchedule = () => {
-//   const [file, setFile] = useState(null);
-//   const handleFile = (e) => {
-//       setFile(e.target.files[0]);
-//   }
-//   const handleUpload = () => {
-//     if (file != null) {
-//       const reader = new FileReader();
-//       reader.onloadend = () => {
-//         const base64String = reader.result.split(',')[1];
-//         const name = file.name;
-//         const type = file.type;
-        
-//         axios.post("https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/uploadfile", { file: base64String, name: name, type: type })
-//           .then((res) => {
-//               alert(res);
-//               window.location.reload();
-//           })
-//           .catch((err) => {
-//               alert(err)
-//           })
-//       }
-//       reader.readAsDataURL(file);
-//     } else {
-//       alert("FILE CANNOT BE EMPTY")
-//     }
-//   }
-
-//   return (
-//     <div>
-//       <div>File Upload Progress is</div>
-//       <input type="file" onChange={handleFile} />
-//       <button onClick={handleUpload}> Upload to S3</button>
-//     </div>
-//   );
-// };
-
-// export default SchoolSchedule;
-
-
-
-
-
-
-
-// // AFTER INTEGRATING REX API (WORKING)
-// import React, { useState } from 'react';
-// import axios from 'axios';
-// import '../css/defaultstyle.css'
-
-// const SchoolSchedule = () => {
-//   const [file, setFile] = useState(null);
-//   const handleFile = (e) => {
-//       setFile(e.target.files[0]);
-//   }
-//   const handleUpload = () => {
-//     if (file != null) {
-//       const reader = new FileReader();
-//       reader.onloadend = () => {
-//         const base64String = reader.result.split(',')[1];
-//         // const name = file.name;
-//         // const parsedName = name.replace(/[\\/@#$%^&+{}|]/g, '-');
-//         let name = file.name; // The file name
-//         name = name.replace(/[^A-Za-z0-9.-]/g, ''); // Remove special characters from the file name
-  
-
-//         const folder = '/parent'
-//         const type = file.type;
-        
-//         axios.post('https://46heb0y4ri.execute-api.us-east-1.amazonaws.com/dev/api/s3/uploadfile', { file: base64String, name: name, folderName: folder, type: type })
-//           .then((res) => {
-//               alert('File upload successfully. View it here: ' + '')
-//               console.log(res.data.imageURL);
-//               // window.location.reload();
-//           })
-//           .catch((err) => {
-//               alert(err)
-//           })
-//       }
-//       reader.readAsDataURL(file);
-//     } else {
-//       alert("FILE CANNOT BE EMPTY")
-//     }
-//   }
-
-//   return (
-//     <div>
-//       <div>File Upload Progress is</div>
-//       <input type="file" onChange={handleFile} />
-//       <button onClick={handleUpload}> Upload to S3</button>
-//     </div>
-//   );
-// };
-
-// export default SchoolSchedule;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { 
@@ -151,32 +25,27 @@ import {
 import { TrashIcon } from "@heroicons/react/24/solid";
 import CIcon from '@coreui/icons-react';
 import '../css/defaultstyle.css';
+import { useNavigate } from 'react-router';
 
 export default function SchoolSchedule() {
-  // RETRIEVE SCHEDULE START //
+  // VIEW SCHEDULE START //
   // Define table header
   const TABLE_HEAD = ["SCHEDULE ID", "SCHEDULE DESCRIPTION", "YEAR", "POSTED BY", "", ""];
 
-  // Declare hook, which will be used to set schedule data, after getting the data from API below
   const [scheduleTable, setScheduleTable] = useState([]);
-
-  // Retrieve school ID from localstorage
-  // So that we can use it to find all schedule that is uploaded by the school before
-  const school_ID = localStorage.getItem('schoolid');
+  const schoolid = localStorage.getItem('schoolid');
 
   // Axios post request
   useEffect(() => {
-    axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getschedule/${school_ID}`)
+    axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getschedule/${schoolid}`)
       .then(res => {
-        // Set in the hook declared earlier
-        // We can now use the scheduleTable.map function to map out the data
         setScheduleTable(res.data)
       })
       .catch(err => {
         console.error(err);
       })
   }, []);
-  // RETRIEVE SCHEDULE END //
+  // VIEW SCHEDULE END //
 
 
   //  SEARCH BOX FUNCTION START  //
@@ -193,6 +62,11 @@ export default function SchoolSchedule() {
 
 
   // UPLOAD FUNCTION START //
+  // NAVIGATE TO UPLOAD TEACHER UI
+  const navigate = useNavigate(); 
+  const navigateToUploadSchedule = async () => {
+    navigate('/school-admin/uploadschedule')
+  }
 
   // UPLOAD FUNCTION END //
 
@@ -208,9 +82,8 @@ export default function SchoolSchedule() {
 
   const handleDeleteSchedule = async () => {
     try {
-      
       const res = await axios.delete('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deleteschedule', { data: { id: deleteScheduleId }  } )
-      console.log(res.data)
+      
       const apiResult = res.data;
       if (apiResult.success) {
         // Schedule successfully deleted
@@ -224,7 +97,6 @@ export default function SchoolSchedule() {
       alert(err)
     }
   }
-
   // DELETE FUNCTION END //
 
   return (
@@ -238,7 +110,7 @@ export default function SchoolSchedule() {
       
         {/* Upload schedule button */}
         <CButton 
-          onClick={{}}
+          onClick={navigateToUploadSchedule}
           style={{
             '--cui-btn-color': 'white',
             '--cui-btn-bg': '#56844B',
@@ -311,7 +183,7 @@ export default function SchoolSchedule() {
                         </Typography>
                       </td>
                       <td className={classes}>
-                      <a href={data.S3_URL} target="_blank" rel="noopener noreferrer" className="underline text-blue-300 hover:text-blue-800">
+                      <a href={data.imageURI} target="_blank" rel="noopener noreferrer" className="underline text-blue-300 hover:text-blue-800">
                         <Typography variant="small" color="blue-gray" className="font-normal">
                           View schedule
                         </Typography>

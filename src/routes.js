@@ -19,6 +19,7 @@ const StudentTable = React.lazy(() => import('./school_admin_module/StudentTable
 const SchoolSchedule = React.lazy(() => import('./school_admin_module/SchoolSchedule'))
 const UploadTeacher = React.lazy(() => import('./school_admin_module/UploadTeacher')) 
 const UploadStudent = React.lazy(() => import('./school_admin_module/UploadStudent')) 
+const UploadSchedule = React.lazy(() => import('./school_admin_module/UploadSchedule')) 
 
 //Bus vendor
 const DashboardBusVendor = React.lazy(() => import('./bus_vendor_module/DashboardBusVendor'))
@@ -45,6 +46,7 @@ const routes = [
   { path: '/school-admin/schedule', name: 'Schedule', element: SchoolSchedule },
   { path: '/school-admin/uploadteacher', name: 'Upload Teacher', element: UploadTeacher },
   { path: '/school-admin/uploadstudent', name: 'Upload Student', element: UploadStudent },
+  { path: '/school-admin/uploadschedule', name: 'Upload Student', element: UploadSchedule },
 
   { path: '/bus-vendor/dashboard', name: 'Bus Vendor Dashboard', element: DashboardBusVendor },
   { path: '/bus-vendor/drivers', name: 'Drivers', element: DriverTable },
