@@ -27,7 +27,7 @@ const _navSchoolAdmin = [
   {
     component: CNavItem,
     name: 'Assignments',
-    to: '/school-admin/',
+    to: '/school-admin/gateassignment',
     icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
   },
 
