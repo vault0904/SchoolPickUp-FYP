@@ -30,8 +30,7 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from 'react-router';
 
 export default function VehicleTable() {
-  //  RETRIEVE VEHICLE DATA START  //
-  //
+  //  VIEW VEHICLES START  //
   // Define table header
   const TABLE_HEAD = ["VEHICLE PLATE", "VEHICLE TYPE", "CAPACITY", "", ""];
 
@@ -40,25 +39,19 @@ export default function VehicleTable() {
 
   // Retrieve vendor ID from localstorage
   // So that we can use it to find all vehicle related to the vendor
-  const vendor_ID = localStorage.getItem('userid');
-
-  // API URL to get vehicle data
-  const API_GETVEHICLE = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-getvehicle'
+  const vendorid = localStorage.getItem('userid');
 
   // Axios post request, which we will get all announcement data
   useEffect(() => {
-    axios.post(API_GETVEHICLE, {vendor_ID})
+    axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-getvehicles/${vendorid}`)
       .then(res => {
-        // Set in the hook declared earlier
-        // We can now use the tableData.map function to map out the data
         setTableData(res.data)
       })
       .catch(err => {
         console.error(err);
       })
   }, []);
-  //
-  //  RETRIEVE VEHICLE DATA END  //
+  //  VIEW VEHICLES END  //
 
 
   //  SEARCH BOX FUNCTION START  //
@@ -75,7 +68,6 @@ export default function VehicleTable() {
 
 
   // CREATE FUNCTION START //
-  //
   // Hook to toggle visibility of create vehicle modal
   const [createModalVisible, setCreateModalVisible] = useState(false)
 
@@ -92,9 +84,6 @@ export default function VehicleTable() {
     setCapacity('')
   };
 
-  // API URL to post input submitted by user in create vehicle modal
-  const API_CREATEVEHICLE = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-createvehicle'
-
   // Handle create vehicle
   const handleCreateVehicle = async () => {
     try {
@@ -106,13 +95,8 @@ export default function VehicleTable() {
       }
       
       // Else proceed with post request
-      // Post the request to API
-      const res = await axios.post(API_CREATEVEHICLE, { vehiclePlate, vehicleType, capacity, vendor_ID });
+      const res = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-createvehicle', { vp: vehiclePlate, vt: vehicleType, c: capacity, vi: vendorid });
 
-      // After API return a response
-      // We check whether the response returned is True or False
-      // Return True means API has successfully created the vehicle in database
-      // Return False means API did not create the vehicle acc in database
       const apiresult = res.data;
       if (apiresult.success) {
         // Vehicle successfully created
@@ -121,15 +105,12 @@ export default function VehicleTable() {
         setCreateModalVisible(false);
         window.location.reload();
       } else {
-        // Account was not created, 
-        // See the exact error in errlog, whether its error from query or stopped by validation that is in lambda function
         alert(apiresult.errlog);
       }
     } catch (err) {
       console.error(err);
     }
   };
-  //
   // CREATE FUNCTION END //
 
 
@@ -140,17 +121,12 @@ export default function VehicleTable() {
   const [updatedVehicletype, setUpdatedVehicletype] = useState('');
   const [updatedCapacity, setUpdatedCapacity] = useState('');
 
-  // Hook to toggle visibility of update modal,
-  // The update modal will be populated with selected row's vehicle data
   const showUpdateModal = ( vehicleplate, vehicletype, capacity ) => {
     setVehicleplate(vehicleplate)
     setUpdatedVehicletype(vehicletype)
     setUpdatedCapacity(capacity)
     setUpdateModalVisible(true);
   };
-
-  // API URL to update vehicle
-  const API_UPDATEVEHICLE = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-updatevehicle'
   
   // Handle updating vehicle details
   const handleUpdateVehicle = async () => {
@@ -158,8 +134,8 @@ export default function VehicleTable() {
       // Perform basic validation
       // Check that atleast inputs are different from table row data before proceeding with update query in axios put
       // Find the specific row data based on the vehicle plate (which was set by state hook)
-      const rowData = tableData.find(data => data.vehicle_plate === vehiclePlate);
-      const isUpdated = updatedVehicletype !== rowData.vehicleType || updatedCapacity !== rowData.capacity;
+      const rowData = tableData.find(data => data.vehicle_Plate === vehiclePlate);
+      const isUpdated = updatedVehicletype !== rowData.vehicle_Type || updatedCapacity !== rowData.capacity;
 
       if (!isUpdated) {
         alert('No changes made. Change either the vehicle type or capacity first before updating');
@@ -167,8 +143,8 @@ export default function VehicleTable() {
       }
 
       // Perform the update API request using axios
-      const res = await axios.put(API_UPDATEVEHICLE, {  
-        vehiclePlate, updatedVehicletype, updatedCapacity
+      const res = await axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-updatevehicle', {  
+        vp: vehiclePlate, uvt: updatedVehicletype, uc: updatedCapacity
       });
   
       // Handle the response
@@ -187,37 +163,24 @@ export default function VehicleTable() {
       console.error(err);
     }
   };
-  //
   // UPDATE FUNCTION END  //
 
 
   //  DELETE FUNCTION START  //
-  //
   // Hook to toggle visibility of delete vehicle modal, and to store the vehicle plate that was selected by user
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingVehicleplate, setDeletingVehicleplate] = useState('');   
 
-  // Show the delete confirmation modal
-  // When user click on the delete button, they will trigger this const, and pass the user id in the parameter
   const showDeleteConfirmation = (vehicleplate) => {
     setDeleteModalVisible(true);
-    // store vehicle plate, so that we can use it in the axios delete request body later should user confirm to delete
     setDeletingVehicleplate(vehicleplate);
   };
-
-  // API URL to delete vehicle
-  const API_DELETEVEHICLE = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-deletevehicle'
 
   // Handle the deletion of an vehicle account
   const handleDeleteVehicle = async () => {
     try {
-      const res = await axios.delete(API_DELETEVEHICLE, { data: { deletingVehicleplate } });
+      const res = await axios.delete('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-deletevehicle', { data: { deletingVehicleplate } });
 
-      // After API returns a response
-      // We check whether it returns True or False
-      // We can manipulate the kind of response we want in API lambda, for now it is set as response is either True or False
-      // Return True means vehicle has been successfully deleted
-      // Return False means vehicle was not deleted, view the errlog to find exact error
       const apiResult = res.data;
       if (apiResult.success) {
         // Vehicle successfully deleted
@@ -233,7 +196,6 @@ export default function VehicleTable() {
       setDeleteModalVisible(false);
     }
   };
-  //
   //  DELETE FUNCTION END //
 
   // UPLOAD BUTTON NAVIGATION //
@@ -294,7 +256,7 @@ export default function VehicleTable() {
             <CForm className='overflow-auto'>
               <CFormLabel>Creating vehicle for vendor</CFormLabel>
               <CFormInput 
-                value={vendor_ID} 
+                value={vendorid} 
                 className='mb-2'
                 disabled
               />
@@ -367,22 +329,22 @@ export default function VehicleTable() {
               </thead>
               <tbody>
                 {tableData
-                  .filter((row) => row.vehicle_plate.toLowerCase().includes(searchQuery.toLowerCase()))  // .filter for real time search query
+                  .filter((row) => row.vehicle_Plate.toLowerCase().includes(searchQuery.toLowerCase()))  // .filter for real time search query
                   .slice(startIndex, startIndex + rowsPerPage)  // .slice for pagination
                   .map(( data, index ) => {
                   const isLast = index === data.length - 1;
                   const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
                   return (
-                    <tr key={data.vehicle_plate}>
+                    <tr key={data.vehicle_Plate}>
                       <td className={classes}>
                         <Typography variant="small" color="blue-gray" className="font-normal">
-                          {data.vehicle_plate}
+                          {data.vehicle_Plate}
                         </Typography>
                       </td>
                       <td className={classes}>
                         <Typography variant="small" color="blue-gray" className="font-normal">
-                          {data.vehicle_type}
+                          {data.vehicle_Type}
                         </Typography>
                       </td>
                       <td className={classes}>
@@ -393,13 +355,13 @@ export default function VehicleTable() {
 
                       <td className={classes}>
                         <IconButton variant="text" color="blue-gray"
-                          onClick={() => showUpdateModal(data.vehicle_plate, data.vehicle_type, data.capacity)}>
+                          onClick={() => showUpdateModal(data.vehicle_Plate, data.vehicle_Type, data.capacity)}>
                           <CIcon icon={cilPencil} />
                         </IconButton>
                       </td>
                       <td className={classes}>
                         <Tooltip content="Delete">
-                          <IconButton variant="text" color="blue-gray" onClick={() => showDeleteConfirmation(data.vehicle_plate)}>
+                          <IconButton variant="text" color="blue-gray" onClick={() => showDeleteConfirmation(data.vehicle_Plate)}>
                             <TrashIcon className="h-4 w-4" />
                           </IconButton>
                         </Tooltip>
