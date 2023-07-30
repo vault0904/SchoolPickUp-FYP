@@ -33,24 +33,18 @@ export default function DriverTable() {
   //  RETRIEVE DRIVER DATA START  //
   //
   // Define table header
-  const TABLE_HEAD = ["USER ID", "FIRST NAME", "LAST NAME", "EMAIL", "LICENSE", "", ""];
+  const TABLE_HEAD = ["DRIVER ID", "FIRST NAME", "LAST NAME", "EMAIL", "CONTACT NO", "ADDRESS", "LICENSE", "", ""];
 
   // Declare hook, which will be used to set drivers data, after getting the data from API below
   const [tableData, setTableData] = useState([]);
 
   // Retrieve vendor ID from localstorage
   // So that we can use it to find all drivers related to vendor
-  const vendor_ID = localStorage.getItem('userid');
+  const vendorid = localStorage.getItem('userid');
 
-  // API URL to get driver data
-  const API_GETDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-getdriver'
-
-  // Axios post request, which we will get all announcement data
   useEffect(() => {
-    axios.post(API_GETDRIVER, {vendor_ID})
+    axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-getdrivers/${vendorid}`)
       .then(res => {
-        // Set in the hook declared earlier
-        // We can now use the tableData.map function to map out the data
         setTableData(res.data)
       })
       .catch(err => {
@@ -65,7 +59,7 @@ export default function DriverTable() {
   //
   // Hooks for pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;  // number of rows to display
+  const rowsPerPage = 10;  // number of rows to display
   const startIndex = (currentPage - 1) * rowsPerPage;
 
   // Hook for search
@@ -86,6 +80,8 @@ export default function DriverTable() {
   const [ firstName, setFirstName ] = useState('');
   const [ lastName, setLastName ] = useState('');
   const [ email, setEmail ] = useState('');
+  const [ contactNo, setContactNo ] = useState('');
+  const [ address, setAddress ] = useState('');
   const [ license, setLicense ] = useState('');
 
   // Method to clear the create driver inputs
@@ -95,30 +91,24 @@ export default function DriverTable() {
     setFirstName('')
     setLastName('')
     setEmail('')
+    setContactNo('')
+    setAddress('')
     setLicense('')
   };
-
-  // API URL to post input submitted by user in create driver modal
-  const API_CREATEDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-createdriver'
 
   // Handle create driver
   const handleCreateDriver = async () => {
     try {
       // Basic frontend validation first, before sending post request
       // If any of the input fields are are empty, do not proceed with axios post req. 
-      if (!userId || !password || !firstName || !lastName || !email || !license) {
+      if (!userId || !password || !firstName || !lastName || !email || !contactNo || !address || !license) {
         alert('Fill in all fields first before creating the account')
         return;
       }
       
       // Else proceed with post request
-      // Post the request to API
-      const res = await axios.post(API_CREATEDRIVER, { userId, password, firstName, lastName, email, license, vendor_ID });
+      const res = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-createdriveraccount', { ui: userId, pw: password, fn: firstName, ln: lastName, e: email, cn: contactNo, a: address, l: license, vi: vendorid });
 
-      // After API return a response
-      // We check whether the response returned is True or False
-      // Return True means API has successfully created the driver acc in database
-      // Return False means API did not create the driver acc in database
       const apiresult = res.data;
       if (apiresult.success) {
         // Account successfully created
@@ -127,8 +117,6 @@ export default function DriverTable() {
         setCreateModalVisible(false);
         window.location.reload();
       } else {
-        // Account was not created, 
-        // See the exact error in errlog, whether its error from query or stopped by validation that is in lambda function
         alert(apiresult.errlog);
       }
     } catch (err) {
@@ -146,39 +134,40 @@ export default function DriverTable() {
   const [updatedFirstname, setUpdatedFirstname] = useState('');
   const [updatedLastname, setUpdatedLastname] = useState('');
   const [updatedEmail, setUpdatedEmail] = useState('');
+  const [updatedContactno, setUpdatedContactno] = useState('');
+  const [updatedAddress, setUpdatedAddress] = useState('');
   const [updatedLicense, setUpdatedLicense] = useState('');
 
   // Hook to toggle visibility of update modal,
   // The update modal will be populated with selected row's driver data
-  const showUpdateModal = ( userid, firstname, lastname, email, license ) => {
+  const showUpdateModal = ( userid, firstname, lastname, email, contactno, address, license ) => {
     setUserId(userid);
     setUpdatedFirstname(firstname);
     setUpdatedLastname(lastname);
     setUpdatedEmail(email);
+    setUpdatedContactno(contactno);
+    setUpdatedAddress(address);
     setUpdatedLicense(license);
     setUpdateModalVisible(true);
   };
 
-  // API URL to update driver account
-  const API_UPDATEDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-updatedriver'
-  
   // Handle updating driver details
   const handleUpdateDriver = async () => {
     try {
       // Perform basic validation
-      // Check that atleast firstname,lastname, email or license inputs are different from table row data before proceeding with update query in axios put
+      // Check that inputs are different from table row data before proceeding with update query in axios put
       // Find the specific row data based on the userid (which was set by state hook)
       const rowData = tableData.find(data => data.driver_ID === userId);
-      const isUpdated = updatedFirstname !== rowData.firstName || updatedLastname !== rowData.lastName || updatedEmail !== rowData.email || updatedLicense !== rowData.license;
+      const isUpdated = updatedFirstname !== rowData.firstName || updatedLastname !== rowData.lastName || updatedEmail !== rowData.email || updatedContactno !== rowData.contactNo || updatedAddress !== rowData.address || updatedLicense !== rowData.license;
 
       if (!isUpdated) {
-        alert('No changes made. Change either the first name, last name, email or license first before updating');
+        alert('No changes made. Change either the first name, last name, email, contact no, address or license first before updating');
         return;
       }
 
       // Perform the update API request using axios
-      const res = await axios.put(API_UPDATEDRIVER, { 
-        userId, updatedFirstname, updatedLastname, updatedEmail, updatedLicense 
+      const res = await axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-updatedriveraccount', { 
+        ui: userId, ufn: updatedFirstname, uln: updatedLastname, ue: updatedEmail, ucn: updatedContactno, ua: updatedAddress, ul: updatedLicense 
       });
   
       // Handle the response
@@ -211,23 +200,14 @@ export default function DriverTable() {
   // When user click on the delete button, they will trigger this const, and pass the user id in the parameter
   const showDeleteConfirmation = (userid) => {
     setDeleteModalVisible(true);
-    // store user id, so that we can use it in the axios delete request body later should user confirm to delete
     setDeletingUserId(userid);
   };
-
-  // API URL to delete driver account
-  const API_DELETEDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/busven-deletedriver'
 
   // Handle the deletion of an driver account
   const handleDeleteDriver = async () => {
     try {
-      const res = await axios.delete(API_DELETEDRIVER, { data: { deletingUserId } });
+      const res = await axios.delete('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-deletedriveraccount', { data: { deletingUserId } });
 
-      // After API returns a response
-      // We check whether it returns True or False
-      // We can manipulate the kind of response we want in API lambda, for now it is set as response is either True or False
-      // Return True means driver account has been successfully deleted
-      // Return False means account was not deleted, view the errlog to find exact error
       const apiResult = res.data;
       if (apiResult.success) {
         // Announcement successfully deleted
@@ -306,11 +286,11 @@ export default function DriverTable() {
             <CForm className='overflow-auto'>
               <CFormLabel>Creating driver account for vendor</CFormLabel>
               <CFormInput 
-                value={vendor_ID} 
+                value={vendorid} 
                 className='mb-2'
                 disabled
               />
-              <CFormLabel>User ID</CFormLabel>
+              <CFormLabel>Driver ID</CFormLabel>
               <CFormInput 
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
@@ -338,6 +318,18 @@ export default function DriverTable() {
               <CFormInput 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className='mb-2'
+              />
+              <CFormLabel>Contact No</CFormLabel>
+              <CFormInput 
+                value={contactNo}
+                onChange={(e) => setContactNo(e.target.value)}
+                className='mb-2'
+              />
+              <CFormLabel>Address</CFormLabel>
+              <CFormInput 
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
                 className='mb-2'
               />
               <CFormLabel>License</CFormLabel>
@@ -424,6 +416,16 @@ export default function DriverTable() {
                         <Typography variant="small" color="blue-gray" className="font-normal">
                           {data.email}
                         </Typography>
+                      </td>                      
+                      <td className={classes}>
+                        <Typography variant="small" color="blue-gray" className="font-normal">
+                          {data.contactNo}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography variant="small" color="blue-gray" className="font-normal">
+                          {data.address}
+                        </Typography>
                       </td>
                       <td className={classes}>
                         <Typography variant="small" color="blue-gray" className="font-normal">
@@ -432,7 +434,7 @@ export default function DriverTable() {
                       </td>
                       <td className={classes}>
                         <IconButton variant="text" color="blue-gray"
-                          onClick={() => showUpdateModal(data.driver_ID, data.firstName, data.lastName, data.email, data.license)}>
+                          onClick={() => showUpdateModal(data.driver_ID, data.firstName, data.lastName, data.email,data.contactNo, data.address, data.license)}>
                           <CIcon icon={cilPencil} />
                         </IconButton>
                       </td>
@@ -457,7 +459,7 @@ export default function DriverTable() {
                   </CModalHeader>
                   <CModalBody>
                     <CForm className="overflow-auto">
-                      <CFormLabel>User ID</CFormLabel>
+                      <CFormLabel>Driver ID</CFormLabel>
                       <CFormInput 
                         value={userId} 
                         className="mb-2"
@@ -479,6 +481,18 @@ export default function DriverTable() {
                       <CFormInput
                         value={updatedEmail}
                         onChange={(e) => setUpdatedEmail(e.target.value)}
+                        className="mb-2"
+                      />
+                      <CFormLabel>Contact No</CFormLabel>
+                      <CFormInput
+                        value={updatedContactno}
+                        onChange={(e) => setUpdatedContactno(e.target.value)}
+                        className="mb-2"
+                      />
+                      <CFormLabel>Address</CFormLabel>
+                      <CFormInput
+                        value={updatedAddress}
+                        onChange={(e) => setUpdatedAddress(e.target.value)}
                         className="mb-2"
                       />
                       <CFormLabel>License</CFormLabel>
