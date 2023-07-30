@@ -17,6 +17,8 @@ import {
   CModalFooter,
   CFormSelect,
 } from '@coreui/react'
+import CIcon from '@coreui/icons-react';
+import { cilPencil } from "@coreui/icons";
 import { TrashIcon } from "@heroicons/react/24/solid"
 import '../css/defaultstyle.css'
 
@@ -85,7 +87,6 @@ export default function GateAssignment() {
     });
     setCombinedData(combinedDataArray);
   }, [teacherTable, gateTable, gateAssignments]);
-  console.log(1,combinedData)
   // VIEW ASSIGNMENT END //
 
   // ASSIGN TEACHER START //
@@ -296,11 +297,10 @@ export default function GateAssignment() {
                           </Typography>
                         </td>
                         <td className={classes}>
-                          <Tooltip content="Delete">
-                            <IconButton variant="text" color="blue-gray" onClick={{}}>
-                              <TrashIcon className="h-4 w-4" />
-                            </IconButton>
-                          </Tooltip>
+                          <IconButton variant="text" color="blue-gray"
+                            onClick={{}}>
+                            <CIcon icon={cilPencil} />
+                          </IconButton>
                         </td>
                       </tr>
                     );
