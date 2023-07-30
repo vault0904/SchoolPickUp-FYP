@@ -30,33 +30,21 @@ import { TrashIcon } from "@heroicons/react/24/solid"
 
 export default function TeacherTable() {
 //  RETRIEVE TEACHER DATA START  //
-//
   // Define table header
-  const TABLE_HEAD = ["USER ID", "FIRST NAME", "LAST NAME", "EMAIL", "FORM CLASS", "", ""];
+  const TABLE_HEAD = ["USER ID", "FIRST NAME", "LAST NAME", "EMAIL", "ADDRESS", "CONTACT NO", "FORM CLASS", "", ""];
 
-  // Declare hook, which will be used to set teacher data, after getting the data from API below
   const [tableData, setTableData] = useState([]);
+  const schoolid = localStorage.getItem('schoolid');
 
-  // Retrieve school ID from localstorage
-  // So that we can use it to find all teachers related to the given school ID
-  const school_ID = localStorage.getItem('schoolid');
-
-  // API URL to get announcement data
-  const API_GETTEACHER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getteacher'
-
-  // Axios post request, which we will get all teacher data
   useEffect(() => {
-    axios.post(API_GETTEACHER, {school_ID})
+    axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getteachers/${schoolid}`)
       .then(res => {
-        // Set in the hook declared earlier
-        // We can now use the tableData.map function to map out the data
         setTableData(res.data)
       })
       .catch(err => {
         console.error(err);
       })
   }, []);
-//
 //  RETRIEVE TEACHER DATA END  //
 
 
@@ -64,7 +52,7 @@ export default function TeacherTable() {
 //
   // Hooks for pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;  // number of rows to display
+  const rowsPerPage = 10;  // number of rows to display
   const startIndex = (currentPage - 1) * rowsPerPage;
 
   // Hook for search
@@ -85,6 +73,8 @@ export default function TeacherTable() {
   const [ firstName, setFirstName ] = useState('');
   const [ lastName, setLastName ] = useState('');
   const [ email, setEmail ] = useState('');
+  const [ address, setAddress ] = useState('');
+  const [ contactno, setContactno ] = useState('');
   const [ formClass, setFormClass ] = useState('');
 
   // Method to clear the create teacher inputs
@@ -94,41 +84,34 @@ export default function TeacherTable() {
     setFirstName('')
     setLastName('')
     setEmail('')
+    setAddress('')
+    setContactno('')
     setFormClass('')
   };
-
-  // API URL to post input submitted by user in create teacher modal
-  const API_CREATETEACHER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createteacher'
 
   // Handle create teacher
   const handleCreateTeacher = async () => {
     try {
       // Basic frontend validation first, before sending post request
       // If any of the input fields are are empty, do not proceed with axios post req. 
-      if (!userId || !password || !firstName || !lastName || !email || !formClass) {
+      if (!userId || !password || !firstName || !lastName || !email || !address || !contactno || !formClass) {
         alert('Fill in all fields first before creating the account')
         return;
       }
       
       // Else proceed with post request
       // Post the request to API
-      const res = await axios.post(API_CREATETEACHER, { userId, password, firstName, lastName, email, formClass, school_ID });
+      const res = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createteacher', { ui: userId, p: password, fn: firstName, ln: lastName, e: email, a: address, cn: contactno, fc: formClass, si: schoolid });
 
-      // After API return a response
-      // We check whether the response returned is True or False
-      // Return True means API has successfully created the teacher acc in database
-      // Return False means API did not create the teacher acc in database
-      const apiresult = res.data;
-      if (apiresult.success) {
+      // Handle response
+      if (res.data.success) {
         // Account successfully created
         alert('Account successfully created')
         handleClearForm();
         setCreateModalVisible(false);
         window.location.reload();
       } else {
-        // Account was not created, 
-        // See the exact error in errlog, whether its error from query or stopped by validation that is in lambda function
-        alert(apiresult.errlog);
+        alert(res.data.errlog);
       }
     } catch (err) {
       console.error(err);
@@ -146,52 +129,49 @@ export default function TeacherTable() {
   const [updatedFirstname, setUpdatedFirstname] = useState('');
   const [updatedLastname, setUpdatedLastname] = useState('');
   const [updatedEmail, setUpdatedEmail] = useState('');
+  const [updatedAddress, setUpdatedAddress] = useState('');
+  const [updatedContactNo, setUpdatedContactNo] = useState('');
   const [updatedFormclass, setUpdatedFormclass] = useState('');
 
   // Hook to toggle visibility of update modal,
   // The update modal will be populated with selected row's  teacher data
-  const showUpdateModal = ( userid, firstname, lastname, email, formclass ) => {
+  const showUpdateModal = ( userid, firstname, lastname, email, address, contactno, formclass ) => {
     setUserId(userid);
     setUpdatedFirstname(firstname);
     setUpdatedLastname(lastname);
     setUpdatedEmail(email);
+    setUpdatedAddress(address);
+    setUpdatedContactNo(contactno)
     setUpdatedFormclass(formclass);
     setUpdateModalVisible(true);
   };
-
-  // API URL to update teacher account
-  const API_UPDATETEACHER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updateteacher'
   
   // Handle updating teacher details
   const handleUpdateTeacher = async () => {
     try {
-      // Perform basic validation
-      // Check that atleast firstname,lastname, email or form class inputs are different from table row data before proceeding with update query in axios put
+      // Validation
+      // Check that inputs are different from table row data before proceeding with update query in axios put
       // Find the specific row data based on the userid (which was set by state hook)
       const rowData = tableData.find(data => data.teacher_ID === userId);
-      const isUpdated = updatedFirstname !== rowData.firstName || updatedLastname !== rowData.lastName || updatedEmail !== rowData.email || updatedFormclass !== rowData.formClass;
+      const isUpdated = updatedFirstname !== rowData.firstName || updatedLastname !== rowData.lastName || updatedEmail !== rowData.email || updatedFormclass !== rowData.class_ID || updatedAddress !== rowData.address || updatedContactNo !== rowData.contactNo;
 
       if (!isUpdated) {
-        alert('No changes made. Change either the first name, last name, email or form class first before updating');
+        alert('No changes made. Change either the first name, last name, email, address, contact number or form class first before updating');
         return;
       }
 
       // Perform the update API request using axios
-      const res = await axios.put(API_UPDATETEACHER, { 
-        userId, updatedFirstname, updatedLastname, updatedEmail, updatedFormclass 
+      const res = await axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updateteacher', { 
+        ui: userId, ufn: updatedFirstname, uln: updatedLastname, ue: updatedEmail, ua: updatedAddress, ucn: updatedContactNo, ufc: updatedFormclass, si: schoolid 
       });
-  
       // Handle the response
-      const apiResult = res.data;
-      if (apiResult.success) {
-        // Account successfully updated
+      if (res.data.success) {
         alert('Account successfully updated');
         // Close the update modal
         setUpdateModalVisible(false);
         window.location.reload();
       } else {
-        // View error
-        alert(apiResult.errlog);
+        alert(res.data.errlog)
       }
     } catch (err) {
       console.error(err);
@@ -207,35 +187,23 @@ export default function TeacherTable() {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState('');   
 
-  // Show the delete confirmation modal
-  // When user click on the delete button, they will trigger this const, and pass the user id in the parameter
   const showDeleteConfirmation = (userid) => {
     setDeleteModalVisible(true);
-    // store user id, so that we can use it in the axios delete request body later should user confirm to delete
     setDeletingUserId(userid);
   };
-
-  // API URL to delete teacher account
-  const API_DELETETEACHER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deleteteacher'
 
   // Handle the deletion of an teacher account
   const handleDeleteTeacher = async () => {
     try {
-      const res = await axios.delete(API_DELETETEACHER, { data: { deletingUserId } });
+      const res = await axios.delete('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deleteteacher', { data: { dui: deletingUserId }, });
 
-      // After API returns a response
-      // We check whether it returns True or False
-      // We can manipulate the kind of response we want in API lambda, for now it is set as response is either True or False
-      // Return True means teacher account has been successfully deleted
-      // Return False means account was not deleted, view the errlog to find exact error
-      const apiResult = res.data;
-      if (apiResult.success) {
+      //Handle response
+      if (res.data.success) {
         // Announcement successfully deleted
         alert('Account successfully deleted');
         window.location.reload();
       } else {
-        // View error
-        alert(apiResult.errlog);
+        alert(res.data.errlog);
       }
     } catch (err) {
       console.error(err);
@@ -304,7 +272,7 @@ export default function TeacherTable() {
             <CForm className='overflow-auto'>
               <CFormLabel>Creating teacher account for school</CFormLabel>
               <CFormInput 
-                value={school_ID} 
+                value={schoolid} 
                 className='mb-2'
                 disabled
               />
@@ -338,6 +306,18 @@ export default function TeacherTable() {
                 onChange={(e) => setEmail(e.target.value)}
                 className='mb-2'
               />
+              <CFormLabel>Address</CFormLabel>
+              <CFormInput 
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className='mb-2'
+              />
+              <CFormLabel>Contact No</CFormLabel>
+              <CFormInput 
+                value={contactno}
+                onChange={(e) => setContactno(e.target.value)}
+                className='mb-2'
+              />              
               <CFormLabel>Form Class</CFormLabel>
               <CFormInput 
                 value={formClass}
@@ -425,12 +405,22 @@ export default function TeacherTable() {
                       </td>
                       <td className={classes}>
                         <Typography variant="small" color="blue-gray" className="font-normal">
-                          {data.formClass}
+                          {data.address}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography variant="small" color="blue-gray" className="font-normal">
+                          {data.contactNo}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography variant="small" color="blue-gray" className="font-normal">
+                          {data.class_ID}
                         </Typography>
                       </td>
                       <td className={classes}>
                         <IconButton variant="text" color="blue-gray"
-                          onClick={() => showUpdateModal(data.teacher_ID, data.firstName, data.lastName, data.email, data.formClass)}>
+                          onClick={() => showUpdateModal(data.teacher_ID, data.firstName, data.lastName, data.email, data.address, data.contactNo, data.class_ID)}>
                           <CIcon icon={cilPencil} />
                         </IconButton>
                       </td>
@@ -477,6 +467,18 @@ export default function TeacherTable() {
                       <CFormInput
                         value={updatedEmail}
                         onChange={(e) => setUpdatedEmail(e.target.value)}
+                        className="mb-2"
+                      />
+                      <CFormLabel>Address</CFormLabel>
+                      <CFormInput
+                        value={updatedAddress}
+                        onChange={(e) => setUpdatedAddress(e.target.value)}
+                        className="mb-2"
+                      />
+                      <CFormLabel>Contact No</CFormLabel>
+                      <CFormInput
+                        value={updatedContactNo}
+                        onChange={(e) => setUpdatedContactNo(e.target.value)}
                         className="mb-2"
                       />
                       <CFormLabel>Form Class</CFormLabel>
