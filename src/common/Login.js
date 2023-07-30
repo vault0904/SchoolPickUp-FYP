@@ -55,49 +55,56 @@ export default function Login() {
           // However before that, we store the relevant user details in local storage, such as their names, so that we can use it to display in their dashboard for example
   
           // Get usertype from API response, store in local storage
-          const retrieve_usertype = data.usertype;
-          localStorage.setItem('usertype', retrieve_usertype)
+          const usertype = data.usertype;
+          localStorage.setItem('usertype', usertype)
   
           switch (data.usertype) {
             case "sys-adm":
               // Retrieve relevant details from API response
-              const retrieve_userid_sysadm = data.userid;
-              const retrieve_fname_sysadm = data.firstName;
-              const retrieve_lname_sysadm = data.lastName;
+              const sysadmid = data.userid;
+              const sysadmfirstname = data.firstName;
+              const sysadmlastname = data.lastName;
               // Store relevant details
-              localStorage.setItem('userid', retrieve_userid_sysadm)
-              localStorage.setItem('firstname', retrieve_fname_sysadm)
-              localStorage.setItem('lastname', retrieve_lname_sysadm)
+              localStorage.setItem('userid', sysadmid)
+              localStorage.setItem('firstname', sysadmfirstname)
+              localStorage.setItem('lastname', sysadmlastname)
               // Navigate the user to their appropriate dashboard
               navigate('/system-admin/dashboard');
               break;
   
             case "sch-adm":
               // Retrieve relevant details from API response
-              const retrieve_userid_schadm = data.userid;
-              const retrieve_fname_schadm = data.firstName;
-              const retrieve_lname_schadm = data.lastName;
-              const retrieve_schid_schadm = data.school_ID;
+              const schadmid = data.userid;
+              const schadmfirstname = data.firstName;
+              const schadmlastname = data.lastName;
+              const schadmschoolid = data.school_ID;
               // Store relevant details
-              localStorage.setItem('userid', retrieve_userid_schadm)
-              localStorage.setItem('firstname', retrieve_fname_schadm)
-              localStorage.setItem('lastname', retrieve_lname_schadm)
-              localStorage.setItem('schoolid', retrieve_schid_schadm)
+              localStorage.setItem('userid', schadmid)
+              localStorage.setItem('firstname', schadmfirstname)
+              localStorage.setItem('lastname', schadmlastname)
+              localStorage.setItem('schoolid', schadmschoolid)
               // Navigate the user to their appropriate dashboard
               navigate('/school-admin/dashboard');
               break;
   
             case "ven":
               // Retrieve relevant details from API response
-              const retrieve_userid_ven = data.userid;
-              const retrieve_vendorname_ven = data.vendor_Name;
-              const retrieve_schoolID_ven = data.school_ID;
-              // Store relevant details
-              localStorage.setItem('userid', retrieve_userid_ven)
-              localStorage.setItem('vendorname', retrieve_vendorname_ven)
-              localStorage.setItem('school_ID_associated', retrieve_schoolID_ven)
-              // Navigate the user to their appropriate dashboard
-              navigate('/vendor/dashboard');
+              const vendorid = data.userid;
+              const vendorname = data.vendor_Name;
+              // Find all the schools that are associated with the vendor (school_vendor table)
+              // axios get request 
+              axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-getassociatedschools/${vendorid}`)
+              .then (res => {
+                const venschoolids = res.data;
+                // Store relevant details
+                localStorage.setItem('userid', vendorid)
+                localStorage.setItem('vendorname', vendorname)
+                localStorage.setItem('assoc_schools', JSON.stringify(venschoolids))
+                navigate('/vendor/dashboard');
+              })
+              .catch (err => {
+                console.error(err)
+              })
               break;
           }
         }
@@ -107,9 +114,6 @@ export default function Login() {
       console.error('Error:', error);
     }
   }
-
-
-
 
   return (
     <div className="maindiv">

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {
   Card,
   CardBody,
@@ -27,6 +27,19 @@ const PICKUP = [
 ]
 
 export default function DashboardVendor() {
+  // Store list of school IDs associated with vendor in state
+  const [schoolIds, setSchoolIds] = useState([]);
+  useEffect(() => {
+    // Get the stored array of school IDs from localStorage
+    const storedSchoolIdsString = localStorage.getItem('assoc_schools');
+
+    // Parse the string back to an array of strings
+    const storedSchoolIds = JSON.parse(storedSchoolIdsString);
+
+    // Update the state with the array of school IDs
+    setSchoolIds(storedSchoolIds);
+  }, []);
+
   // Get today's date in the format "DD-Month-YYYY"
   // Find the pickup object with today's date
   // Get the vendor company name
@@ -53,7 +66,6 @@ export default function DashboardVendor() {
       </div>
 
       {/* School information card */}
-      {/* Replace the static inputs with the data returned by the API  */}
       <Card className="flex-row w-full max-w-[48rem]" style={{marginTop: '15px'}}>
         <CardHeader shadow={false} floated={false} className="w-2/5 shrink-0 m-0 rounded-r-none">
           <img src={DefaultSchoolLogo} alt="image"  style={{marginLeft: '10%'}}/>
