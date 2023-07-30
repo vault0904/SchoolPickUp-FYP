@@ -26,7 +26,7 @@ const GateAssignment = React.lazy(() => import('./school_admin_module/GateAssign
 const DashboardVendor = React.lazy(() => import('./vendor_module/DashboardVendor'))
 const DriverTable = React.lazy(() => import('./vendor_module/DriverTable'))
 const VehicleTable = React.lazy(() => import('./vendor_module/VehicleTable'))
-const DriverAssignmentTable = React.lazy(() => import('./vendor_module/DriverAssignmentTable'))
+const DriverAssignment = React.lazy(() => import('./vendor_module/DriverAssignment'))
 const UploadVehicle = React.lazy(() => import('./vendor_module/UploadVehicle'))
 const UploadDriver = React.lazy(() => import('./vendor_module/UploadDriver'))
 
@@ -53,7 +53,7 @@ const routes = [
   { path: '/vendor/dashboard', name: 'Vendor Dashboard', element: DashboardVendor },
   { path: '/vendor/drivers', name: 'Drivers', element: DriverTable },
   { path: '/vendor/vehicletable', name: 'Vehicle Management', element: VehicleTable },
-  { path: '/vendor/driverassignment', name: 'Driver Assignment', element: DriverAssignmentTable },
+  { path: '/vendor/driverassignment', name: 'Driver Assignment', element: DriverAssignment },
   { path: '/vendor/uploadvehicle', name: 'Upload Vehicle', element: UploadVehicle },
   { path: '/vendor/uploaddriver', name: 'Upload Driver', element: UploadDriver },
 ]
