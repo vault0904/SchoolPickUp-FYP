@@ -8,7 +8,7 @@ import BrandLogo from '../assets/images/brand-logo1.jpg'
 // Import the sidebar of the different actors using the website
 import navigationSystemAdmin from './_navSystemAdmin'
 import navigationSchoolAdmin from './_navSchoolAdmin'
-import navigationBusVendor from './_navBusVendor'
+import navigationVendor from './_navVendor'
 
 const AppSidebar = () => {
   const dispatch = useDispatch()
@@ -26,8 +26,8 @@ const AppSidebar = () => {
     case 'sch-adm':
       AppSidebarNavItems = <AppSidebarNav items={navigationSchoolAdmin} />;
       break;
-    case 'bus-ven':
-      AppSidebarNavItems = <AppSidebarNav items={navigationBusVendor} />;
+    case 'ven':
+      AppSidebarNavItems = <AppSidebarNav items={navigationVendor} />;
       break;
     default:
       AppSidebarNavItems = null;

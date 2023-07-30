@@ -89,15 +89,15 @@ export default function Login() {
   
             case "ven":
               // Retrieve relevant details from API response
-              const retrieve_userid_busven = data.userid;
-              const retrieve_vendorname_busven = data.vendor_Name;
-              const retrieve_schoolID_busven = data.school_ID;
+              const retrieve_userid_ven = data.userid;
+              const retrieve_vendorname_ven = data.vendor_Name;
+              const retrieve_schoolID_ven = data.school_ID;
               // Store relevant details
-              localStorage.setItem('userid', retrieve_userid_busven)
-              localStorage.setItem('vendorname', retrieve_vendorname_busven)
-              localStorage.setItem('school_ID_associated', retrieve_schoolID_busven)
+              localStorage.setItem('userid', retrieve_userid_ven)
+              localStorage.setItem('vendorname', retrieve_vendorname_ven)
+              localStorage.setItem('school_ID_associated', retrieve_schoolID_ven)
               // Navigate the user to their appropriate dashboard
-              navigate('/bus-vendor/dashboard');
+              navigate('/vendor/dashboard');
               break;
           }
         }
@@ -134,7 +134,7 @@ export default function Login() {
                       >
                         <option value='sys-adm'>Log in as System Admin</option>
                         <option value='sch-adm'>Log in as School Admin</option>
-                        <option value='ven'>Log in as Bus Vendor</option>
+                        <option value='ven'>Log in as Vendor</option>
                       </CFormSelect>
                     </CInputGroup>
 

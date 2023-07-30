@@ -57,7 +57,7 @@ export default function EditProfile() {
   // States for Toggling editing mode
   const [ disableEdit, setDisableEdit ] = useState(true)
   const toggleEditMode = () => {
-    if (type == "bus-ven") {
+    if (type == "ven") {
       // We do not want vendor to change their official details randomly
       alert("Please contact Marsupium admin to change vendor details")  
       return
@@ -176,8 +176,8 @@ export default function EditProfile() {
                 </Typography>
                 <Input disabled value={profileDetails.id}/>
               </div>
-              {type == "bus-ven" ? (
-                  // Bus vendor's interface will show vendor name and address
+              {type == "ven" ? (
+                  // Vendor's interface will show vendor name and address
                   <>
                     <div>
                       <Typography variant="small" color="blue-gray" className="mt-4 mb-2 font-medium">

@@ -29,7 +29,7 @@ import {
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from 'react-router';
 
-export default function BusManagementTable() {
+export default function VehicleTable() {
   //  RETRIEVE VEHICLE DATA START  //
   //
   // Define table header
@@ -239,7 +239,7 @@ export default function BusManagementTable() {
   // UPLOAD BUTTON NAVIGATION //
   const navigate = useNavigate('')
   const navigateToUploadVehicle = () => {
-    navigate('/bus-vendor/uploadvehicle')
+    navigate('/vendor/uploadvehicle')
   }
 
   return (

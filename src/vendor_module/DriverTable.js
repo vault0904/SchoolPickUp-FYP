@@ -251,7 +251,7 @@ export default function DriverTable() {
   //  NAVIGATE TO UPLOAD DRIVER PAGE  //
   const navigate = useNavigate('')
   const navigateToUploadDriver = () => {
-    navigate('/bus-vendor/uploaddriver')
+    navigate('/vendor/uploaddriver')
   }
 
   return (

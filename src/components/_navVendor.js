@@ -9,18 +9,18 @@ import {
 } from '@coreui/icons'
 import { CNavItem, CNavGroup } from '@coreui/react'
 
-const _navBusVendor = [
+const _navVendor = [
 
   {
     component: CNavItem,
     name: 'Dashboard',
-    to: '/bus-vendor/dashboard',
+    to: '/vendor/dashboard',
     icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Assignments',
-    to: '/bus-vendor/driverassignment',
+    to: '/vendor/driverassignment',
     icon: <CIcon icon={cilTask} customClassName="nav-icon" />,
   },
 
@@ -31,7 +31,7 @@ const _navBusVendor = [
       {
         component: CNavItem,
         name: 'Driver',
-        to: '/bus-vendor/drivers',
+        to: '/vendor/drivers',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
     ]
@@ -44,11 +44,11 @@ const _navBusVendor = [
       {
         component: CNavItem,
         name: 'Vehicle',
-        to: '/bus-vendor/busmanagement',
+        to: '/vendor/vehicletable',
         icon: <CIcon icon={cilBusAlt} customClassName="nav-icon" />,
       },
     ]
   },
 ]
 
-export default _navBusVendor
+export default _navVendor

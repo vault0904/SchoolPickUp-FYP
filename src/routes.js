@@ -22,13 +22,13 @@ const UploadStudent = React.lazy(() => import('./school_admin_module/UploadStude
 const UploadSchedule = React.lazy(() => import('./school_admin_module/UploadSchedule')) 
 const GateAssignment = React.lazy(() => import('./school_admin_module/GateAssignment'))
 
-//Bus vendor
-const DashboardBusVendor = React.lazy(() => import('./bus_vendor_module/DashboardBusVendor'))
-const DriverTable = React.lazy(() => import('./bus_vendor_module/DriverTable'))
-const BusManagementTable = React.lazy(() => import('./bus_vendor_module/BusManagementTable'))
-const DriverAssignmentTable = React.lazy(() => import('./bus_vendor_module/DriverAssignmentTable'))
-const UploadVehicle = React.lazy(() => import('./bus_vendor_module/UploadVehicle'))
-const UploadDriver = React.lazy(() => import('./bus_vendor_module/UploadDriver'))
+//Vendor
+const DashboardVendor = React.lazy(() => import('./vendor_module/DashboardVendor'))
+const DriverTable = React.lazy(() => import('./vendor_module/DriverTable'))
+const VehicleTable = React.lazy(() => import('./vendor_module/VehicleTable'))
+const DriverAssignmentTable = React.lazy(() => import('./vendor_module/DriverAssignmentTable'))
+const UploadVehicle = React.lazy(() => import('./vendor_module/UploadVehicle'))
+const UploadDriver = React.lazy(() => import('./vendor_module/UploadDriver'))
 
 const routes = [
   { path: '/', exact: true, name: 'Login', element: Login },
@@ -50,12 +50,12 @@ const routes = [
   { path: '/school-admin/uploadschedule', name: 'Upload Schedule', element: UploadSchedule },
   { path: '/school-admin/gateassignment', name: 'Gate Assignment', element: GateAssignment },
 
-  { path: '/bus-vendor/dashboard', name: 'Bus Vendor Dashboard', element: DashboardBusVendor },
-  { path: '/bus-vendor/drivers', name: 'Drivers', element: DriverTable },
-  { path: '/bus-vendor/busmanagement', name: 'Bus Management', element: BusManagementTable },
-  { path: '/bus-vendor/driverassignment', name: 'Driver Assignment', element: DriverAssignmentTable },
-  { path: '/bus-vendor/uploadvehicle', name: 'Upload Vehicle', element: UploadVehicle },
-  { path: '/bus-vendor/uploaddriver', name: 'Upload Driver', element: UploadDriver },
+  { path: '/vendor/dashboard', name: 'Vendor Dashboard', element: DashboardVendor },
+  { path: '/vendor/drivers', name: 'Drivers', element: DriverTable },
+  { path: '/vendor/vehicletable', name: 'Vehicle Management', element: VehicleTable },
+  { path: '/vendor/driverassignment', name: 'Driver Assignment', element: DriverAssignmentTable },
+  { path: '/vendor/uploadvehicle', name: 'Upload Vehicle', element: UploadVehicle },
+  { path: '/vendor/uploaddriver', name: 'Upload Driver', element: UploadDriver },
 ]
 
 export default routes

@@ -26,10 +26,10 @@ const PICKUP = [
   },
 ]
 
-export default function DashboardBusVendor() {
+export default function DashboardVendor() {
   // Get today's date in the format "DD-Month-YYYY"
   // Find the pickup object with today's date
-  // Get the bus vendor company name
+  // Get the vendor company name
   const today = new Date().toLocaleDateString('en-UK', { day: '2-digit',month: 'long', year: 'numeric' });
   const todayPickup = PICKUP.find(pickup => pickup.date === today);
   const vendorname = localStorage.getItem('vendorname').toUpperCase();
@@ -44,7 +44,7 @@ export default function DashboardBusVendor() {
     <>
       <div>
         <p style={{color: '#56844B', fontWeight: 'bold'}}>
-          Welcome, BUS VENDOR {vendorname}
+          Welcome, VENDOR {vendorname}
         </p> 
       </div>
 
