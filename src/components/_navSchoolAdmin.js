@@ -14,13 +14,13 @@ const _navSchoolAdmin = [
 
   {
     component: CNavItem,
-    name: 'Announcement',
+    name: 'Announcements',
     to: '/school-admin/announcements',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Schedules',
+    name: 'Schedule',
     to: '/school-admin/schedule',
     icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
   },
@@ -38,7 +38,7 @@ const _navSchoolAdmin = [
       {
         component: CNavItem,
         name: 'Teacher',
-        to: '/school-admin/teachers',
+        to: '/school-admin/teacher',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
       {
@@ -63,13 +63,13 @@ const _navSchoolAdmin = [
       {
         component: CNavItem,
         name: 'Gate',
-        to: '/sys-adm/selfpickupoverview',
+        to: '/school-admin/gate',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
       {
         component: CNavItem,
-        name: 'Form class',
-        to: '/sys-adm/buspickupoverview',
+        name: 'Class',
+        to: '/school-admin/class',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
     ]
