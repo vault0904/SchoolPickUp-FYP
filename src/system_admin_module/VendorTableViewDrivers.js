@@ -26,86 +26,65 @@ import '../css/defaultstyle.css';
 import ConfirmationModal from './ConfirmationModal';
 
 export default function VendorTableViewDrivers() {  
-// RETRIEVE DRIVER DATA START //
-//
+  // VIEW DRIVER DATA START //
   // Define table header
-  const TABLE_HEAD = ["DRIVER ID", "FIRST NAME", "LAST NAME", "EMAIL", "LICENSE", "", ""];
+  const TABLE_HEAD = ["DRIVER ID", "FIRST NAME", "LAST NAME", "EMAIL", "CONTACT NO" , "ADDRESS", "LICENSE", "", ""];
 
-  // Declare hook, which will be used to set driver data, after getting the data from API below
   const [tableData, setTableData] = useState([]);
 
-  // Hooks to get the vendor_ID, from website URL, to include in API post request body
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const vendor_ID = searchParams.get('vendor_ID');
 
-  // API URL to get driver data
-  const API_GETDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getdrivers'
-
-  // Axios post request, which we will get all driver data
   useEffect(() => {
-    axios.post(API_GETDRIVER, {vendor_ID})
+    axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-getdrivers/${vendor_ID}`)
       .then(res => {
-        // Set in the hook declared earlier
-        // We can now use the tableData.map function to map out the data
         setTableData(res.data)
       })
       .catch(err => {
         console.error(err);
       })
   }, []);
-//
-// RETRIEVE DRIVER DATA END //
+  // VIEW DRIVER DATA END //
 
 
-
-
-
-
-// CREATE FUNCTION START //
-//
+  // CREATE FUNCTION START //
   // Hook to toggle visibility of create driver modal
   const [visible, setVisible] = useState(false)
 
-  // Hooks which will save the inputs in the create driver modal,
-  // The inputs will then be submitted to the post request API later
   const [userid, setUserid] = useState('');
   const [password, setPassword] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
+  const [contactNo, setContactNo] = useState('');
+  const [address, setAddress] = useState('');
   const [license, setLicense] = useState('');
 
-  // Method to clear the create driver modal inputs
   const handleClearForm = () => {
     setUserid('');
     setPassword('');
     setFirstname('');
     setLastname('');
     setEmail('');
+    setContactNo('');
+    setAddress();
     setLicense('');
   };
 
-  // API URL to post input submitted by user in create driver modal
-  const API_CREATEDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-createdriver'
-
-  // 
   const handleCreateDriver = async () => {
     try {
       // Basic frontend validation first, before sending post request
       // If either userid, password, firstname, lastname or email is empty, do not proceed with axios post req. 
-      if (!userid || !password || !firstname || !lastname || !email || !license) {
+      if (!userid || !password || !firstname || !lastname || !email || !contactNo || !address || !license) {
         alert('Fill in all fields first')
         return;
       }
       // Else proceed with post request, 
-      // Post request body contains the inputs by the user + the vendor ID
-      const res = await axios.post(API_CREATEDRIVER, { userid, password, firstname, lastname, email, license, vendor_ID });
+      const res = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-createdriveraccount', {
+         ui: userid, pw: password, fn: firstname, ln:  lastname, e: email, cn: contactNo, a:address, l: license,  vi: vendor_ID 
+      });
 
-      // After API return a response
-      // We check whether the response returned is True or False
-      // Return True means API has successfully created the account in database
-      // Return False means API did not create the account in database
       const apiresult = res.data;
       if (apiresult.success) {
         // Account successfully created
@@ -113,97 +92,36 @@ export default function VendorTableViewDrivers() {
         handleClearForm();
         window.location.reload();
       } else {
-        // Account was not created, 
-        // See the exact error in errlog, whether its error from query or stopped by validation that is in lambda function
         alert(apiresult.errlog);
       }
     } catch (err) {
       console.error(err);
     }
   };
-//
-// CREATE FUNCTION END //
+  // CREATE FUNCTION END //
 
 
-
-
-
-//  DELETE FUNCTION START  //
-//
-  // Hook to toggle visibility of delete driver account modal, and to store the driver id that was selected by user
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [deletingUserId, setDeletingUserId] = useState('');   
-
-  // Show the delete confirmation modal
-  // When user click on the delete button, they will trigger this const, and pass the driver ID in the parameter
-  const showDeleteConfirmation = (userid) => {
-    setDeleteModalVisible(true);
-    // store driver id, so that we can use it in the axios delete request body later should user confirm to delete
-    setDeletingUserId(userid);
-  };
-
-  // API URL to delete driver account
-  const API_DELETEDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deletedriver'
-
-  // Handle the deletion of an driver
-  // This const will be triggered when a user clicks on the confirm button in ConfirmationModal.js (it has the attribute 'onClick={onConfirm}')
-  // which will then trigger the 'onConfirm={handleDeleteDriver}' in our code below, 
-  const handleDeleteDriver = async () => {
-    try {
-      const res = await axios.delete(API_DELETEDRIVER, { data: { deletingUserId } });
-
-      // After API returns a response
-      // We check whether it returns True or False
-      // We can manipulate the kind of response we want in API lambda, for now it is set as response is either True or False
-      // Return True means driver account has been successfully deleted
-      // Return False means account was not deleted, view the errlog to find exact error
-      const apiResult = res.data;
-      if (apiResult.success) {
-        // Account successfully deleted
-        alert('Account successfully deleted');
-        window.location.reload();
-      } else {
-        // View error
-        alert(apiResult.errlog);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setDeleteModalVisible(false);
-      // refresh page
-      window.location.reload();
-    }
-  };
-//
-//  DELETE FUNCTION END //
-
-
-
-
-
-//  UPDATE FUNCTION START  //
-//
+  //  UPDATE FUNCTION START  //
   // Variables that will be used in the update modal
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [userId, setUserId] = useState('');
   const [updatedFirstname, setUpdatedFirstname] = useState('');
   const [updatedLastname, setUpdatedLastname] = useState('');
   const [updatedEmail, setUpdatedEmail] = useState('');
+  const [updatedContactNo, setUpdatedContactNo] = useState('');
+  const [updatedAddress, setUpdatedAddress] = useState('');
   const [updatedLicense, setUpdatedLicense] = useState('');
 
-  // Hook to toggle visibility of update modal,
-  // The update modal will be populated with selected row's data
-  const showUpdateModal = ( userid, firstname, lastname, email, license) => {
+  const showUpdateModal = ( userid, firstname, lastname, email, contactNo, address, license) => {
     setUserId(userid);
     setUpdatedFirstname(firstname);
     setUpdatedLastname(lastname);
     setUpdatedEmail(email);
+    setUpdatedContactNo(contactNo);
+    setUpdatedAddress(address);
     setUpdatedLicense(license);
     setUpdateModalVisible(true);
   };
-
-  // API URL to update driver account
-  const API_UPDATEDRIVER = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-updatedriver'
   
   // Handle updating driver details
   const handleUpdateDriver = async () => {
@@ -212,20 +130,22 @@ export default function VendorTableViewDrivers() {
       // Check that atleast firstname,lastname, email or license inputs are different from table row data before proceeding with update query in axios put
       // Find the specific row data based on the userId (which was set by state hook)
       const rowData = tableData.find(data => data.driver_ID === userId);
-      const isUpdated = updatedFirstname !== rowData.firstName || updatedLastname !== rowData.lastName || updatedEmail !== rowData.email || updatedLicense !== rowData.license;
+      const isUpdated = updatedFirstname !== rowData.firstName || updatedLastname !== rowData.lastName || updatedEmail !== rowData.email || updatedContactNo !== rowData.contactNo || updatedAddress !== rowData.address || updatedLicense !== rowData.license;
 
       if (!isUpdated) {
-        alert('No changes made. Change either the first name, last name, email or license first before updating');
+        alert('No changes made. Change either the name, email, contact no, address or license first before updating');
         return;
       }
 
       // Perform the update API request using axios
-      const res = await axios.put(API_UPDATEDRIVER, {
-        userid: userId,
-        updatedfirstname: updatedFirstname,
-        updatedlastname: updatedLastname,
-        updatedemail: updatedEmail,
-        updatedlicense: updatedLicense,
+      const res = await axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-updatedriveraccount', {
+        ui: userId,
+        ufn: updatedFirstname,
+        uln: updatedLastname,
+        ue: updatedEmail,
+        ucn: updatedContactNo,
+        ua: updatedAddress,
+        ul: updatedLicense,
       });
   
       // Handle the response
@@ -243,9 +163,42 @@ export default function VendorTableViewDrivers() {
     } catch (err) {
       console.error(err);
     }
+  };  
+  // UPDATE FUNCTION END  //
+
+
+  //  DELETE FUNCTION START  //
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [deletingUserId, setDeletingUserId] = useState('');   
+
+  const showDeleteConfirmation = (userid) => {
+    setDeleteModalVisible(true);
+
+    setDeletingUserId(userid);
   };
-//
-// UPDATE FUNCTION END  //
+
+  const handleDeleteDriver = async () => {
+    try {
+      const res = await axios.delete('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-deletedriveraccount', { data: { deletingUserId } });
+
+      const apiResult = res.data;
+      if (apiResult.success) {
+        // Account successfully deleted
+        alert('Account successfully deleted');
+        window.location.reload();
+      } else {
+        // View error
+        alert(apiResult.errlog);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setDeleteModalVisible(false);
+      // refresh page
+      window.location.reload();
+    }
+  };
+  //  DELETE FUNCTION END //
 
   return (
     <>
@@ -314,6 +267,18 @@ export default function VendorTableViewDrivers() {
                 onChange={(e) => setEmail(e.target.value)}
                 className='mb-2'
               />
+              <CFormLabel>Contact No</CFormLabel>
+              <CFormInput 
+                value={contactNo}
+                onChange={(e) => setContactNo(e.target.value)}
+                className='mb-2'
+              />
+              <CFormLabel>Address</CFormLabel>
+              <CFormInput 
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className='mb-2'
+              />
               <CFormLabel>License</CFormLabel>
               <CFormInput 
                 value={license}
@@ -343,7 +308,7 @@ export default function VendorTableViewDrivers() {
           {tableData.length === 0 ? 
           (
             <Typography className="p-4">
-              No driver account with this vendor
+              No driver accounts with this vendor
             </Typography>
           ) 
           : 
@@ -391,13 +356,23 @@ export default function VendorTableViewDrivers() {
                       </td>
                       <td className={classes}>
                         <Typography variant="small" color="blue-gray" className="font-normal">
+                          {data.contactNo}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography variant="small" color="blue-gray" className="font-normal">
+                          {data.address}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography variant="small" color="blue-gray" className="font-normal">
                           {data.license}
                         </Typography>
                       </td>
 
                       <td className={classes}>
                         <IconButton variant="text" color="blue-gray"
-                          onClick={() => showUpdateModal(data.driver_ID, data.firstName, data.lastName, data.email, data.license)}>
+                          onClick={() => showUpdateModal(data.driver_ID, data.firstName, data.lastName, data.email,data.contactNo, data.address, data.license)}>
                           <CIcon icon={cilPencil} />
                         </IconButton>
                       </td>
@@ -445,6 +420,18 @@ export default function VendorTableViewDrivers() {
                       <CFormInput
                         value={updatedEmail}
                         onChange={(e) => setUpdatedEmail(e.target.value)}
+                        className="mb-2"
+                      />
+                      <CFormLabel>Contact No</CFormLabel>
+                      <CFormInput
+                        value={updatedContactNo}
+                        onChange={(e) => setUpdatedContactNo(e.target.value)}
+                        className="mb-2"
+                      />
+                      <CFormLabel>Address</CFormLabel>
+                      <CFormInput
+                        value={updatedAddress}
+                        onChange={(e) => setUpdatedAddress(e.target.value)}
                         className="mb-2"
                       />
                       <CFormLabel>License</CFormLabel>

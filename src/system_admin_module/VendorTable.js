@@ -14,22 +14,16 @@ import ConfirmationModal from './ConfirmationModal';
 
 export default function VendorTable() {
 
-//  VIEW FUNCTION START  //
-//
+  //  VIEW FUNCTION START  //
   // Define table header here
-  const TABLE_HEAD = ["VENDOR ID", "VENDOR NAME", "ADDRESS", "EMAIL", "SCHOOL PARTNERED WITH", "", ""];
+  const TABLE_HEAD = ["VENDOR ID", "VENDOR NAME", "ADDRESS", "EMAIL", "CONTACT NO", "SCHOOL PARTNERED WITH", "", ""];
 
-  // Hook for setting vendor data
   const [tableData, setTableData] = useState([]);
 
-  // API to get all vendor data
-  const API_URL = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getallbusvendor'
-
-  // Axios get request to get all vendor data from db
   useEffect(() => {
-    axios.get(API_URL)
+    axios.get('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getvendor')
       .then(res => {
-        setTableData(res.data)  // With this set, we can map out the table data
+        setTableData(res.data)
       })
       .catch(err => {
         console.error(err);
@@ -41,43 +35,22 @@ export default function VendorTable() {
   const handleViewDrivers = (vendor_ID) => {
     navigate(`/system-admin/vendor/viewdrivers?vendor_ID=${vendor_ID}`);
   };
-
-//
-//  VIEW FUNCTION END  //
+  //  VIEW FUNCTION END  //
 
 
-
-
-
-//  DELETE FUNCTION START //
-//
-  // Hook to toggle visibility of delete vendor modal, 
-  // and to store the vendor id that was selected by user
+  //  DELETE FUNCTION START //
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingVendorId, setDeletingVendorId] = useState('');  
 
-  // Show the delete confirmation modal
-  // When user click on the delete button, they will trigger this const, and pass the vendor id in the parameter
   const showDeleteConfirmation = (vendorid) => {
     setDeleteModalVisible(true);
-    // store vendor id, so that we can use it in the axios delete request body later should user confirm to delete
     setDeletingVendorId(vendorid);
   };
 
-  // API URL to delete vendor account
-  const API_DELETEVEN = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deletevendor'
-
-  // Handle deletion of vendor,
-  // Triggered when user clicks on 'confirm' in delete modal
   const handleDeleteVendor = async () => {
     try {
-      const res = await axios.delete(API_DELETEVEN, { data: { deletingVendorId } });
-
-      // After API returns a response
-      // We check if response returned is True or False 
-      // We can manipulate the kind of response we want in API lambda, for now it is set as response is either True or False
-      // Return True means query executed, vendor account deleted
-      // Return False means some error occured, either query did not execute properly or validation check stopped the query 
+      const res = await axios.delete('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deletevendor', { data: { deletingVendorId } });
+ 
       const apiResult = res.data;
       if (apiResult.success) {
         // Vendor successfully deleted
@@ -93,8 +66,7 @@ export default function VendorTable() {
       setDeleteModalVisible(false);
     }
   }
-//
-// DELETE FUNCTION END  //
+  // DELETE FUNCTION END  //
 
   return (
     <>
@@ -151,7 +123,12 @@ export default function VendorTable() {
                     </td>
                     <td className={classes}>
                       <Typography variant="small" color="blue-gray" className="font-normal">
-                        {data.school_ID}
+                        {data.contactNo}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography variant="small" color="blue-gray" className="font-normal">
+                        Hi
                       </Typography>
                     </td>
                     <td className={classes}>
