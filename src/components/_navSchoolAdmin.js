@@ -44,7 +44,7 @@ const _navSchoolAdmin = [
       {
         component: CNavItem,
         name: 'Parent',
-        to: '/sys-adm/buspickupoverview',
+        to: '/school-admin/parent',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
       {
