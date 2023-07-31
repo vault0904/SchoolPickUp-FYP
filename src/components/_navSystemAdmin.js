@@ -53,7 +53,7 @@ const _navSystemAdmin = [
       {
         component: CNavItem,
         name: 'Vendor',
-        to: '/system-admin/company',
+        to: '/system-admin/vendor',
         icon: <CIcon icon={cilContact} customClassName="nav-icon" />,
       },
     ]

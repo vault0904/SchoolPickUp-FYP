@@ -26,12 +26,10 @@ import '../css/defaultstyle.css';
 import ConfirmationModal from './ConfirmationModal';
 
 export default function SchoolTableViewAdmins() {  
-// RETRIEVE SCHOOL ADMIN DATA START //
-//
+  // VIEW SCHOOL ADMIN DATA START //
   // Define table header
-  const TABLE_HEAD = ["SCHOOL ADMIN ID", "FIRST NAME", "LAST NAME", "EMAIL", "", ""];
+  const TABLE_HEAD = ["SCHOOL ADMIN ID", "FIRST NAME", "LAST NAME", "EMAIL", "CONTACT NO", "ADDRESS", "", ""];
 
-  // Declare hook, which will be used to set school admin data, after getting the data from API below
   const [tableData, setTableData] = useState([]);
 
   // Hooks to get the school_ID, from website URL, to include in API post request body
@@ -39,41 +37,29 @@ export default function SchoolTableViewAdmins() {
   const searchParams = new URLSearchParams(location.search);
   const school_ID = searchParams.get('school_ID');
 
-  // API URL to get school admin data
-  const API_GETSCHADM = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getschooladmins'
-
   // Axios post request, which we will get all the school admin data
   useEffect(() => {
-    axios.post(API_GETSCHADM, {school_ID})
+    axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getschooladmin/${school_ID}`)
       .then(res => {
-        // Set in the hook declared earlier
-        // We can now use the tableData.map function to map out the data
         setTableData(res.data)
       })
       .catch(err => {
         console.error(err);
       })
   }, []);
-//
-// RETRIEVE SCHOOL ADMIN DATA END //
+  // VIEW SCHOOL ADMIN DATA END //
 
 
-
-
-
-
-// CREATE FUNCTION START //
-//
+  // CREATE FUNCTION START //
   // Hook to toggle visibility of create admin modal
   const [visible, setVisible] = useState(false)
-
-  // Hooks which will save the inputs in the create admin modal,
-  // The inputs will then be submitted to the post request API later
   const [userid, setUserid] = useState('');
   const [password, setPassword] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
+  const [contactNo, setContactNo] = useState('');
+  const [address, setAddress] = useState('');
 
   // Method to clear the create admin modal inputs
   const handleClearForm = () => {
@@ -82,28 +68,23 @@ export default function SchoolTableViewAdmins() {
     setFirstname('');
     setLastname('');
     setEmail('');
+    setContactNo('');
+    setAddress('');
   };
-
-  // API URL to post input submitted by user in create admin modal
-  const API_CREATESCHADM = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-createschooladmin'
 
   // 
   const handleCreateAdmin = async () => {
     try {
       // Basic frontend validation first, before sending post request
       // If either userid, password, firstname, lastname or email is empty, do not proceed with axios post req. 
-      if (!userid || !password || !firstname || !lastname || !email) {
+      if (!userid || !password || !firstname || !lastname || !email || !contactNo || !address) {
         alert('Fill in all fields first')
         return;
       }
       // Else proceed with post request, 
       // Post request body contains the inputs by the user + the school ID
-      const res = await axios.post(API_CREATESCHADM, { userid, password, firstname, lastname, email, school_ID });
+      const res = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-createschooladmin', { ui: userid, p: password, fn: firstname, ln: lastname, e: email, cn:contactNo, a:address, si: school_ID });
 
-      // After API return a response
-      // We check whether the response returned is True or False
-      // Return True means API has successfully created the account in database
-      // Return False means API did not create the account in database
       const apiresult = res.data;
       if (apiresult.success) {
         // Account successfully created
@@ -111,52 +92,89 @@ export default function SchoolTableViewAdmins() {
         handleClearForm();
         window.location.reload();
       } else {
-        // Account was not created, 
-        // See the exact error in errlog, whether its error from query or stopped by validation that is in lambda function
         alert(apiresult.errlog);
       }
     } catch (err) {
       console.error(err);
     }
   };
-//
-// CREATE FUNCTION END //
+  // CREATE FUNCTION END //
 
 
+  //  UPDATE FUNCTION START  //
+  // Variables that will be used in the update modal
+  const [updateModalVisible, setUpdateModalVisible] = useState(false);
+  const [userId, setUserId] = useState('');
+  const [updatedFirstname, setUpdatedFirstname] = useState('');
+  const [updatedLastname, setUpdatedLastname] = useState('');
+  const [updatedEmail, setUpdatedEmail] = useState('');
+  const [updatedContactNo, setUpdatedContactNo] = useState('');
+  const [updatedAddress, setUpdatedAddress] = useState('');
+
+  const showUpdateModal = ( userid, firstname, lastname, email, contactNo, address) => {
+    setUserId(userid);
+    setUpdatedFirstname(firstname);
+    setUpdatedLastname(lastname);
+    setUpdatedEmail(email);
+    setUpdatedContactNo(contactNo);
+    setUpdatedAddress(address);
+    setUpdateModalVisible(true);
+  };
+  
+  // Handle updating admin details
+  const handleUpdateAdmin = async () => {
+    try {
+      // Perform basic validation
+      // Check that atleast firstname,lastname or email inputs are different from table row data before proceeding with update query in axios put
+      // Find the specific row data based on the userId (which was set by state hook)
+      const rowData = tableData.find(data => data.schAdmin_ID === userId);
+      const isUpdated = updatedFirstname !== rowData.firstName || updatedLastname !== rowData.lastName || updatedEmail !== rowData.email || updatedContactNo !== rowData.contactNo || updatedAddress !==rowData.address;
+
+      if (!isUpdated) {
+        alert('No changes made. Change either the first name, last name or email first before updating');
+        return;
+      }
+
+      // Perform the update API request using axios
+      const res = await axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-updateschooladmin', {
+        ui: userId,
+        ufn: updatedFirstname,
+        uln: updatedLastname,
+        ue: updatedEmail,
+        ucn: updatedContactNo,
+        ua: updatedAddress,
+      });
+  
+      // Handle the response
+      const apiResult = res.data;
+      if (apiResult.success) {
+        // Account successfully updated
+        alert('Account successfully updated');
+        setUpdateModalVisible(false);
+        window.location.reload();
+      } else {
+        alert(apiResult.errlog);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  // UPDATE FUNCTION END  //
 
 
-
-//  DELETE FUNCTION START  //
-//
-  // Hook to toggle visibility of delete school admin account modal, and to store the schooladmin id that was selected by user
+  //  DELETE FUNCTION START  //
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState('');   
 
-  // Show the delete confirmation modal
-  // When user click on the delete button, they will trigger this const, and pass the schooladmin ID in the parameter
   const showDeleteConfirmation = (userid) => {
     setDeleteModalVisible(true);
-    // store schooladmin id, so that we can use it in the axios delete request body later should user confirm to delete
     setDeletingUserId(userid);
   };
 
-  // API URL to delete school admin account
-  const API_DELETESCHADM = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deleteschooladmin'
-
-  // Handle the deletion of an admin
-  // This const will be triggered when a user clicks on the confirm button in ConfirmationModal.js (it has the attribute 'onClick={onConfirm}')
-  // When the confirm button is clicked, it triggers the onConfirm in ConfirmationModal.js, 
-  // which will then trigger the 'onConfirm={handleDeleteAdmin}' in our code below, 
-  // which then triggers the handleDeleteAdmin
   const handleDeleteAdmin = async () => {
     try {
-      const res = await axios.delete(API_DELETESCHADM, { data: { deletingUserId } });
+      const res = await axios.delete('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deleteschooladmin', { data: { deletingUserId } });
 
-      // After API returns a response
-      // We check whether it returns True or False
-      // We can manipulate the kind of response we want in API lambda, for now it is set as response is either True or False
-      // Return True means school admin account has been successfully deleted
-      // Return False means account was not deleted, view the errlog to find exact error
       const apiResult = res.data;
       if (apiResult.success) {
         // Account successfully deleted
@@ -172,75 +190,7 @@ export default function SchoolTableViewAdmins() {
       setDeleteModalVisible(false);
     }
   };
-//
-//  DELETE FUNCTION END //
-
-
-
-
-
-//  UPDATE FUNCTION START  //
-//
-  // Variables that will be used in the update modal
-  const [updateModalVisible, setUpdateModalVisible] = useState(false);
-  const [userId, setUserId] = useState('');
-  const [updatedFirstname, setUpdatedFirstname] = useState('');
-  const [updatedLastname, setUpdatedLastname] = useState('');
-  const [updatedEmail, setUpdatedEmail] = useState('');
-
-  // Hook to toggle visibility of update modal,
-  // The update modal will be populated with selected row's data
-  const showUpdateModal = ( userid, firstname, lastname, email) => {
-    setUserId(userid);
-    setUpdatedFirstname(firstname);
-    setUpdatedLastname(lastname);
-    setUpdatedEmail(email);
-    setUpdateModalVisible(true);
-  };
-
-  // API URL to update school admin account
-  const API_UPDATESCHADM = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-updateschooladmin'
-  
-  // Handle updating admin details
-  const handleUpdateAdmin = async () => {
-    try {
-      // Perform basic validation
-      // Check that atleast firstname,lastname or email inputs are different from table row data before proceeding with update query in axios put
-      // Find the specific row data based on the userId (which was set by state hook)
-      const rowData = tableData.find(data => data.schAdmin_ID === userId);
-      const isUpdated = updatedFirstname !== rowData.firstName || updatedLastname !== rowData.lastName || updatedEmail !== rowData.email;
-
-      if (!isUpdated) {
-        alert('No changes made. Change either the first name, last name or email first before updating');
-        return;
-      }
-
-      // Perform the update API request using axios
-      const res = await axios.put(API_UPDATESCHADM, {
-        userid: userId,
-        updatedfirstname: updatedFirstname,
-        updatedlastname: updatedLastname,
-        updatedemail: updatedEmail,
-      });
-  
-      // Handle the response
-      const apiResult = res.data;
-      if (apiResult.success) {
-        // Account successfully updated
-        alert('Account successfully updated');
-        // Close the update modal
-        setUpdateModalVisible(false);
-        window.location.reload();
-      } else {
-        // View error
-        alert(apiResult.errlog);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-//
-// UPDATE FUNCTION END  //
+  //  DELETE FUNCTION END //
 
   return (
     <>
@@ -309,6 +259,18 @@ export default function SchoolTableViewAdmins() {
                 onChange={(e) => setEmail(e.target.value)}
                 className='mb-2'
               />
+              <CFormLabel>Contact No</CFormLabel>
+              <CFormInput 
+                value={contactNo}
+                onChange={(e) => setContactNo(e.target.value)}
+                className='mb-2'
+              />
+              <CFormLabel>Address</CFormLabel>
+              <CFormInput 
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className='mb-2'
+              />
             </CForm>
           </CModalBody>
           <CModalFooter className="d-flex justify-content-center">
@@ -332,7 +294,7 @@ export default function SchoolTableViewAdmins() {
           {tableData.length === 0 ? 
           (
             <Typography className="p-4">
-              No school admin account with this school
+              No school admin accounts in this school
             </Typography>
           ) 
           : 
@@ -378,10 +340,20 @@ export default function SchoolTableViewAdmins() {
                           {data.email}
                         </Typography>
                       </td>
+                      <td className={classes}>
+                        <Typography variant="small" color="blue-gray" className="font-normal">
+                          {data.contactNo}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography variant="small" color="blue-gray" className="font-normal">
+                          {data.address}
+                        </Typography>
+                      </td>
 
                       <td className={classes}>
                         <IconButton variant="text" color="blue-gray"
-                          onClick={() => showUpdateModal(data.schAdmin_ID, data.firstName, data.lastName, data.email)}>
+                          onClick={() => showUpdateModal(data.schAdmin_ID, data.firstName, data.lastName, data.email, data.contactNo, data.address)}>
                           <CIcon icon={cilPencil} />
                         </IconButton>
                       </td>
@@ -429,6 +401,18 @@ export default function SchoolTableViewAdmins() {
                       <CFormInput
                         value={updatedEmail}
                         onChange={(e) => setUpdatedEmail(e.target.value)}
+                        className="mb-2"
+                      />
+                      <CFormLabel>Contact No</CFormLabel>
+                      <CFormInput
+                        value={updatedContactNo}
+                        onChange={(e) => setUpdatedContactNo(e.target.value)}
+                        className="mb-2"
+                      />
+                      <CFormLabel>Address</CFormLabel>
+                      <CFormInput
+                        value={updatedAddress}
+                        onChange={(e) => setUpdatedAddress(e.target.value)}
                         className="mb-2"
                       />
                     </CForm>

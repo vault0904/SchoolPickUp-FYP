@@ -25,7 +25,7 @@ import { cilPencil } from "@coreui/icons"
 import '../css/defaultstyle.css';
 import ConfirmationModal from './ConfirmationModal';
 
-export default function CompanyTableViewDrivers() {  
+export default function VendorTableViewDrivers() {  
 // RETRIEVE DRIVER DATA START //
 //
   // Define table header
@@ -470,7 +470,7 @@ export default function CompanyTableViewDrivers() {
                   visible={deleteModalVisible}
                   onClose={() => setDeleteModalVisible(false)}
                   onConfirm={handleDeleteDriver}
-                  callingComponent="CompanyTableViewDrivers"
+                  callingComponent="VendorTableViewDrivers"
                 />
               </tbody>
             </table>

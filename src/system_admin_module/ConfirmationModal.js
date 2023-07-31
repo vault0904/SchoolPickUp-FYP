@@ -27,7 +27,7 @@ const ConfirmationModal = ({ visible, onClose, onConfirm, callingComponent }) =>
           <CModalTitle style={{ color: '#56844B', fontWeight: 'bold', fontSize: '20px'}}>Confirm Deletion</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <p>Are you sure you want to delete this admin?</p>
+          <p>Are you sure you want to delete this school admin?</p>
         </CModalBody>
         <CModalFooter>
           <CButton onClick={onConfirm} color="light">Confirm</CButton>
@@ -35,9 +35,9 @@ const ConfirmationModal = ({ visible, onClose, onConfirm, callingComponent }) =>
         </CModalFooter>
       </CModal>
     );
-  } else if (callingComponent === 'CompanyTable') {
+  } else if (callingComponent === 'VendorTable') {
     return (
-      // Modal for CompanyTable
+      // Modal for VendorTable
       <CModal scrollable visible={visible} onClose={onClose} >   
         <CModalHeader>
           <CModalTitle style={{ color: '#56844B', fontWeight: 'bold', fontSize: '20px'}}>Confirm Deletion</CModalTitle>
@@ -51,9 +51,9 @@ const ConfirmationModal = ({ visible, onClose, onConfirm, callingComponent }) =>
         </CModalFooter>
       </CModal>
     );
-  } else if (callingComponent === 'CompanyTableViewDrivers') {
+  } else if (callingComponent === 'VendorTableViewDrivers') {
     return (
-      // Modal for CompanyTableViewDrivers
+      // Modal for VendorTableViewDrivers
       <CModal scrollable visible={visible} onClose={onClose} >   
         <CModalHeader>
           <CModalTitle style={{ color: '#56844B', fontWeight: 'bold', fontSize: '20px'}}>Confirm Deletion</CModalTitle>

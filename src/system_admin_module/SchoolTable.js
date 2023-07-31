@@ -8,28 +8,24 @@ import {
   Tooltip, 
   IconButton,
 } from "@material-tailwind/react";
+import { CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormLabel, CFormInput } from '@coreui/react';
 import { TrashIcon } from "@heroicons/react/24/solid";
 import '../css/defaultstyle.css';
 import ConfirmationModal from './ConfirmationModal';
 
 export default function SchoolTable() {
 
-//  VIEW FUNCTION START  //
-//
+  //  VIEW FUNCTION START  //
   // Define table header here
-  const TABLE_HEAD = ["SCHOOL ID", "SCHOOL NAME", "SCHOOL ADDRESS", "SCHOOL TYPE", "EMAIL", "", ""];
+  const TABLE_HEAD = ["SCHOOL ID", "SCHOOL NAME", "SCHOOL ADDRESS", "CONTACT NO", "SCHOOL TYPE", "", ""];
 
-  // Hook for setting school data
   const [tableData, setTableData] = useState([]);
-
-  // API to get all school data
-  const API_URL = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getallschool'
 
   // Axios get request to get all school data from db
   useEffect(() => {
-    axios.get(API_URL)
+    axios.get('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getschool')
       .then(res => {
-        setTableData(res.data)  // With this set, we can map out the table data
+        setTableData(res.data)
       })
       .catch(err => {
         console.error(err);
@@ -41,49 +37,76 @@ export default function SchoolTable() {
   const handleViewSchoolAdmins = (school_ID) => {
     navigate(`/system-admin/school/viewadmins?school_ID=${school_ID}`);
   };
-//
-//  VIEW FUNCTION END  //
+  //  VIEW FUNCTION END  //
 
 
+  // CREATE FUNCTION START //
+  const [visible, setVisible] = useState(false)
+  const [schoolId, setSchoolId] = useState('')
+  const [schoolName, setSchoolName] = useState('')
+  const [address, setAddress] = useState('')
+  const [contactNo, setContactNo] = useState('')
+  const [type, setType] = useState('')
+
+  const handleClearForm = () => {
+    setSchoolId('')
+    setSchoolName('')
+    setAddress('')
+    setContactNo('')
+    setType('')
+  }
+
+  const handleCreateSchool = async () => {
+    try {
+      // basic validation check for empty inputs
+      if (!schoolId || !schoolName || !address || !contactNo || !type) {
+        alert('Fill in all fields first')
+        return;
+      }
+
+      const res = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-createschool', { 
+        si: schoolId,
+        sn: schoolName,
+        a: address,
+        cn: contactNo,
+        t: type,
+      });
+      
+      const apiresult = res.data;
+      if (apiresult.success) {
+        // School successfully created
+        alert('School successfully created')
+        handleClearForm();
+        window.location.reload();
+      } else {
+        alert(apiresult.errlog);
+      }
+    } catch(err) {
+      console.error(err)
+    }
+  }
+  // CREATE FUNCTION END //
 
 
-
-//  DELETE FUNCTION START //
-//
-  // Hook to toggle visibility of delete school modal, 
-  // and to store the school id that was selected by user
+  //  DELETE FUNCTION START //
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingSchoolId, setDeletingSchoolId] = useState('');  
 
-  // Show the delete confirmation modal
-  // When user click on the delete button, they will trigger this const, and pass the school id in the parameter
   const showDeleteConfirmation = (schoolid) => {
     setDeleteModalVisible(true);
-    // store school id, so that we can use it in the axios delete request body later should user confirm to delete
     setDeletingSchoolId(schoolid);
   };
 
-  // API URL to delete school account
-  const API_DELETESCH = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deleteschool'
-
-  // Handle deletion of school,
-  // Triggered when user clicks on 'confirm' in delete modal
   const handleDeleteSchool = async () => {
     try {
-      const res = await axios.delete(API_DELETESCH, { data: { deletingSchoolId } });
+      const res = await axios.delete('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-deleteschool', { data: { deletingSchoolId } });
 
-      // After API returns a response
-      // We check if response returned is True or False 
-      // We can manipulate the kind of response we want in API lambda, for now it is set as response is either True or False
-      // Return True means query executed, school account deleted
-      // Return False means some error occured, either query did not execute properly or validation check stopped the query 
       const apiResult = res.data;
       if (apiResult.success) {
         // School successfully deleted
         alert('School successfully deleted');
         window.location.reload();
       } else {
-        // View error
         alert(apiResult.errlog);
       }
     } catch (err) {
@@ -92,10 +115,7 @@ export default function SchoolTable() {
       setDeleteModalVisible(false);
     }
   }
-
-//
-// DELETE FUNCTION END  //
-
+  // DELETE FUNCTION END  //
 
   return (
     <>
@@ -105,6 +125,76 @@ export default function SchoolTable() {
           style={{ fontSize: '20px', color: '#56844B', paddingLeft: '5%'}} >
           School Account Management
         </p>
+
+          {/* Create school button */}
+          <CButton 
+          onClick={() => setVisible(!visible)}
+          style={{
+            '--cui-btn-color': 'white',
+            '--cui-btn-bg': '#56844B',
+            '--cui-btn-border-color': 'transparent',
+            '--cui-btn-hover-bg': '#56844B',
+            '--cui-btn-hover-border-color': '#56844B',
+          }}
+          className="px-5 py-2" >
+          Create School
+        </CButton>
+
+        {/* Create school modal */}
+        <CModal scrollable visible={visible} onClose={() => setVisible(false)}>
+          <CModalHeader>
+            <CModalTitle style={{ color: '#56844B', fontWeight: 'bold', fontSize: '20px'}}>Create School</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <CForm className='overflow-auto'>
+
+              <CFormLabel>School ID</CFormLabel>
+              <CFormInput 
+                value={schoolId}
+                onChange={(e) => setSchoolId(e.target.value)}
+                className='mb-2'
+              />
+              <CFormLabel>School Name</CFormLabel>
+              <CFormInput 
+                value={schoolName}
+                onChange={(e) => setSchoolName(e.target.value)}
+                className='mb-2'
+              />
+              <CFormLabel>Address</CFormLabel>
+              <CFormInput 
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className='mb-2'
+              />
+              <CFormLabel>Contact No</CFormLabel>
+              <CFormInput 
+                value={contactNo}
+                onChange={(e) => setContactNo(e.target.value)}
+                className='mb-2'
+              />
+              <CFormLabel>School Type</CFormLabel>
+              <CFormInput 
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className='mb-2'
+              />
+            </CForm>
+          </CModalBody>
+          <CModalFooter className="d-flex justify-content-center">
+            <CButton 
+              style ={{'background': '#56844B', width: '70%'}}
+              onClick={handleCreateSchool}>
+              Create
+            </CButton>
+            <CButton 
+              color='light'
+              style ={{ width: '70%'}}
+              onClick={handleClearForm}>
+              Clear Form
+            </CButton>
+          </CModalFooter>
+        </CModal>
+
       </div>
 
       <Card className="overflow-scroll h-full w-full">
@@ -142,17 +232,17 @@ export default function SchoolTable() {
                     </td>
                     <td className={classes}>
                       <Typography variant="small" color="blue-gray" className="font-normal">
-                        {data.school_Address}
+                        {data.address}
                       </Typography>
                     </td>
                     <td className={classes}>
                       <Typography variant="small" color="blue-gray" className="font-normal">
-                        {data.school_Type}
+                        {data.contactNo}
                       </Typography>
                     </td>
                     <td className={classes}>
                       <Typography variant="small" color="blue-gray" className="font-normal">
-                        {data.email}
+                        {data.type}
                       </Typography>
                     </td>
                     <td className={classes}>

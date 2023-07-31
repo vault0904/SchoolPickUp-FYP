@@ -42,7 +42,7 @@
 
 //   // Get today's date in the format "DD-Month-YYYY"
 //   // Find the pickup object with today's date
-//   // Get the vendor company name
+//   // Get the vendor vendor name
 //   const today = new Date().toLocaleDateString('en-UK', { day: '2-digit',month: 'long', year: 'numeric' });
 //   const todayPickup = PICKUP.find(pickup => pickup.date === today);
 //   const vendorname = localStorage.getItem('vendorname').toUpperCase();

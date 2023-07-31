@@ -12,7 +12,7 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import '../css/defaultstyle.css';
 import ConfirmationModal from './ConfirmationModal';
 
-export default function CompanyTable() {
+export default function VendorTable() {
 
 //  VIEW FUNCTION START  //
 //
@@ -39,7 +39,7 @@ export default function CompanyTable() {
   // Navigate hook, is used when user clicks on 'view drivers'
   const navigate = useNavigate(); 
   const handleViewDrivers = (vendor_ID) => {
-    navigate(`/system-admin/company/viewdrivers?vendor_ID=${vendor_ID}`);
+    navigate(`/system-admin/vendor/viewdrivers?vendor_ID=${vendor_ID}`);
   };
 
 //
@@ -177,7 +177,7 @@ export default function CompanyTable() {
                 visible={deleteModalVisible}
                 onClose={() => setDeleteModalVisible(false)}
                 onConfirm={handleDeleteVendor}
-                callingComponent="CompanyTable"
+                callingComponent="VendorTable"
               />
             </tbody>
           </table>

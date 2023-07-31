@@ -8,8 +8,8 @@ const EditProfile = React.lazy(() => import('./common/EditProfile'))
 const DashboardSystemAdmin = React.lazy(() => import('./system_admin_module/DashboardSystemAdmin'))
 const SchoolTable = React.lazy(() => import('./system_admin_module/SchoolTable'))
 const SchoolTableViewAdmins = React.lazy(() => import('./system_admin_module/SchoolTableViewAdmins'))
-const CompanyTable = React.lazy(() => import('./system_admin_module/CompanyTable'))
-const CompanyTableViewDrivers = React.lazy(() => import('./system_admin_module/CompanyTableViewDrivers'))
+const VendorTable = React.lazy(() => import('./system_admin_module/VendorTable'))
+const VendorTableViewDrivers = React.lazy(() => import('./system_admin_module/VendorTableViewDrivers'))
 
 //Sch admin
 const DashboardSchoolAdmin = React.lazy(() => import('./school_admin_module/DashboardSchoolAdmin'))
@@ -40,8 +40,8 @@ const routes = [
   { path: '/system-admin/dashboard', name: 'System Admin Dashboard', element: DashboardSystemAdmin },
   { path: '/system-admin/school', name: 'SchoolTable', element: SchoolTable },
   { path: '/system-admin/school/viewadmins', name: 'SchoolTableViewAdmins', element: SchoolTableViewAdmins },
-  { path: '/system-admin/company', name: 'CompanyTable', element: CompanyTable },
-  { path: '/system-admin/company/viewdrivers', name: 'CompanyTableViewDrivers', element: CompanyTableViewDrivers },
+  { path: '/system-admin/vendor', name: 'VendorTable', element: VendorTable },
+  { path: '/system-admin/vendor/viewdrivers', name: 'VendorTableViewDrivers', element: VendorTableViewDrivers },
 
   { path: '/school-admin/dashboard', name: 'School Admin Dashboard', element: DashboardSchoolAdmin },
   { path: '/school-admin/announcements', name: 'Announcements', element: AnnouncementTable },
