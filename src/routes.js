@@ -46,7 +46,7 @@ const routes = [
   { path: '/school-admin/child', name: 'Child', element: ChildTable },
   { path: '/school-admin/schedule', name: 'Schedule', element: SchoolSchedule },
   { path: '/school-admin/uploadteacher', name: 'Upload Teacher', element: UploadTeacher },
-  { path: '/school-admin/uploadChild', name: 'Upload Child', element: UploadChild },
+  { path: '/school-admin/uploadchild', name: 'Upload Child', element: UploadChild },
   { path: '/school-admin/uploadschedule', name: 'Upload Schedule', element: UploadSchedule },
   { path: '/school-admin/gateassignment', name: 'Gate Assignment', element: GateAssignment },
 

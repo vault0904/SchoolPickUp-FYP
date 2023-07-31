@@ -32,27 +32,49 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 export default function ChildTable() {
   //  VIEW CHILD START  // 
   // Define table header
-  const TABLE_HEAD = ["Child ID", "FIRST NAME", "LAST NAME", "ADDRESS", "REGION", "PARENT", "CLASS", "", ""];
+  const TABLE_HEAD = ["CHILD ID", "FIRST NAME", "LAST NAME", "ADDRESS", "REGION", "PARENT", "CLASS ID", "CLASS NAME", "", ""];
 
-  const [tableData, setTableData] = useState([]);
+  const [childData, setChildData] = useState([]);
+  const [classData, setClassData] = useState([]);
+  const [combinedTable, setCombinedTable] = useState([]);
   const schoolid = localStorage.getItem('schoolid');
 
-  // API URL to get child data
-  const API_GETCHILD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getchild'
-
-  // Axios post request, which we will get all child data related to the school
   useEffect(() => {
-    axios.post(API_GETCHILD, {schoolid})
+    axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getchild/${schoolid}`)
       .then(res => {
-        // Set in the hook declared earlier
-        // We can now use the tableData.map function to map out the data
-        setTableData(res.data)
+        setChildData(res.data)
       })
       .catch(err => {
         console.error(err);
       })
   }, []);
-  //
+
+  useEffect(() => {
+    axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getclass/${schoolid}`)
+      .then(res=> {
+        setClassData(res.data)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  }, [childData])
+
+  useEffect(() => {
+    // When both childData and classData are available, create the combined table
+    if (childData.length > 0 && classData.length > 0) {
+      const combined = childData.map((child) => {
+        // Find the class object with matching class_ID in classData
+        const classObj = classData.find((cls) => cls.class_ID === child.class_ID);
+
+        // Return a new object with combined data
+        return {
+          ...child,
+          class_Name: classObj ? classObj.class_Name : "N/A", // If class is not found, display "N/A"
+        };
+      });
+      setCombinedTable(combined);
+    }
+  }, [childData, classData]);
   //  RETRIEVE CHILD DATA END  //
 
 
@@ -60,7 +82,7 @@ export default function ChildTable() {
   //
     // Hooks for pagination
     const [currentPage, setCurrentPage] = useState(1);
-    const rowsPerPage = 5;  // number of rows to display
+    const rowsPerPage = 10;  // number of rows to display
     const startIndex = (currentPage - 1) * rowsPerPage;
 
     // Hook for search
@@ -69,8 +91,7 @@ export default function ChildTable() {
   // SEARCH BOX FUNCTION END  //
 
 
-// CREATE FUNCTION START //
-//
+  // CREATE FUNCTION START //
   // Hook to toggle visibility of create child modal
   const [createModalVisible, setCreateModalVisible] = useState(false)
 
@@ -79,43 +100,34 @@ export default function ChildTable() {
   const [ userId, setUserId ] = useState('');
   const [ firstName, setFirstName ] = useState('');
   const [ lastName, setLastName ] = useState('');
-  const [ formClass, setFormClass ] = useState('');
-  const [ email, setEmail ] = useState('');
   const [ address, setAddress ] = useState('');
+  const [ region, setRegion ] = useState('');
   const [ parentId, setParentId ] = useState('');
+  const [ formClass, setFormClass ] = useState('');  
 
   // Method to clear the create child inputs
   const handleClearForm = () => {
     setUserId('')
     setFirstName('')
     setLastName('')
-    setFormClass('')
-    setEmail('')
     setAddress('')
+    setRegion('')
     setParentId('')
+    setFormClass('')
   };
-
-  // API URL to post input submitted by user in create child modal
-  const API_CREATECHILD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createchild'
 
   // Handle create child
   const handleCreateChild = async () => {
     try {
       // Basic frontend validation first, before sending post request
-      // If any of the input fields are are empty, do not proceed with axios post req. 
-      if (!userId || !firstName || !lastName || !formClass || !email || !address || !parentId ) {
+      if (!userId || !firstName || !lastName || !address || !region || !parentId || !formClass) {
         alert('Fill in all fields first before creating the account')
         return;
       }
       
       // Else proceed with post request
-      // Post the request to API
-      const res = await axios.post(API_CREATECHILD, { userId, firstName, lastName, formClass, email, address, schoolid, parentId });
+      const res = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createchild', { ui: userId, fn: firstName, ln: lastName, a: address, r: region, pi: parentId, fc: formClass, si: schoolid});
 
-      // After API return a response
-      // We check whether the response returned is True or False
-      // Return True means API has successfully created the child acc in database
-      // Return False means API did not create the child acc in database
       const apiresult = res.data;
       if (apiresult.success) {
         // Account successfully created
@@ -124,64 +136,50 @@ export default function ChildTable() {
         setCreateModalVisible(false);
         window.location.reload();
       } else {
-        // Account was not created, 
-        // See the exact error in errlog, whether its error from query or stopped by validation that is in lambda function
         alert(apiresult.errlog);
       }
     } catch (err) {
       console.error(err);
     }
   };
-//
-// CREATE FUNCTION END //
+  // CREATE FUNCTION END //
 
 
-//  UPDATE FUNCTION START  //
-//
-  // Variables that will be used in the update child modal
-  // Note that updatedUserId hook is not declared and used here we are re-using userId hook that was created above
-  // We are able to re-use based on the assumption that (the child ID is unique and cannot be changed once the account for it has been created)
-  // Same assumption for parent ID
+  //  UPDATE FUNCTION START  //
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [updatedFirstname, setUpdatedFirstname] = useState('');
   const [updatedLastname, setUpdatedLastname] = useState('');
-  const [updatedFormclass, setUpdatedFormclass] = useState('');
-  const [updatedEmail, setUpdatedEmail] = useState('');
   const [updatedAddress, setUpdatedAddress] = useState('');
+  const [updatedRegion, setUpdatedRegion] = useState('');
+  const [updatedParent, setUpdatedParent] = useState('');
+  const [updatedFormclass, setUpdatedFormclass] = useState('');
 
-  // Hook to toggle visibility of update modal,
-  // The update modal will be populated with selected row's child data
-  const showUpdateModal = ( userid, firstname, lastname, formclass, email, address, parentid ) => {
+  const showUpdateModal = ( userid, firstname, lastname, address, region, parentid, formclass ) => {
     setUserId(userid);
     setUpdatedFirstname(firstname);
     setUpdatedLastname(lastname);
-    setUpdatedFormclass(formclass);
-    setUpdatedEmail(email);
     setUpdatedAddress(address);
-    setParentId(parentid);
+    setUpdatedRegion(region);
+    setUpdatedParent(parentid);
+    setUpdatedFormclass(formclass);
     setUpdateModalVisible(true);
   };
-
-  // API URL to update child account
-  const API_UPDATECHILD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updatechild'
   
   // Handle updating driver details
   const handleUpdateChild = async () => {
     try {
       // Perform basic validation
-      // Check that atleast 1 of the inputs are different from table row data before proceeding with update query in axios put
-      // Find the specific row data based on the userid (which was set by state hook)
-      const rowData = tableData.find(data => data.child_ID === userId);
-      const isUpdated = updatedFirstname !== rowData.firstName || updatedLastname !== rowData.lastName || updatedFormclass !== rowData.formClass || updatedEmail !== rowData.email || updatedAddress !== rowData.address
-
+      // Check that atleast 1 of the inputs are different from table row 
+      const rowData = childData.find(data => data.child_ID === userId);
+      const isUpdated = (updatedFirstname !== rowData.firstName || updatedLastname !== rowData.lastName || updatedAddress !== rowData.address || updatedRegion !== rowData.region || updatedParent !== rowData.parent_ID || updatedFormclass !== rowData.class_ID);
+      
       if (!isUpdated) {
-        alert('No changes made. Change either the first name, last name, form class, email or address first before updating!');
+        alert('No changes made. Change either the names, address, region, parent or form class first before updating!');
         return;
       }
 
-      // Perform the update API request using axios
-      const res = await axios.put(API_UPDATECHILD, { 
-        userId, updatedFirstname, updatedLastname, updatedFormclass, updatedEmail, updatedAddress
+      const res = await axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updatechild', { 
+        ui: userId, ufn: updatedFirstname, uln: updatedLastname, ua: updatedAddress, ur: updatedRegion, up: updatedParent, ufc: updatedFormclass
       });
   
       // Handle the response
@@ -204,38 +202,20 @@ export default function ChildTable() {
 // UPDATE FUNCTION END  //
 
 
-
-
-
-
-
-//  DELETE FUNCTION START  //
-//
-  // Hook to toggle visibility of delete child modal, and to store the user id that was selected by user
+  //  DELETE FUNCTION START  //
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState('');   
 
-  // Show the delete confirmation modal
-  // When user click on the delete button, they will trigger this const, and pass the user id in the parameter
   const showDeleteConfirmation = (userid) => {
     setDeleteModalVisible(true);
-    // store user id, so that we can use it in the axios delete request body later should user confirm to delete
     setDeletingUserId(userid);
   };
-
-  // API URL to delete child account
-  const API_DELETECHILD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deletechild'
 
   // Handle the deletion of an child account
   const handleDeleteChild = async () => {
     try {
-      const res = await axios.delete(API_DELETECHILD, { data: { deletingUserId } });
+      const res = await axios.delete('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deletechild', { data: { deletingUserId } });
 
-      // After API returns a response
-      // We check whether it returns True or False
-      // We can manipulate the kind of response we want in API lambda, for now it is set as response is either True or False
-      // Return True means child account has been successfully deleted
-      // Return False means account was not deleted, view the errlog to find exact error
       const apiResult = res.data;
       if (apiResult.success) {
         // Announcement successfully deleted
@@ -317,7 +297,7 @@ export default function ChildTable() {
                 className='mb-2'
                 disabled
               />
-              <CFormLabel>User ID</CFormLabel>
+              <CFormLabel>Child ID</CFormLabel>
               <CFormInput 
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
@@ -335,28 +315,28 @@ export default function ChildTable() {
                 onChange={(e) => setLastName(e.target.value)}
                 className='mb-2'
               />
-              <CFormLabel>Form Class</CFormLabel>
-              <CFormInput 
-                value={formClass}
-                onChange={(e) => setFormClass(e.target.value)}
-                className='mb-2'
-              />
-              <CFormLabel>Email</CFormLabel>
-              <CFormInput 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className='mb-2'
-              />
               <CFormLabel>Address</CFormLabel>
               <CFormInput 
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 className='mb-2'
               />
+              <CFormLabel>Region</CFormLabel>
+              <CFormInput 
+                value={region}
+                onChange={(e) => setRegion(e.target.value)}
+                className='mb-2'
+              />
               <CFormLabel>Parent</CFormLabel>
               <CFormInput 
                 value={parentId}
                 onChange={(e) => setParentId(e.target.value)}
+                className='mb-2'
+              />
+              <CFormLabel>Form Class</CFormLabel>
+              <CFormInput 
+                value={formClass}
+                onChange={(e) => setFormClass(e.target.value)}
                 className='mb-2'
               />
             </CForm>
@@ -391,7 +371,7 @@ export default function ChildTable() {
       {/* Child Accounts Overview Table */}
       <Card className="overflow-scroll h-full w-full">
         <CardBody style={{ padding: 0 }}>
-          {tableData.length === 0 ? (
+          {combinedTable.length === 0 ? (
             <Typography className="p-4">No child accounts</Typography>
           ) : (
             <table className="w-full min-w-max table-auto text-left">
@@ -409,7 +389,7 @@ export default function ChildTable() {
                 </tr>
               </thead>
               <tbody>
-                {tableData
+                {combinedTable
                   .filter((row) => row.child_ID.toLowerCase().includes(searchQuery.toLowerCase()))  // .filter for real time search query
                   .slice(startIndex, startIndex + rowsPerPage)  // .slice for pagination
                   .map(( data, index ) => {
@@ -435,17 +415,12 @@ export default function ChildTable() {
                       </td>
                       <td className={classes}>
                         <Typography variant="small" color="blue-gray" className="font-normal">
-                          {data.formClass}
-                        </Typography>
-                      </td>
-                      <td className={classes}>
-                        <Typography variant="small" color="blue-gray" className="font-normal">
-                          {data.email}
-                        </Typography>
-                      </td>
-                      <td className={classes}>
-                        <Typography variant="small" color="blue-gray" className="font-normal">
                           {data.address}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography variant="small" color="blue-gray" className="font-normal">
+                          {data.region}
                         </Typography>
                       </td>
                       <td className={classes}>
@@ -454,8 +429,19 @@ export default function ChildTable() {
                         </Typography>
                       </td>
                       <td className={classes}>
+                        <Typography variant="small" color="blue-gray" className="font-normal">
+                          {data.class_ID}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography variant="small" color="blue-gray" className="font-normal">
+                          {data.class_Name}
+                        </Typography>
+                      </td>
+
+                      <td className={classes}>
                         <IconButton variant="text" color="blue-gray"
-                          onClick={() => showUpdateModal(data.child_ID, data.firstName, data.lastName, data.formClass, data.email, data.address, data.parent_ID)}>
+                          onClick={() => showUpdateModal(data.child_ID, data.firstName, data.lastName, data.address, data.region, data.parent_ID, data.class_ID)}>
                           <CIcon icon={cilPencil} />
                         </IconButton>
                       </td>
@@ -498,29 +484,29 @@ export default function ChildTable() {
                         onChange={(e) => setUpdatedLastname(e.target.value)}
                         className="mb-2"
                       />
-                      <CFormLabel>Form Class</CFormLabel>
-                      <CFormInput
-                        value={updatedFormclass}
-                        onChange={(e) => setUpdatedFormclass(e.target.value)}
-                        className="mb-2"
-                      />
-                      <CFormLabel>Email</CFormLabel>
-                      <CFormInput
-                        value={updatedEmail}
-                        onChange={(e) => setUpdatedEmail(e.target.value)}
-                        className="mb-2"
-                      />
                       <CFormLabel>Address</CFormLabel>
                       <CFormInput
                         value={updatedAddress}
                         onChange={(e) => setUpdatedAddress(e.target.value)}
                         className="mb-2"
                       />
-                      <CFormLabel>Parent ID</CFormLabel>
-                      <CFormInput 
-                        value={parentId} 
+                      <CFormLabel>Region</CFormLabel>
+                      <CFormInput
+                        value={updatedRegion}
+                        onChange={(e) => setUpdatedRegion(e.target.value)}
                         className="mb-2"
-                        disabled 
+                      />
+                      <CFormLabel>Parent</CFormLabel>
+                      <CFormInput
+                        value={updatedParent}
+                        onChange={(e) => setUpdatedParent(e.target.value)}
+                        className="mb-2"
+                      />
+                      <CFormLabel>Class</CFormLabel>
+                      <CFormInput
+                        value={updatedFormclass}
+                        onChange={(e) => setUpdatedFormclass(e.target.value)}
+                        className="mb-2"
                       />
                     </CForm>
                   </CModalBody>
@@ -568,7 +554,7 @@ export default function ChildTable() {
             Previous
           </Button>
           <div className="flex items-center gap-2">
-            {Array.from(Array(Math.ceil(tableData.length / rowsPerPage)).keys()).map((page) => (
+            {Array.from(Array(Math.ceil(combinedTable.length / rowsPerPage)).keys()).map((page) => (
               <IconButton
                 key={page + 1} variant={currentPage === page + 1 ? "outlined" : "text"}
                 color="blue-gray" 
@@ -581,7 +567,7 @@ export default function ChildTable() {
           </div>
           <Button
             variant="outlined" color="blue-gray"
-            size="sm" disabled={currentPage === Math.ceil(tableData.length / rowsPerPage)}
+            size="sm" disabled={currentPage === Math.ceil(childData.length / rowsPerPage)}
             onClick={() => setCurrentPage(currentPage + 1)}
           >
             Next
