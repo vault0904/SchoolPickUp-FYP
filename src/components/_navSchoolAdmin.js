@@ -49,8 +49,8 @@ const _navSchoolAdmin = [
       },
       {
         component: CNavItem,
-        name: 'Student',
-        to: '/school-admin/students',
+        name: 'Child',
+        to: '/school-admin/child',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
     ]

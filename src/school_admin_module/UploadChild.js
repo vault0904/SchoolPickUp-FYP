@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { Card, CardHeader, Typography } from '@material-tailwind/react';
 import '../css/defaultstyle.css'
 
-export default function UploadStudent() {
+export default function UploadChild() {
   //  UPLOAD FUNCTION START  //
   //
   // Papaparse codes
@@ -69,7 +69,7 @@ export default function UploadStudent() {
         style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <h1 
           style={{ color: '#56844B', fontWeight: 'bold', marginBottom: '25px', fontSize: '20px'}}>
-          Upload Student Details
+          Upload Child Details
         </h1>
         <CFormInput 
           type="file" 
@@ -90,18 +90,18 @@ export default function UploadStudent() {
       <CContainer className='px-4 py-2 pb-5'>
         {data.length == 0 ? '' : 
           <Typography variant="lead" className="text-center">
-            Number of student data registered after upload: {numberOfRows} 
+            Number of child data registered after upload: {numberOfRows} 
           </Typography>
         }
 
         <Typography variant="h5" className="pt-4 pb-5 text-center">
-          How your csv should look like for uploading student details
+          How your csv should look like for uploading child details
         </Typography>
 
         <CardHeader color="blue-gray" className="pb-2">
           <img
             src=""  // put S3 link here
-            alt="Student CSV sample image"
+            alt="Child CSV sample image"
           />
         </CardHeader>
 

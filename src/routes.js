@@ -15,10 +15,10 @@ const CompanyTableViewDrivers = React.lazy(() => import('./system_admin_module/C
 const DashboardSchoolAdmin = React.lazy(() => import('./school_admin_module/DashboardSchoolAdmin'))
 const AnnouncementTable = React.lazy(() => import('./school_admin_module/AnnouncementTable'))
 const TeacherTable = React.lazy(() => import('./school_admin_module/TeacherTable'))
-const StudentTable = React.lazy(() => import('./school_admin_module/StudentTable'))
+const ChildTable = React.lazy(() => import('./school_admin_module/ChildTable'))
 const SchoolSchedule = React.lazy(() => import('./school_admin_module/SchoolSchedule'))
 const UploadTeacher = React.lazy(() => import('./school_admin_module/UploadTeacher')) 
-const UploadStudent = React.lazy(() => import('./school_admin_module/UploadStudent')) 
+const UploadChild = React.lazy(() => import('./school_admin_module/UploadChild')) 
 const UploadSchedule = React.lazy(() => import('./school_admin_module/UploadSchedule')) 
 const GateAssignment = React.lazy(() => import('./school_admin_module/GateAssignment'))
 
@@ -43,10 +43,10 @@ const routes = [
   { path: '/school-admin/dashboard', name: 'School Admin Dashboard', element: DashboardSchoolAdmin },
   { path: '/school-admin/announcements', name: 'Announcements', element: AnnouncementTable },
   { path: '/school-admin/teachers', name: 'Teacher', element: TeacherTable },
-  { path: '/school-admin/students', name: 'Student', element: StudentTable },
+  { path: '/school-admin/child', name: 'Child', element: ChildTable },
   { path: '/school-admin/schedule', name: 'Schedule', element: SchoolSchedule },
   { path: '/school-admin/uploadteacher', name: 'Upload Teacher', element: UploadTeacher },
-  { path: '/school-admin/uploadstudent', name: 'Upload Student', element: UploadStudent },
+  { path: '/school-admin/uploadChild', name: 'Upload Child', element: UploadChild },
   { path: '/school-admin/uploadschedule', name: 'Upload Schedule', element: UploadSchedule },
   { path: '/school-admin/gateassignment', name: 'Gate Assignment', element: GateAssignment },
 

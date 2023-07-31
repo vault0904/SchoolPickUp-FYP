@@ -29,25 +29,20 @@ import {
 } from '@material-tailwind/react'
 import { TrashIcon } from "@heroicons/react/24/solid";
 
-export default function StudentTable() {
-  //  RETRIEVE CHILD DATA START  // 
-  //
+export default function ChildTable() {
+  //  VIEW CHILD START  // 
   // Define table header
-  const TABLE_HEAD = ["USER ID", "FIRST NAME", "LAST NAME", "FORM CLASS","EMAIL", "ADDRESS", "PARENT ID", "", ""];
+  const TABLE_HEAD = ["Child ID", "FIRST NAME", "LAST NAME", "ADDRESS", "REGION", "PARENT", "CLASS", "", ""];
 
-  // Declare hook, which will be used to set child data, after getting the data from API below
   const [tableData, setTableData] = useState([]);
-
-  // Retrieve school ID from localstorage
-  // So that we can use it to find all child related to the given school ID
-  const school_ID = localStorage.getItem('schoolid');
+  const schoolid = localStorage.getItem('schoolid');
 
   // API URL to get child data
   const API_GETCHILD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getchild'
 
   // Axios post request, which we will get all child data related to the school
   useEffect(() => {
-    axios.post(API_GETCHILD, {school_ID})
+    axios.post(API_GETCHILD, {schoolid})
       .then(res => {
         // Set in the hook declared earlier
         // We can now use the tableData.map function to map out the data
@@ -76,10 +71,10 @@ export default function StudentTable() {
 
 // CREATE FUNCTION START //
 //
-  // Hook to toggle visibility of create student modal
+  // Hook to toggle visibility of create child modal
   const [createModalVisible, setCreateModalVisible] = useState(false)
 
-  // Hooks which will save the inputs in the create student modal,
+  // Hooks which will save the inputs in the create child modal,
   // The inputs will then be submitted to the post request API later
   const [ userId, setUserId ] = useState('');
   const [ firstName, setFirstName ] = useState('');
@@ -89,7 +84,7 @@ export default function StudentTable() {
   const [ address, setAddress ] = useState('');
   const [ parentId, setParentId ] = useState('');
 
-  // Method to clear the create student inputs
+  // Method to clear the create child inputs
   const handleClearForm = () => {
     setUserId('')
     setFirstName('')
@@ -100,10 +95,10 @@ export default function StudentTable() {
     setParentId('')
   };
 
-  // API URL to post input submitted by user in create student modal
+  // API URL to post input submitted by user in create child modal
   const API_CREATECHILD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createchild'
 
-  // Handle create student
+  // Handle create child
   const handleCreateChild = async () => {
     try {
       // Basic frontend validation first, before sending post request
@@ -115,12 +110,12 @@ export default function StudentTable() {
       
       // Else proceed with post request
       // Post the request to API
-      const res = await axios.post(API_CREATECHILD, { userId, firstName, lastName, formClass, email, address, school_ID, parentId });
+      const res = await axios.post(API_CREATECHILD, { userId, firstName, lastName, formClass, email, address, schoolid, parentId });
 
       // After API return a response
       // We check whether the response returned is True or False
-      // Return True means API has successfully created the student acc in database
-      // Return False means API did not create the student acc in database
+      // Return True means API has successfully created the child acc in database
+      // Return False means API did not create the child acc in database
       const apiresult = res.data;
       if (apiresult.success) {
         // Account successfully created
@@ -143,7 +138,7 @@ export default function StudentTable() {
 
 //  UPDATE FUNCTION START  //
 //
-  // Variables that will be used in the update student modal
+  // Variables that will be used in the update child modal
   // Note that updatedUserId hook is not declared and used here we are re-using userId hook that was created above
   // We are able to re-use based on the assumption that (the child ID is unique and cannot be changed once the account for it has been created)
   // Same assumption for parent ID
@@ -155,7 +150,7 @@ export default function StudentTable() {
   const [updatedAddress, setUpdatedAddress] = useState('');
 
   // Hook to toggle visibility of update modal,
-  // The update modal will be populated with selected row's student data
+  // The update modal will be populated with selected row's child data
   const showUpdateModal = ( userid, firstname, lastname, formclass, email, address, parentid ) => {
     setUserId(userid);
     setUpdatedFirstname(firstname);
@@ -167,7 +162,7 @@ export default function StudentTable() {
     setUpdateModalVisible(true);
   };
 
-  // API URL to update student account
+  // API URL to update child account
   const API_UPDATECHILD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updatechild'
   
   // Handle updating driver details
@@ -216,7 +211,7 @@ export default function StudentTable() {
 
 //  DELETE FUNCTION START  //
 //
-  // Hook to toggle visibility of delete student modal, and to store the user id that was selected by user
+  // Hook to toggle visibility of delete child modal, and to store the user id that was selected by user
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState('');   
 
@@ -228,10 +223,10 @@ export default function StudentTable() {
     setDeletingUserId(userid);
   };
 
-  // API URL to delete student account
+  // API URL to delete child account
   const API_DELETECHILD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deletechild'
 
-  // Handle the deletion of an student account
+  // Handle the deletion of an child account
   const handleDeleteChild = async () => {
     try {
       const res = await axios.delete(API_DELETECHILD, { data: { deletingUserId } });
@@ -239,7 +234,7 @@ export default function StudentTable() {
       // After API returns a response
       // We check whether it returns True or False
       // We can manipulate the kind of response we want in API lambda, for now it is set as response is either True or False
-      // Return True means student account has been successfully deleted
+      // Return True means child account has been successfully deleted
       // Return False means account was not deleted, view the errlog to find exact error
       const apiResult = res.data;
       if (apiResult.success) {
@@ -259,10 +254,10 @@ export default function StudentTable() {
 //
 //  DELETE FUNCTION END //
 
-  // NAVIGATE TO UPLOAD STUDENT UI
+  // NAVIGATE TO UPLOAD Child UI
   const navigate = useNavigate(); 
-  const navigateToUploadstudent = async () => {
-    navigate('/school-admin/uploadstudent')
+  const navigateToUploadChild = async () => {
+    navigate('/school-admin/uploadChild')
   }
 
 
@@ -274,12 +269,12 @@ export default function StudentTable() {
           className="font-bold mx-auto text-lg"
           style={{ fontSize: '20px', color: '#56844B', paddingLeft: '23%'}} 
         >
-          Student User Accounts
+          Child User Accounts
         </p>
 
-        {/* Upload Student Accounts Button */}
+        {/* Upload Child Accounts Button */}
         <CButton 
-          onClick={navigateToUploadstudent}
+          onClick={navigateToUploadChild}
           style={{  
             '--cui-btn-color': 'white',
             '--cui-btn-bg': '#56844B',
@@ -289,10 +284,10 @@ export default function StudentTable() {
           }}
           className="px-2 py-2" 
         >
-          Upload Students
+          Upload Child
         </CButton>
         
-        {/* Create Student Account Button */}
+        {/* Create Child Account Button */}
         <div style={{marginLeft: '10px'}}>
           <CButton 
             onClick={() => setCreateModalVisible(!createModalVisible)}
@@ -305,20 +300,20 @@ export default function StudentTable() {
             }}
             className="px-2 py-2"
           >
-            Create Student
+            Create Child
           </CButton>
         </div>
 
-        {/* Create Student Account Modal */}
+        {/* Create Child Account Modal */}
         <CModal scrollable visible={createModalVisible} onClose={() => setCreateModalVisible(false)} backdrop='static'>
           <CModalHeader>
-            <CModalTitle style={{ color: '#56844B', fontWeight: 'bold', fontSize: '20px'}}>Create Student Account</CModalTitle>
+            <CModalTitle style={{ color: '#56844B', fontWeight: 'bold', fontSize: '20px'}}>Create Child Account</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm className='overflow-auto'>
-              <CFormLabel>Creating student account for school</CFormLabel>
+              <CFormLabel>Creating child account for school</CFormLabel>
               <CFormInput 
-                value={school_ID} 
+                value={schoolid} 
                 className='mb-2'
                 disabled
               />
@@ -371,7 +366,7 @@ export default function StudentTable() {
               style ={{'background': '#56844B', width: '70%'}}
               onClick={handleCreateChild}
             >
-              Create Student Account  
+              Create Child Account  
             </CButton>
             <CButton 
               color='light'
@@ -389,15 +384,15 @@ export default function StudentTable() {
         <Input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search student user ID"
+          placeholder="Search child user ID"
         />
       </div>
 
-      {/* Student Accounts Overview Table */}
+      {/* Child Accounts Overview Table */}
       <Card className="overflow-scroll h-full w-full">
         <CardBody style={{ padding: 0 }}>
           {tableData.length === 0 ? (
-            <Typography className="p-4">No student accounts</Typography>
+            <Typography className="p-4">No child accounts</Typography>
           ) : (
             <table className="w-full min-w-max table-auto text-left">
               <thead className="bg-gray-200">
@@ -476,11 +471,11 @@ export default function StudentTable() {
                 })}
 
                 {/* IMPORTANT NOTE, modal code should be placed outside of the table map function */}
-                {/* Update student account modal */}
+                {/* Update child account modal */}
                 <CModal scrollable visible={updateModalVisible} onClose={() => setUpdateModalVisible(false)} backdrop='static'>
                   <CModalHeader>
                     <CModalTitle style={{ color: '#56844B', fontWeight: 'bold', fontSize: '20px' }}>
-                      Update Student Account
+                      Update Child Account
                     </CModalTitle>
                   </CModalHeader>
                   <CModalBody>
