@@ -257,6 +257,7 @@ export default function EditProfile() {
                     Old password
                 </Typography>
                 <Input 
+                  type='password'
                   value={oldPassword}
                   onChange={(e) => setOldPassword(e.target.value)}/>
               </div>
@@ -265,6 +266,7 @@ export default function EditProfile() {
                     New password
                 </Typography>
                 <Input 
+                  type='password'
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}/>
               </div>
@@ -273,6 +275,7 @@ export default function EditProfile() {
                     Re-enter new password
                 </Typography>
                 <Input 
+                  type='password'
                   value={newReEnterPassword}
                   onChange={(e) => setNewReEnterPassword(e.target.value)}/>
               </div>

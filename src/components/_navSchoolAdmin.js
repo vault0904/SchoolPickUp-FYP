@@ -6,6 +6,8 @@ import {
   cilPeople,
   cilFile,
   cilCalendar,
+  cilLockLocked,
+  cilRoom,
 } from '@coreui/icons'
 import { CNavItem, CNavGroup } from '@coreui/react'
 
@@ -64,13 +66,13 @@ const _navSchoolAdmin = [
         component: CNavItem,
         name: 'Gate',
         to: '/school-admin/gate',
-        icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+        icon: <CIcon icon={cilLockLocked} customClassName="nav-icon" />,
       },
       {
         component: CNavItem,
         name: 'Class',
         to: '/school-admin/class',
-        icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+        icon: <CIcon icon={cilRoom} customClassName="nav-icon" />,
       },
     ]
   },
