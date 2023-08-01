@@ -22,7 +22,7 @@ const _navSystemAdmin = [
   {
     component: CNavGroup,
     name: 'Pickup records',
-    icon: <CIcon icon={cilTouchApp} customClassName="nav-icon" />,
+    // icon: <CIcon icon={cilTouchApp} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
@@ -42,7 +42,7 @@ const _navSystemAdmin = [
   {
     component: CNavGroup,
     name: 'Accounts',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    // icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,

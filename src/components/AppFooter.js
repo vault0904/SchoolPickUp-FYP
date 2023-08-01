@@ -4,8 +4,8 @@ import { CFooter } from '@coreui/react'
 const AppFooter = () => {
   return (
     <CFooter>
-      <div className="ms-auto">
-        <a target="_blank">FYP-S2-23-14</a>
+      <div className="ms-auto px-2">
+        <p>FYP 2023</p>
       </div>
     </CFooter>
   )

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   CButton,
@@ -24,6 +24,11 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [usertype, setUsertype] = useState('sys-adm');  // Set default as 'sys-adm' because that is the first choice of the CFormSelect, and we are accounting for the situation that system admin did not touch the drop down box at all during login. If that scenario happens then default value 'sys-adm' will come into play when API request is sent
   const navigate = useNavigate(); 
+
+  // Clear localStorage whenever the login page is rendered
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
 
   // API URL for login
   const API_WEBLOGIN = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/weblogin';
@@ -64,10 +69,12 @@ export default function Login() {
               const sysadmid = data.userid;
               const sysadmfirstname = data.firstName;
               const sysadmlastname = data.lastName;
+              const sysadmimageuri = data.imageURI;
               // Store relevant details
               localStorage.setItem('userid', sysadmid)
               localStorage.setItem('firstname', sysadmfirstname)
               localStorage.setItem('lastname', sysadmlastname)
+              localStorage.setItem('image', sysadmimageuri)
               // Navigate the user to their appropriate dashboard
               navigate('/system-admin/dashboard');
               break;
@@ -78,11 +85,13 @@ export default function Login() {
               const schadmfirstname = data.firstName;
               const schadmlastname = data.lastName;
               const schadmschoolid = data.school_ID;
+              const schadmimageuri = data.imageURI;
               // Store relevant details
               localStorage.setItem('userid', schadmid)
               localStorage.setItem('firstname', schadmfirstname)
               localStorage.setItem('lastname', schadmlastname)
               localStorage.setItem('schoolid', schadmschoolid)
+              localStorage.setItem('image', schadmimageuri)
               // Navigate the user to their appropriate dashboard
               navigate('/school-admin/dashboard');
               break;
@@ -91,6 +100,7 @@ export default function Login() {
               // Retrieve relevant details from API response
               const vendorid = data.userid;
               const vendorname = data.vendor_Name;
+              const vendorimageuri = data.imageURI
               // Find all the schools that are associated with the vendor (school_vendor table)
               // axios get request 
               axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-getassociatedschools/${vendorid}`)
@@ -100,6 +110,7 @@ export default function Login() {
                 localStorage.setItem('userid', vendorid)
                 localStorage.setItem('vendorname', vendorname)
                 localStorage.setItem('assoc_schools', JSON.stringify(venschoolids))
+                localStorage.setItem('image', vendorimageuri)
                 navigate('/vendor/dashboard');
               })
               .catch (err => {

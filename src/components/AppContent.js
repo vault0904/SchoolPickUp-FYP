@@ -5,7 +5,7 @@ import routes from '../routes'
 
 const AppContent = () => {
   return (
-    <CContainer lg>
+    <CContainer lg className='pb-5'>
       <Suspense fallback={<CSpinner color="primary" />}>
         <Routes>
           {routes.map((route, idx) => {
@@ -21,7 +21,6 @@ const AppContent = () => {
               )
             )
           })}
-          {/* <Route path="" element={<Navigate to="login" />} /> */}
         </Routes>
       </Suspense>
     </CContainer>
