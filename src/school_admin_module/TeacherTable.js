@@ -94,7 +94,7 @@ export default function TeacherTable() {
     try {
       // Basic frontend validation first, before sending post request
       // If any of the input fields are are empty, do not proceed with axios post req. 
-      if (!userId || !password || !firstName || !lastName || !email || !address || !contactno || !formClass) {
+      if (!userId.trim() || !password.trim() || !firstName.trim() || !lastName.trim() || !email.trim() || !address.trim() || !contactno.trim() || !formClass.trim()) {
         alert('Fill in all fields first before creating the account')
         return;
       }

@@ -69,7 +69,7 @@ export default function AnnouncementTable() {
   const handleCreateAnnouncement = async () => {
     try {
       // validation check if empty
-      if (!message) {
+      if (!message.trim()) {
         alert('Announcement message is empty! Write your message before posting')
         return;
       }

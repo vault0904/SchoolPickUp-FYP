@@ -7,6 +7,9 @@ import {
   Typography, 
   Tooltip, 
   IconButton,
+  Input,
+  CardFooter,
+  Button,
 } from "@material-tailwind/react";
 import { CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormLabel, CFormInput } from '@coreui/react';
 import { TrashIcon } from "@heroicons/react/24/solid";
@@ -37,7 +40,7 @@ export default function SchoolTable() {
   const handleViewSchoolAdmins = (school_ID) => {
     navigate(`/system-admin/school/viewadmins?school_ID=${school_ID}`);
   };
-  //  VIEW FUNCTION END  //
+  //  VIEW FUNCTION END //
 
 
   // CREATE FUNCTION START //
@@ -47,6 +50,11 @@ export default function SchoolTable() {
   const [address, setAddress] = useState('')
   const [contactNo, setContactNo] = useState('')
   const [type, setType] = useState('')
+
+  const [file, setFile] = useState(null);
+  const handleFile = (e) => {
+      setFile(e.target.files[0]);
+  }
 
   const handleClearForm = () => {
     setSchoolId('')
@@ -59,28 +67,82 @@ export default function SchoolTable() {
   const handleCreateSchool = async () => {
     try {
       // basic validation check for empty inputs
-      if (!schoolId || !schoolName || !address || !contactNo || !type) {
+      if (!schoolId.trim() || !schoolName.trim() || !address.trim() || !contactNo.trim() || !type.trim()) {
         alert('Fill in all fields first')
         return;
       }
+      // School picture not uploaded
+      if (file == null) {
+        const res = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-createschool', { 
+          si: schoolId,
+          sn: schoolName,
+          a: address,
+          cn: contactNo,
+          t: type,
+        });
 
-      const res = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-createschool', { 
-        si: schoolId,
-        sn: schoolName,
-        a: address,
-        cn: contactNo,
-        t: type,
-      });
-      
-      const apiresult = res.data;
-      if (apiresult.success) {
-        // School successfully created
-        alert('School successfully created')
-        handleClearForm();
-        window.location.reload();
+        const apiresult = res.data;
+        if (apiresult.success) {
+          // School successfully created
+          alert('School successfully created')
+          handleClearForm();
+          window.location.reload();
+        } else {
+          alert(apiresult.errlog);
+        }
+      // School picture uploaded
       } else {
-        alert(apiresult.errlog);
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          // convert pdf file into base64 string for upload purposes
+          const base64String = reader.result.split(',')[1];
+  
+          // define which folder to upload to in S3
+          const folder = '/systemadmin'
+          // define and trim file name
+          let name = file.name;
+          name = name.replace(/[^A-Za-z0-9.-]/g, ''); // Remove special characters from the file name
+          // get file type
+          const filetype = file.type;
+          
+          axios.post('https://46heb0y4ri.execute-api.us-east-1.amazonaws.com/dev/api/s3/uploadfile', { file: base64String, name: name, folderName: folder, type: filetype })
+            .then((uploadFileRes) => {
+              // get the URI returned by successful upload
+              const uri = uploadFileRes.data.imageURL
+              
+              // Upload into school table
+              axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-createschoolwithimage', { 
+                si: schoolId,
+                sn: schoolName,
+                a: address,
+                cn: contactNo,
+                t: type,
+                uri: uri,
+              })
+              .then(uploadSchoolRes => {
+                console.log(uploadSchoolRes.data)
+                if (uploadSchoolRes.data.success) {
+                  // School successfully created
+                  alert('School successfully created')
+                  handleClearForm();
+                  window.location.reload();
+                } else {
+                  alert(uploadSchoolRes.errlog);
+                }
+              })
+              .catch(err=>{
+                console.error(err)
+              })
+            })
+            .catch((err) => {
+                alert(err)
+            })
+        }
+        reader.readAsDataURL(file);
+
       }
+
     } catch(err) {
       console.error(err)
     }
@@ -116,6 +178,16 @@ export default function SchoolTable() {
     }
   }
   // DELETE FUNCTION END  //
+
+  //  SEARCH BOX FUNCTION START  //
+  // Hooks for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 15;  // number of rows to display
+  const startIndex = (currentPage - 1) * rowsPerPage;
+
+  // Hook for search
+  const [searchQuery, setSearchQuery] = useState('');
+  // SEARCH BOX FUNCTION END  //
 
   return (
     <>
@@ -178,6 +250,13 @@ export default function SchoolTable() {
                 onChange={(e) => setType(e.target.value)}
                 className='mb-2'
               />
+              <CFormLabel>School Picture (optional)</CFormLabel>
+              <CFormInput 
+                type="file"
+                accept="image/jpeg, image/png"
+                className='mb-2'
+                onChange={handleFile} 
+              />
             </CForm>
           </CModalBody>
           <CModalFooter className="d-flex justify-content-center">
@@ -194,7 +273,15 @@ export default function SchoolTable() {
             </CButton>
           </CModalFooter>
         </CModal>
+      </div>
 
+      {/* Search box */}
+      <div className='px-5 py-3'>
+        <Input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search school ID"
+        />
       </div>
 
       <Card className="overflow-scroll h-full w-full">
@@ -214,7 +301,10 @@ export default function SchoolTable() {
               </tr>
             </thead>
             <tbody>
-              {tableData.map(( data, index ) => {
+              {tableData
+                .filter((row) => row.school_ID.toLowerCase().includes(searchQuery.toLowerCase()))  // .filter for real time search query
+                .slice(startIndex, startIndex + rowsPerPage)  // .slice for pagination
+                .map(( data, index ) => {
                 const isLast = index === data.length - 1;
                 const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
@@ -273,6 +363,37 @@ export default function SchoolTable() {
             </tbody>
           </table>
         </CardBody>
+
+        {/* Pagination for table */}
+        <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+          <Button 
+            variant="outlined" color="blue-gray" 
+            size="sm" disabled={currentPage === 1} 
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            Previous
+          </Button>
+          <div className="flex items-center gap-2">
+            {Array.from(Array(Math.ceil(tableData.length / rowsPerPage)).keys()).map((page) => (
+              <IconButton
+                key={page + 1} variant={currentPage === page + 1 ? "outlined" : "text"}
+                color="blue-gray" 
+                size="sm"
+                onClick={() => setCurrentPage(page + 1)}
+              >
+                {page + 1}
+              </IconButton>
+            ))}
+          </div>
+          <Button
+            variant="outlined" color="blue-gray"
+            size="sm" disabled={currentPage === Math.ceil(tableData.length / rowsPerPage)}
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            Next
+          </Button>
+        </CardFooter>
+
       </Card>
     </>
   )

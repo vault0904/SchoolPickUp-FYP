@@ -89,7 +89,7 @@ export default function VehicleTable() {
     try {
       // Basic frontend validation first, before sending post request
       // If any of the input fields are are empty, do not proceed with axios post req. 
-      if (!vehiclePlate || !vehicleType || !capacity) {
+      if (!vehiclePlate.trim() || !vehicleType.trim() || !capacity.trim()) {
         alert('Fill in all fields first before creating the vehicle')
         return;
       }

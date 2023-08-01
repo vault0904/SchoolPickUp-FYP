@@ -60,7 +60,7 @@ export default function GateTable() {
   const handleCreateGate = async () => {
     try {
       // Basic frontend validation first, before sending post request
-      if (!gateName || !capacity) {
+      if (!gateName.trim() || !capacity.trim()) {
         alert('Fill in gate name or capacity first before creating')
         return;
       }

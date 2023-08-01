@@ -76,7 +76,7 @@ export default function VendorTableViewDrivers() {
     try {
       // Basic frontend validation first, before sending post request
       // If either userid, password, firstname, lastname or email is empty, do not proceed with axios post req. 
-      if (!userid || !password || !firstname || !lastname || !email || !contactNo || !address || !license) {
+      if (!userid.trim() || !password.trim() || !firstname.trim() || !lastname.trim() || !email.trim() || !contactNo.trim() || !address.trim() || !license.trim()) {
         alert('Fill in all fields first')
         return;
       }

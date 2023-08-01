@@ -96,7 +96,7 @@ export default function GateAssignment() {
 
   const handleGateAssignment = async () => {
     // Validation, check if user actually selected a teacher and a gate
-    if (!selectedTeacherId || !selectedGateId) {
+    if (!selectedTeacherId.trim() || !selectedGateId.trim()) {
       alert("Please select a teacher and/or a gate first.");
       return;
     }

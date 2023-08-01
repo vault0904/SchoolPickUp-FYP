@@ -120,7 +120,7 @@ export default function ChildTable() {
   const handleCreateChild = async () => {
     try {
       // Basic frontend validation first, before sending post request
-      if (!userId || !firstName || !lastName || !address || !region || !parentId || !formClass) {
+      if (!userId.trim() || !firstName.trim() || !lastName.trim() || !address.trim() || !region.trim() || !parentId.trim() || !formClass.trim()) {
         alert('Fill in all fields first before creating the account')
         return;
       }

@@ -58,7 +58,7 @@ export default function ClassTable() {
   const handleCreateClass = async () => {
     try {
       // Basic frontend validation first, before sending post request
-      if (!className) {
+      if (!className.trim()) {
         alert('Fill in class name first before creating')
         return;
       }

@@ -62,7 +62,12 @@ export default function EditProfile() {
   }
   const handleUpload = () => {
     const usertype = localStorage.getItem('usertype')
+    const maxFileSize = 10 * 1024 * 1024; 
     if (file != null) {
+      if (file.size > maxFileSize) {
+        alert("File size exceeds the limit of 10 MB");
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         // Convert pdf file into base64 string for upload purposes
@@ -220,9 +225,13 @@ export default function EditProfile() {
 
   return (
     <>
-      {/* https://www.material-tailwind.com/docs/react/form */}
       <Card className="w-full max-w-[24rem]">
-        <CardHeader color="gray" floated={false} shadow={false} className="m-0 grid place-items-center rounded-b-none py-8 px-4 text-center">
+        <CardHeader 
+          style={{ backgroundColor: '#66925B'}} 
+          color="gray" 
+          floated={false} 
+          shadow={false} 
+          className="m-0 grid place-items-center rounded-b-none py-8 px-4 text-center">
           <div style={{width: '200px', height: '200px'}}>
             <img 
               src={(profileimage == 'null') ? Avatar : profileimage} 
@@ -242,14 +251,17 @@ export default function EditProfile() {
             visible={editModalVisible} 
             onClose={() => setEditModalVisible(false)}>
           <CModalHeader>
-            <CModalTitle style={{ color: '#56844B', fontWeight: 'bold', fontSize: '20px'}}>Upload your profile picture</CModalTitle>
+            <CModalTitle style={{color: '#56844B', fontWeight: 'bold', fontSize: '20px'}}>Upload profile picture</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <Typography className='pb-4'>
-              Please select a picture lesser than 10mb
+              Please select a picture lesser than 5mb
             </Typography>
             <CForm className='overflow-auto pb-4'>
-              <CFormInput type='file' onChange={handleFile}/>
+              <CFormInput 
+                type='file' 
+                accept="image/jpeg, image/png"
+                onChange={handleFile}/>
             </CForm>
           </CModalBody>
           <CModalFooter className="d-flex justify-content-center">
@@ -340,7 +352,11 @@ export default function EditProfile() {
       </Card>
 
       <Card className="w-full max-w-[24rem] mt-5">
-        <CardHeader color="gray" floated={false} shadow={false} className="m-0 grid place-items-center rounded-b-none py-8 px-4 text-center" value="cardheader">
+        <CardHeader 
+          style={{ backgroundColor: '#66925B'}} 
+          color="gray" floated={false} 
+          shadow={false} 
+          className="m-0 grid place-items-center rounded-b-none py-8 px-4 text-center" value="cardheader">
           <Typography variant="h6" color="white">
             Change Password
           </Typography>

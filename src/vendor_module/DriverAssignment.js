@@ -99,7 +99,7 @@ export default function DriverAssignment() {
 
   const handleVehicleAssignment = async () => {
     // Validation, check if user actually selected a driver and a vehicle
-    if (!selectedDriverId || !selectedVehicleId) {
+    if (!selectedDriverId.trim() || !selectedVehicleId.trim()) {
       alert("Please select a driver and/or a vehicle first.");
       return;
     }

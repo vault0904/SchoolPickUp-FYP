@@ -28,7 +28,7 @@ const _navSystemAdmin = [
         component: CNavItem,
         name: 'Self pickups',
         to: '/system-adm/selfpickupoverview',
-        icon: <CIcon icon={cilWalk} customClassName="nav-icon" />,
+        icon: <CIcon icon={cilTouchApp} customClassName="nav-icon" />,
       },
       {
         component: CNavItem,
