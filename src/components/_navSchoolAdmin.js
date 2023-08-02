@@ -8,11 +8,17 @@ import {
   cilCalendar,
   cilLockLocked,
   cilRoom,
+  cilWindowMaximize,
 } from '@coreui/icons'
 import { CNavItem, CNavGroup } from '@coreui/react'
 
 const _navSchoolAdmin = [
-  
+  {
+    component: CNavItem,
+    name: 'Dashboard',
+    to: '/school-admin/dashboard',
+    icon: <CIcon icon={cilWindowMaximize} customClassName="nav-icon" />,
+  },
 
   {
     component: CNavItem,

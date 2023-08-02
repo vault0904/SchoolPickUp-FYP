@@ -6,6 +6,7 @@ import {
   cilBusAlt,
   cilTask,
   cilPencil,
+  cilWindowMaximize,
 } from '@coreui/icons'
 import { CNavItem, CNavGroup } from '@coreui/react'
 
@@ -15,7 +16,7 @@ const _navVendor = [
     component: CNavItem,
     name: 'Dashboard',
     to: '/vendor/dashboard',
-    icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilWindowMaximize} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
