@@ -240,7 +240,6 @@ export default function ChildTable() {
     navigate('/school-admin/uploadchild')
   }
 
-
   return (
     <>
       <div className="flex justify-between items-center mb-4">

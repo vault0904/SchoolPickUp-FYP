@@ -33,20 +33,32 @@ export default function UploadChild() {
         complete: function(result) {
           const column = [];
           const value = [];
-          result.data.forEach((d) => {
-            // Check if all required values are present in the row
+          const rowsToRemove = [];
+          result.data.forEach((d, index) => {
+            // Extract key value pairs
             const keys = Object.keys(d);
             const values = Object.values(d);
-            const allValuesPresent = values.every((val) => val !== undefined && val !== "");  // check if value is either empty string or undefined
+            // Check if the values in each row contains data (as no blanks allowed)
+            const allValuesPresent = values.every((val) => val !== "" && val !== undefined);  
             
-            // Only process rows that have complete values
+            // Only process rows that have complete values into the column and value arrays
             if (allValuesPresent) {
               column.push(keys);
               value.push(values);
+            } else {
+              // Push the index that have blank values into the rowsToRemove array, which is used for deleting/splicing later
+              rowsToRemove.push(index);
             }
           });
+          // Method to delete the rows with blank values
+          rowsToRemove.reverse().forEach((index) => {
+            result.data.splice(index, 1);
+          });
 
+          // After removing rows with blank values, set the data state
           setData(result.data);
+
+          // To know what is the name of the columns submitted by user
           setColumn(column[0]);
 
           // To see number of rows uploaded
