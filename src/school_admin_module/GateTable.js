@@ -111,6 +111,13 @@ export default function GateTable() {
       setDeleteModalVisible(false);
     }
   };
+  // DELETE FUNCTION END //
+
+  // NAVIGATE TO UPLOAD GATE UI
+  const navigate = useNavigate(); 
+  const navigateToUploadgate = async () => {
+    navigate('/school-admin/uploadgate')
+  }
 
   return (
     <>
@@ -125,7 +132,7 @@ export default function GateTable() {
 
         {/* Upload Gate Details Button */}
         <CButton 
-          onClick={{}}
+          onClick={navigateToUploadgate}
           style={{  
             '--cui-btn-color': 'white',
             '--cui-btn-bg': '#56844B',
