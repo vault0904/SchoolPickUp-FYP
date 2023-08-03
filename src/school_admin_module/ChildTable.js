@@ -237,7 +237,7 @@ export default function ChildTable() {
   // NAVIGATE TO UPLOAD Child UI
   const navigate = useNavigate(); 
   const navigateToUploadChild = async () => {
-    navigate('/school-admin/uploadChild')
+    navigate('/school-admin/uploadchild')
   }
 
 

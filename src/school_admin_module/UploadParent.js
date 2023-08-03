@@ -141,7 +141,7 @@ export default function UploadParent() {
       <CContainer className='px-4 py-2 pb-5'>
         {data.length == 0 ? '' : 
           <Typography className="px-5">
-            Number of Parent data registered after upload: {numberOfRows}
+            Number of parent data registered after upload: {numberOfRows}
           </Typography>
         }
 
