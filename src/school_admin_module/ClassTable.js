@@ -110,6 +110,13 @@ export default function ClassTable() {
       setDeleteModalVisible(false);
     }
   };
+  // DELETE FUNCTION END //
+
+  // NAVIGATE TO UPLOAD CLASS UI //
+  const navigate = useNavigate();
+  const navigateToUploadclass = async () => {
+    navigate('/school-admin/uploadclass')
+  }
 
   return (
     <>
@@ -124,7 +131,7 @@ export default function ClassTable() {
 
         {/* Upload Class Details Button */}
         <CButton 
-          onClick={{}}
+          onClick={navigateToUploadclass}
           style={{  
             '--cui-btn-color': 'white',
             '--cui-btn-bg': '#56844B',
