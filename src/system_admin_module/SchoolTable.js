@@ -121,7 +121,6 @@ export default function SchoolTable() {
                 uri: uri,
               })
               .then(uploadSchoolRes => {
-                console.log(uploadSchoolRes.data)
                 if (uploadSchoolRes.data.success) {
                   // School successfully created
                   alert('School successfully created')
