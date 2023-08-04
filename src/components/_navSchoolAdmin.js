@@ -40,13 +40,13 @@ const _navSchoolAdmin = [
   },
   {
     component: CNavItem,
-    name: 'Gate Assignment',
+    name: 'Gate',
     to: '/school-admin/gateassignment',
     icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Teacher-Child Allocation',
+    name: 'Teacher-Child',
     to: '/school-admin/teacherchildassignment',
     icon: <CIcon icon={cilContact} customClassName="nav-icon" />,
   },
