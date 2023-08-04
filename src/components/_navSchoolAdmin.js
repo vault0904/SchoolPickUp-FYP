@@ -9,6 +9,7 @@ import {
   cilLockLocked,
   cilRoom,
   cilWindowMaximize,
+  cilContact,
 } from '@coreui/icons'
 import { CNavItem, CNavGroup } from '@coreui/react'
 
@@ -19,7 +20,6 @@ const _navSchoolAdmin = [
     to: '/school-admin/dashboard',
     icon: <CIcon icon={cilWindowMaximize} customClassName="nav-icon" />,
   },
-
   {
     component: CNavItem,
     name: 'Announcements',
@@ -32,11 +32,24 @@ const _navSchoolAdmin = [
     to: '/school-admin/schedule',
     icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
   },
+
   {
-    component: CNavItem,
+    component: CNavGroup,
     name: 'Assignments',
-    to: '/school-admin/gateassignment',
-    icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Gate Assignment',
+        to: '/school-admin/gateassignment',
+        icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Teacher-Child Allocation',
+        to: '/school-admin/teacherchildassignment',
+        icon: <CIcon icon={cilContact} customClassName="nav-icon" />,
+      },
+    ]
   },
 
   {
