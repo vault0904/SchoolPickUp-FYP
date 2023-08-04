@@ -8,7 +8,7 @@ import {
   cilPencil,
   cilWindowMaximize,
 } from '@coreui/icons'
-import { CNavItem, CNavGroup } from '@coreui/react'
+import { CNavItem, CNavGroup, CNavTitle } from '@coreui/react'
 
 const _navVendor = [
 
@@ -26,30 +26,50 @@ const _navVendor = [
   },
 
   {
-    component: CNavGroup,
+    component: CNavTitle,
     name: 'Accounts',
-    items: [
-      {
-        component: CNavItem,
-        name: 'Driver',
-        to: '/vendor/drivers',
-        icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-      },
-    ]
   },
+  {
+    component: CNavItem,
+    name: 'Driver',
+    to: '/vendor/drivers',
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+  },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Accounts',
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Driver',
+  //       to: '/vendor/drivers',
+  //       icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+  //     },
+  //   ]
+  // },
 
   {
-    component: CNavGroup,
+    component: CNavTitle,
     name: 'Additional',
-    items: [
-      {
-        component: CNavItem,
-        name: 'Vehicle',
-        to: '/vendor/vehicletable',
-        icon: <CIcon icon={cilBusAlt} customClassName="nav-icon" />,
-      },
-    ]
   },
+  {
+    component: CNavItem,
+    name: 'Vehicle',
+    to: '/vendor/vehicletable',
+    icon: <CIcon icon={cilBusAlt} customClassName="nav-icon" />,
+  },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Additional',
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Vehicle',
+  //       to: '/vendor/vehicletable',
+  //       icon: <CIcon icon={cilBusAlt} customClassName="nav-icon" />,
+  //     },
+  //   ]
+  // },
 ]
 
 export default _navVendor
