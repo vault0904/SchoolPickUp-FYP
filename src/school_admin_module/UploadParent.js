@@ -33,7 +33,8 @@ export default function UploadParent() {
         complete: function(result) {
           const column = [];
           const value = [];
-          result.data.forEach((d) => {
+          const rowsToRemove = [];
+          result.data.forEach((d, index) => {
             // Check if all required values are present in the row
             const keys = Object.keys(d);
             const values = Object.values(d);
@@ -43,10 +44,19 @@ export default function UploadParent() {
             if (allValuesPresent) {
               column.push(keys);
               value.push(values);
+            } else {
+              rowsToRemove.push(index);
             }
           });
+          // Method to delete the rows with blank values
+          rowsToRemove.reverse().forEach((index) => {
+            result.data.splice(index, 1);
+          });
 
+          // After removing rows with blank values, set the data state
           setData(result.data);
+
+          // To know what is the name of the columns submitted by user
           setColumn(column[0]);
 
           // To see number of rows uploaded
@@ -62,7 +72,7 @@ export default function UploadParent() {
         alert('Upload csv file first')
       } else {
         // First validation, check if user submitted csv file with correct headers 
-        const expectedHeader = ['parentid', 'password', 'firstname', 'lastname', 'email', 'address', 'contactno'];
+        const expectedHeader = ['parentid', 'password', 'firstname', 'lastname', 'email', 'contactno', 'address'];
         // check if correct number of headers
         if (column.length !== expectedHeader.length) {
           alert('CSV file has incorrect number of headers. Please check the columns');
@@ -162,7 +172,7 @@ export default function UploadParent() {
           <Card className="h-full w-full overflow-scroll">
             <table className="w-full min-w-max table-auto text-left">
               <tbody>
-                {data.map(({ parentid, password, firstname, lastname, email, address, contactno }, index) => (
+                {data.map(({ parentid, password, firstname, lastname, email, contactno ,address }, index) => (
                   <tr key={parentid} className="even:bg-blue-gray-50/50">
                     <td className="p-4">
                       <Typography variant="small" color="blue-gray" className="font-normal">
@@ -191,12 +201,12 @@ export default function UploadParent() {
                     </td>
                     <td className="p-4">
                       <Typography variant="small" color="blue-gray" className="font-normal">
-                        {address}
+                        {contactno}
                       </Typography>
                     </td>
                     <td className="p-4">
                       <Typography variant="small" color="blue-gray" className="font-normal">
-                        {contactno}
+                        {address}
                       </Typography>
                     </td>
                   </tr>

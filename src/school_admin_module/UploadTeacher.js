@@ -33,7 +33,8 @@ export default function UploadTeacher() {
         complete: function(result) {
           const column = [];
           const value = [];
-          result.data.forEach((d) => {
+          const rowsToRemove = [];
+          result.data.forEach((d, index) => {
             // Check if all required values are present in the row
             const keys = Object.keys(d);
             const values = Object.values(d);
@@ -43,10 +44,19 @@ export default function UploadTeacher() {
             if (allValuesPresent) {
               column.push(keys);
               value.push(values);
+            } else {
+              rowsToRemove.push(index);
             }
           });
+          // Method to delete the rows with blank values
+          rowsToRemove.reverse().forEach((index) => {
+            result.data.splice(index, 1);
+          });
 
+          // After removing rows with blank values, set the data state
           setData(result.data);
+
+          // To know what is the name of the columns submitted by user
           setColumn(column[0]);
 
           // To see number of rows uploaded

@@ -97,7 +97,7 @@ export default function UploadChild() {
 
         axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-uploadchildvalidation', {
           si: schoolid,
-          sti: submittedChildIds,
+          scdi: submittedChildIds,
           spi: submittedParentIds,
           sci: submittedClassIds,
         })
