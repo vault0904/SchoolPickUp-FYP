@@ -23,6 +23,7 @@ const UploadChild = React.lazy(() => import('./school_admin_module/UploadChild')
 const UploadGate = React.lazy(() => import('./school_admin_module/UploadGate')) 
 const UploadClass = React.lazy(() => import('./school_admin_module/UploadClass')) 
 const UploadSchedule = React.lazy(() => import('./school_admin_module/UploadSchedule')) 
+const UploadTeacherChildAssignment = React.lazy(() => import('./school_admin_module/UploadTeacherChildAssignment')) 
 const GateAssignment = React.lazy(() => import('./school_admin_module/GateAssignment'))
 const TeacherChildAssignment = React.lazy(() => import('./school_admin_module/TeacherChildAssignment'))
 const ParentTable = React.lazy(() => import('./school_admin_module/ParentTable'))
@@ -60,6 +61,7 @@ const routes = [
   { path: '/school-admin/uploadschedule', name: 'Upload Schedule', element: UploadSchedule },
   { path: '/school-admin/gateassignment', name: 'Gate Assignment', element: GateAssignment },
   { path: '/school-admin/teacherchildassignment', name: 'Teacher Child Assignment', element: TeacherChildAssignment },
+  { path: '/school-admin/uploadteacherchildassignment', name: 'Upload Teacher Child Assignment', element: UploadTeacherChildAssignment },
   { path: '/school-admin/parent', name: 'Parent', element: ParentTable },
   { path: '/school-admin/gate', name: 'Parent', element: GateTable },
   { path: '/school-admin/class', name: 'Parent', element: ClassTable },

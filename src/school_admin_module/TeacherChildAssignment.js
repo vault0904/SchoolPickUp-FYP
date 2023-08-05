@@ -47,7 +47,7 @@ export default function TeacherChildAssignment() {
   }, [schoolid]);
 
   const [teacherChildTable, setTeacherChildTable] = useState([])
-  const TABLE_HEAD = ['CHILD ID']
+  const TABLE_HEAD = ['CHILD ID', "", ""]
   const [displayTable, setDisplayTable] = useState(false)
 
   const [selectedTeacherId, setSelectedTeacherId] = useState('NIL')
@@ -81,12 +81,12 @@ export default function TeacherChildAssignment() {
   // Navigate user to upload csv of teacher child assignment
   const navigate = useNavigate();
   const redirectToUploadTeacherChild = () => {
-    navigate('/school-admin/dashboard');
+    navigate('/school-admin/uploadteacherchildassignment');
   }
 
   return (
     <>
-      <div className="flex flex-col items-left mb-4">
+      <div className="flex flex-col items-left mt-3 mb-4">
         <div className="px-4">
           <p className="font-bold text-lg" style={{ fontSize: '20px', color: '#56844B' }}>
             View current form teacher assignments
