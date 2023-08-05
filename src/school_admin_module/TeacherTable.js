@@ -14,6 +14,7 @@ import {
   CModalHeader,
   CModalTitle,
   CModalFooter,
+  CFormSelect,
 } from '@coreui/react'
 import '../css/defaultstyle.css'
 import {
@@ -29,7 +30,7 @@ import {
 import { TrashIcon } from "@heroicons/react/24/solid"
 
 export default function TeacherTable() {
-//  RETRIEVE TEACHER DATA START  //
+  //  RETRIEVE TEACHER DATA START  //
   // Define table header
   const TABLE_HEAD = ["USER ID", "FIRST NAME", "LAST NAME", "EMAIL", "ADDRESS", "CONTACT NO", "FORM CLASS", "", ""];
 
@@ -45,11 +46,10 @@ export default function TeacherTable() {
         console.error(err);
       })
   }, []);
-//  RETRIEVE TEACHER DATA END  //
+  //  RETRIEVE TEACHER DATA END  //
 
 
-//  SEARCH BOX FUNCTION START  //
-//
+  //  SEARCH BOX FUNCTION START  //
   // Hooks for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;  // number of rows to display
@@ -57,14 +57,23 @@ export default function TeacherTable() {
 
   // Hook for search
   const [searchQuery, setSearchQuery] = useState('');
-//
-// SEARCH BOX FUNCTION END  //
+  // SEARCH BOX FUNCTION END  //
 
 
-// CREATE FUNCTION START //
-//
+  // CREATE FUNCTION START //
   // Hook to toggle visibility of create teacher modal
   const [createModalVisible, setCreateModalVisible] = useState(false)
+  const [classData, setClassData] = useState([])
+  useEffect(() => {
+    axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getclass/${schoolid}`)
+      .then(res=> {
+        setClassData(res.data)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  }, [tableData])
+
 
   // Hooks which will save the inputs in the create teacher modal,
   // The inputs will then be submitted to the post request API later
@@ -117,12 +126,10 @@ export default function TeacherTable() {
       console.error(err);
     }
   };
-//
-// CREATE FUNCTION END //
+  // CREATE FUNCTION END //
 
 
-//  UPDATE FUNCTION START  //
-//
+  //  UPDATE FUNCTION START  //
   // Variables that will be used in the update teacher modal
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   // const [userId, setUserId] = useState('');
@@ -317,13 +324,16 @@ export default function TeacherTable() {
                 value={contactno}
                 onChange={(e) => setContactno(e.target.value)}
                 className='mb-2'
-              />              
-              <CFormLabel>Form Class</CFormLabel>
-              <CFormInput 
-                value={formClass}
-                onChange={(e) => setFormClass(e.target.value)}
-                className='mb-2'
               />
+              <CFormLabel className='mb-2'>Form Class</CFormLabel>        
+              <CFormSelect onChange={(e) => setFormClass(e.target.value)}>
+                <option value="">Select Form Class</option>
+                {classData.map((c) => (
+                <option key={c.class_ID} value={c.class_ID}>
+                ID: {c.class_ID} | {c.class_Name}
+                </option>
+                ))}
+              </CFormSelect>
             </CForm>
           </CModalBody>
           <CModalFooter className="d-flex justify-content-center">
@@ -481,12 +491,16 @@ export default function TeacherTable() {
                         onChange={(e) => setUpdatedContactNo(e.target.value)}
                         className="mb-2"
                       />
-                      <CFormLabel>Form Class</CFormLabel>
-                      <CFormInput
-                        value={updatedFormclass}
-                        onChange={(e) => setUpdatedFormclass(e.target.value)}
-                        className="mb-2"
-                      />
+                      <CFormLabel className='mt-2'>Form Class</CFormLabel>        
+                      <CFormSelect onChange={(e) => setUpdatedFormclass(e.target.value)}>
+                        <option value={updatedFormclass}>ID: {updatedFormclass}</option>
+                        <option value="" disabled>--</option>
+                        {classData.map((c) => (
+                        <option key={c.class_ID} value={c.class_ID}>
+                        ID: {c.class_ID} | {c.class_Name}
+                        </option>
+                        ))}
+                      </CFormSelect>
                     </CForm>
                   </CModalBody>
                   <CModalFooter className="d-flex justify-content-center">

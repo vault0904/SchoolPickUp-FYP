@@ -15,6 +15,7 @@ import {
   CModalHeader,
   CModalTitle,
   CModalFooter,
+  CFormSelect,
 } from '@coreui/react'
 import '../css/defaultstyle.css';
 import {
@@ -94,6 +95,16 @@ export default function ChildTable() {
   // CREATE FUNCTION START //
   // Hook to toggle visibility of create child modal
   const [createModalVisible, setCreateModalVisible] = useState(false)
+  const [parentData, setParentData] = useState([])
+  useEffect(() => {
+    axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getparent/${schoolid}`)
+      .then(res=> {
+        setParentData(res.data)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  }, [combinedTable])
 
   // Hooks which will save the inputs in the create child modal,
   // The inputs will then be submitted to the post request API later
@@ -320,24 +331,33 @@ export default function ChildTable() {
                 onChange={(e) => setAddress(e.target.value)}
                 className='mb-2'
               />
-              <CFormLabel>Region</CFormLabel>
-              <CFormInput 
-                value={region}
-                onChange={(e) => setRegion(e.target.value)}
-                className='mb-2'
-              />
-              <CFormLabel>Parent</CFormLabel>
-              <CFormInput 
-                value={parentId}
-                onChange={(e) => setParentId(e.target.value)}
-                className='mb-2'
-              />
-              <CFormLabel>Form Class</CFormLabel>
-              <CFormInput 
-                value={formClass}
-                onChange={(e) => setFormClass(e.target.value)}
-                className='mb-2'
-              />
+              <CFormLabel className='mb-2'>Region</CFormLabel>        
+              <CFormSelect onChange={(e) => setRegion(e.target.value)}>
+                <option value="">Select Region</option>
+                <option value="North">North</option>
+                <option value="West">West</option>
+                <option value="East">East</option>
+                <option value="South">South</option>
+                <option value="Central">Central</option>
+              </CFormSelect>
+              <CFormLabel className='mb-2'>Parent</CFormLabel>        
+              <CFormSelect onChange={(e) => setParentId(e.target.value)}>
+                <option value="">Select Parent</option>
+                {parentData.map((p) => (
+                <option key={p.parent_ID} value={p.parent_ID}>
+                ID: {p.parent_ID} | {p.firstName}{p.lastName}
+                </option>
+                ))}
+              </CFormSelect>
+              <CFormLabel className='mt-2'>Form Class</CFormLabel>        
+              <CFormSelect onChange={(e) => setFormClass(e.target.value)}>
+                <option value="">Select Form Class</option>
+                {classData.map((c) => (
+                <option key={c.class_ID} value={c.class_ID}>
+                ID: {c.class_ID} | {c.class_Name}
+                </option>
+                ))}
+              </CFormSelect>
             </CForm>
           </CModalBody>
           <CModalFooter className="d-flex justify-content-center">
@@ -489,24 +509,36 @@ export default function ChildTable() {
                         onChange={(e) => setUpdatedAddress(e.target.value)}
                         className="mb-2"
                       />
-                      <CFormLabel>Region</CFormLabel>
-                      <CFormInput
-                        value={updatedRegion}
-                        onChange={(e) => setUpdatedRegion(e.target.value)}
-                        className="mb-2"
-                      />
-                      <CFormLabel>Parent</CFormLabel>
-                      <CFormInput
-                        value={updatedParent}
-                        onChange={(e) => setUpdatedParent(e.target.value)}
-                        className="mb-2"
-                      />
-                      <CFormLabel>Class</CFormLabel>
-                      <CFormInput
-                        value={updatedFormclass}
-                        onChange={(e) => setUpdatedFormclass(e.target.value)}
-                        className="mb-2"
-                      />
+                      <CFormLabel className='mt-2'>Region</CFormLabel>        
+                      <CFormSelect onChange={(e) => setUpdatedRegion(e.target.value)}>
+                        <option value={updatedRegion}>{updatedRegion}</option>
+                        <option value="" disabled>--</option>
+                        <option value="North">North</option>
+                        <option value="West">West</option>
+                        <option value="East">East</option>
+                        <option value="South">South</option>
+                        <option value="Central">Central</option>
+                      </CFormSelect>
+                      <CFormLabel className='mt-2'>Parent</CFormLabel>        
+                      <CFormSelect onChange={(e) => setUpdatedParent(e.target.value)}>
+                        <option value={updatedParent}>{updatedParent}</option>
+                        <option value="" disabled>--</option>
+                        {parentData.map((p) => (
+                        <option key={p.parent_ID} value={p.parent_ID}>
+                        ID: {p.parent_ID} | {p.firstName}{p.lastName}
+                        </option>
+                        ))}
+                      </CFormSelect>
+                      <CFormLabel className='mt-2'>Class</CFormLabel>        
+                      <CFormSelect onChange={(e) => setUpdatedFormclass(e.target.value)}>
+                        <option value={updatedFormclass}>ID: {updatedFormclass}</option>
+                        <option value="" disabled>--</option>
+                        {classData.map((c) => (
+                        <option key={c.class_ID} value={c.class_ID}>
+                        ID: {c.class_ID} | {c.class_Name}
+                        </option>
+                        ))}
+                      </CFormSelect>
                     </CForm>
                   </CModalBody>
                   <CModalFooter className="d-flex justify-content-center">
