@@ -185,7 +185,7 @@ export default function DashboardVendor() {
               </Typography>
               <a className="inline-block" onClick={() => handleViewVehiclePickUpJobs(s.school_ID)}>
                 <Button variant="text" className="flex gap-2" style={{ paddingLeft: '0px' }}>
-                View more information <ArrowLongRightIcon strokeWidth={2} className="w-4 h-4" />
+                View expected job volumes <ArrowLongRightIcon strokeWidth={2} className="w-4 h-4" />
                 </Button>
               </a>
            </CardBody>
