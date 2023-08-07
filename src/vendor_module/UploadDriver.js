@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { Card, CardHeader, Typography } from '@material-tailwind/react';
 import '../css/defaultstyle.css'
 import axios from 'axios';
+import DriverCsvExample from '../assets/csv-examples/drivercsv.png'
 
 export default function UploadDriver() {
   // PREVIEW START //
@@ -155,7 +156,7 @@ export default function UploadDriver() {
 
         <CardHeader color="blue-gray" className="pb-2">
           <img
-            src=""  // link the png from assets here
+            src={DriverCsvExample}  // link the png from assets here
             alt="Driver CSV sample image"
           />
         </CardHeader>

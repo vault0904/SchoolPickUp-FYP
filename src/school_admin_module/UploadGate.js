@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { Card, CardHeader, Typography } from '@material-tailwind/react';
 import '../css/defaultstyle.css'
 import axios from 'axios';
+import GateCsvExample from '../assets/csv-examples/gatecsv.png'
 
 export default function UploadGate() {
   // PREVIEW START //
@@ -146,7 +147,7 @@ export default function UploadGate() {
 
         <CardHeader color="blue-gray" className="pb-2">
           <img
-            src=""  // link the png from assets here
+            src={GateCsvExample}  // link the png from assets here
             alt="Gate CSV sample image"
           />
         </CardHeader>

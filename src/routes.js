@@ -32,6 +32,7 @@ const ClassTable = React.lazy(() => import('./school_admin_module/ClassTable'))
 
 //Vendor
 const DashboardVendor = React.lazy(() => import('./vendor_module/DashboardVendor'))
+const ViewVehiclePickUpJobs = React.lazy(() => import('./vendor_module/ViewVehiclePickUpJobs'))
 const DriverTable = React.lazy(() => import('./vendor_module/DriverTable'))
 const VehicleTable = React.lazy(() => import('./vendor_module/VehicleTable'))
 const DriverAssignment = React.lazy(() => import('./vendor_module/DriverAssignment'))
@@ -67,6 +68,7 @@ const routes = [
   { path: '/school-admin/class', name: 'Parent', element: ClassTable },
 
   { path: '/vendor/dashboard', name: 'Vendor Dashboard', element: DashboardVendor },
+  { path: '/vendor/dashboard/viewvehiclepickupjobs', name: 'Vendor View Vehicle Pick Up Jobs', element: ViewVehiclePickUpJobs },
   { path: '/vendor/drivers', name: 'Drivers', element: DriverTable },
   { path: '/vendor/vehicletable', name: 'Vehicle Management', element: VehicleTable },
   { path: '/vendor/driverassignment', name: 'Driver Assignment', element: DriverAssignment },

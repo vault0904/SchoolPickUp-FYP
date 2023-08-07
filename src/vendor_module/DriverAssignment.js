@@ -202,7 +202,7 @@ export default function DriverAssignment() {
                 <option value="blankdriver">Select a driver</option>
                 {driverTable.map((driver) => (
                 <option key={driver.driver_ID} value={driver.driver_ID}>
-                  {driver.firstName} {driver.lastName}
+                  ID: {driver.driver_ID} | Name: {driver.firstName} {driver.lastName}
                 </option>
                 ))}
               </CFormSelect>
@@ -304,12 +304,12 @@ export default function DriverAssignment() {
                             {data.datetime}
                           </Typography>
                         </td>
-                        <td className={classes}>
+                        {/* <td className={classes}>
                           <IconButton variant="text" color="blue-gray"
                             onClick={{}}>
                             <CIcon icon={cilPencil} />
                           </IconButton>
-                        </td>
+                        </td> */}
                       </tr>
                     );
                   })}

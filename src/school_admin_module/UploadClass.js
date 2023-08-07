@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { Card, CardHeader, Typography } from '@material-tailwind/react';
 import '../css/defaultstyle.css'
 import axios from 'axios';
+import ClassCsvExample from "../assets/csv-examples/classcsv.png"
 
 export default function UploadClass() {
   // PREVIEW START //
@@ -146,7 +147,7 @@ export default function UploadClass() {
 
         <CardHeader color="blue-gray" className="pb-2">
           <img
-            src=""  // link the png from assets here
+            src={ClassCsvExample}
             alt="Class CSV sample image"
           />
         </CardHeader>

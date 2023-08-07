@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { Card, CardHeader, Typography } from '@material-tailwind/react';
 import '../css/defaultstyle.css'
 import axios from 'axios';
+import ChildCsvExample from '../assets/csv-examples/childcsv.png'
 
 export default function UploadChild() {
   // PREVIEW START //
@@ -168,7 +169,7 @@ export default function UploadChild() {
 
         <CardHeader color="blue-gray" className="pb-2">
           <img
-            src=""  // link the png from assets here
+            src={ChildCsvExample}  // link the png from assets here
             alt="Child CSV sample image"
           />
         </CardHeader>
