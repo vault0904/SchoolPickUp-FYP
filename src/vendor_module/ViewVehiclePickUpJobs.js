@@ -26,6 +26,11 @@ import { cilPencil } from "@coreui/icons"
 import '../css/defaultstyle.css';
 import DefaultSchoolLogo from '../assets/images/schoollogo.jpg'
 
+// // Define pickUpJobsTodayTS1 and pickUpJobsTodayTS2 arrays
+// const pickUpJobsTodayTS1 = [];
+// const pickUpJobsTodayTS2 = [];
+// export { pickUpJobsTodayTS1, pickUpJobsTodayTS2 };
+
 export default function ViewVehiclePickUpJobs() {
   // Get the school_ID which the vendor click in the DashboardVendor page
   const location = useLocation();
@@ -37,6 +42,7 @@ export default function ViewVehiclePickUpJobs() {
   const datetime = new Date();
   datetime.setHours(datetime.getHours() + 8);
   const singaporeDatetime = datetime.toISOString().split('T')[0];
+  const forFrontendDisplayDT = datetime.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
 
   // The 2 fixed pickup timing for vehicle pickup
   // Timeslot 1 and 2
@@ -135,6 +141,10 @@ export default function ViewVehiclePickUpJobs() {
     setPickUpJobsTodayTS2(matchPickUpJobsTodayTS2);
   }, [retrievePickUpJobsTS2])
 
+  const calculateCapacitySum = (array) => {
+    return array.reduce((sum, item) => sum + item.Capacity, 0);
+  };
+
   return (
     <>
       <div className="flex flex-col items-left mt-3 mb-4">
@@ -160,9 +170,9 @@ export default function ViewVehiclePickUpJobs() {
             </CardBody>
           </Card> */}
 
-          <div className="px-4 pt-4">
+          <div className="p-4">
             <p className="font-bold text-lg" style={{ fontSize: '20px', color: '#56844B' }}>
-              Vehicle pick up jobs for {i.type} - {i.school_Name}
+              {forFrontendDisplayDT} | Vehicle pick up jobs for {i.type} - {i.school_Name} 
             </p>
           </div>
         </>
@@ -174,10 +184,13 @@ export default function ViewVehiclePickUpJobs() {
           </p>
 
           {pickUpJobsTodayTS1.slice(0, 5).map((item, index) => (
-            <Typography variant="lead" className="p-2">
+            <Typography key={index} variant="lead" className="p-2">
               {item.Region} Region | Confirmed Jobs: <b>{item.Capacity}</b>
             </Typography>
           ))}
+          <Typography variant="lead" className="p-2">
+            Total: <b>{calculateCapacitySum(pickUpJobsTodayTS1)}</b>
+          </Typography>
         </div>
 
         <div className="flex px-4 pt-20">
@@ -186,10 +199,13 @@ export default function ViewVehiclePickUpJobs() {
           </p>
 
           {pickUpJobsTodayTS2.slice(0, 5).map((item, index) => (
-            <Typography variant="lead" className="p-2">
+            <Typography key={index} variant="lead" className="p-2">
               {item.Region} Region | Confirmed Jobs: <b>{item.Capacity}</b>
             </Typography>
           ))}
+          <Typography variant="lead" className="p-2">
+            Total: <b>{calculateCapacitySum(pickUpJobsTodayTS2)}</b>
+          </Typography>
         </div>
       </div>
     </>
