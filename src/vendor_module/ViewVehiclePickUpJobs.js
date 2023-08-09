@@ -4,32 +4,9 @@ import { useLocation } from 'react-router-dom';
 import { 
   Card, 
   CardBody,
-  CardHeader, 
   Typography, 
-  Tooltip, 
-  IconButton,
 } from "@material-tailwind/react";
-import { 
-  CButton,
-  CModal,
-  CForm,
-  CFormInput, 
-  CFormLabel,
-  CModalHeader,
-  CModalTitle,
-  CModalBody,
-  CModalFooter,
-} from "@coreui/react";
-import { TrashIcon } from "@heroicons/react/24/solid";
-import CIcon from '@coreui/icons-react'
-import { cilPencil } from "@coreui/icons"
 import '../css/defaultstyle.css';
-import DefaultSchoolLogo from '../assets/images/schoollogo.jpg'
-
-// // Define pickUpJobsTodayTS1 and pickUpJobsTodayTS2 arrays
-// const pickUpJobsTodayTS1 = [];
-// const pickUpJobsTodayTS2 = [];
-// export { pickUpJobsTodayTS1, pickUpJobsTodayTS2 };
 
 export default function ViewVehiclePickUpJobs() {
   // Get the school_ID which the vendor click in the DashboardVendor page
@@ -147,65 +124,49 @@ export default function ViewVehiclePickUpJobs() {
 
   return (
     <>
-      <div className="flex flex-col items-left mt-3 mb-4">
+      <div className="mt-3 mb-4">
         {schoolData.map((i, idx) => (
         <>
-          {/* <Card key={i.school_ID} className="flex-row w-3/4 justify-center max-w-[48rem]" style={{ marginTop: '15px' }}>
-            <CardHeader shadow={false} floated={false} className="w-2/5 shrink-0 m-0 rounded-r-none">
-              <img src={i.imageURI ? i.imageURI : DefaultSchoolLogo} alt="image" />
-            </CardHeader>
-            <CardBody style={{ marginTop: '25px' }}>
-              <Typography variant="h4" color="blue-gray" className="mb-4">
-                {i.school_Name}
-              </Typography>
-              <Typography color="gray" className="font-normal mb-4">
-                Address: {i.address}
-              </Typography>
-              <Typography color="gray" className="font-normal mb-4">
-                Contact: {i.contactNo}
-              </Typography>
-              <Typography color="gray" className="font-normal mb-4">
-                Type: {i.type}
-              </Typography>
-            </CardBody>
-          </Card> */}
-
-          <div className="p-4">
+          <div className="p-4 justify-center">
             <p className="font-bold text-lg" style={{ fontSize: '20px', color: '#56844B' }}>
-              {forFrontendDisplayDT} | Vehicle pick up jobs for {i.type} - {i.school_Name} 
+              Viewing {i.school_Name}'s expected job volume for Today {forFrontendDisplayDT}
             </p>
           </div>
         </>
         ))}
 
-        <div className="flex px-4 pt-10">
-          <p className="font-bold text-lg" style={{ fontSize: '20px', color: '#56844B' }}>
-            Timeslot 1 : {TS1}
-          </p>
+        <div className="flex items-center">
+          <Card className="mt-6 mr-10 w-96">
+            <CardBody>
+              <Typography variant="h5" color="blue-gray" className="mb-2">
+                Timeslot 1 : {TS1}
+              </Typography>
+              {pickUpJobsTodayTS1.slice(0, 5).map((item, index) => (
+                <Typography key={index} variant="lead" className="p-2 text-right">
+                  {item.Region} Region - Confirmed Jobs: <b>{item.Capacity}</b>
+                </Typography>
+              ))}
+              <Typography variant="lead" className="p-2 text-right">
+                Total: <b>{calculateCapacitySum(pickUpJobsTodayTS1)}</b>
+              </Typography>
+            </CardBody>
+          </Card>
 
-          {pickUpJobsTodayTS1.slice(0, 5).map((item, index) => (
-            <Typography key={index} variant="lead" className="p-2">
-              {item.Region} Region | Confirmed Jobs: <b>{item.Capacity}</b>
-            </Typography>
-          ))}
-          <Typography variant="lead" className="p-2">
-            Total: <b>{calculateCapacitySum(pickUpJobsTodayTS1)}</b>
-          </Typography>
-        </div>
-
-        <div className="flex px-4 pt-20">
-          <p className="font-bold text-lg" style={{ fontSize: '20px', color: '#56844B' }}>
-            Timeslot 2 : {TS2}
-          </p>
-
-          {pickUpJobsTodayTS2.slice(0, 5).map((item, index) => (
-            <Typography key={index} variant="lead" className="p-2">
-              {item.Region} Region | Confirmed Jobs: <b>{item.Capacity}</b>
-            </Typography>
-          ))}
-          <Typography variant="lead" className="p-2">
-            Total: <b>{calculateCapacitySum(pickUpJobsTodayTS2)}</b>
-          </Typography>
+          <Card className="mt-6 w-96">
+            <CardBody>
+              <Typography variant="h5" color="blue-gray" className="mb-2">
+                Timeslot 2 : {TS2}
+              </Typography>
+              {pickUpJobsTodayTS2.slice(0, 5).map((item, index) => (
+                <Typography key={index} variant="lead" className="p-2 text-right">
+                  {item.Region} Region - Confirmed Jobs: <b>{item.Capacity}</b>
+                </Typography>
+              ))}
+              <Typography variant="lead" className="p-2 text-right">
+              Total: <b>{calculateCapacitySum(pickUpJobsTodayTS2)}</b>
+              </Typography>
+            </CardBody>
+          </Card>
         </div>
       </div>
     </>
