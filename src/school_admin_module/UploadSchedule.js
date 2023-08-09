@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React from 'react'
+import {
+  CButton,
+  CContainer,
+  CFormInput,
+  CFormLabel,
+  CForm,
+  CFormSelect,
+} from '@coreui/react'
+import { useState } from 'react'
 import '../css/defaultstyle.css'
+import axios from 'axios';
 
-const UploadSchedule = () => {
+export default function UploadSchedule() {
   const [file, setFile] = useState(null);
   const handleFile = (e) => {
       setFile(e.target.files[0]);
   }
+
+  const [scheduleDescription, setScheduleDescription] = useState('')
+  const [scheduleYear, setScheduleYear] = useState('')
+  
   const handleUpload = () => {
-    if (file != null) {
+    if (file != null && scheduleDescription != "" && scheduleYear != "") {
       const reader = new FileReader();
       reader.onloadend = () => {
         // convert pdf file into base64 string for upload purposes
@@ -32,7 +45,7 @@ const UploadSchedule = () => {
             const schoolid = localStorage.getItem('schoolid')
             
             // Make the second POST request to upload the schedule to the database
-            axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-uploadschedule', { uri: uri, userid: userid, schoolid: schoolid })
+            axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-uploadschedule', { sd: scheduleDescription, sy: scheduleYear, uri: uri, userid: userid, schoolid: schoolid })
             .then((createScheduleRes) => {
               const apiresult = createScheduleRes.data;
               if (apiresult.success) {
@@ -53,18 +66,61 @@ const UploadSchedule = () => {
       reader.readAsDataURL(file);
 
     } else {
-      alert("File cannot be empty")
+      alert("Upload file, enter description and select the year first")
     }
   }
 
   return (
-    <div>Upload your schoold schedule here PDF format. Only lesser than 10mb files accepted
-      <br/><br/>
-      <input type="file" onChange={handleFile} />
-      <br/><br/>
-      <button onClick={handleUpload}> Upload to S3</button>
-    </div>
-  );
-};
+    <>
+      <CContainer 
+        className='px-5 py-4 pb-5' 
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <h1 
+          style={{ color: '#56844B', fontWeight: 'bold', marginBottom: '25px', fontSize: '20px'}}>
+          Upload School Schedule
+        </h1>
+        <CForm className='overflow-auto w-max'>
+          <CFormInput 
+            type="file" 
+            id="formFile"
+            accept=".pdf, .jpg, .png"
+            onChange={handleFile}
+            className=''/>
 
-export default UploadSchedule;
+          <div className='mt-4'>
+          <CFormLabel>Enter a description for your schedule</CFormLabel>
+          <CFormInput 
+            id="scheduleDesc"
+            value={scheduleDescription}
+            onChange={(e) => setScheduleDescription(e.target.value)}
+            className=''/>
+          </div>
+
+          <div className='mt-4'>
+          <CFormLabel>Select schedule's year</CFormLabel>
+          <CFormSelect onChange={(e) => setScheduleYear(e.target.value)}>
+            <option value={scheduleYear}>Year</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+          </CFormSelect>
+          </div>
+
+          <div style={{marginTop: '40px', display: 'flex', justifyContent: 'space-between'}} className=''>
+            <CButton 
+              onClick={handleUpload}
+              style ={{'background': '#56844B', width: '45%'}}
+              >
+              Submit
+            </CButton>
+          </div>
+        </CForm>
+      </CContainer>
+    </>
+  )
+}
