@@ -67,8 +67,23 @@ const ConfirmationModal = ({ visible, onClose, onConfirm, callingComponent }) =>
         </CModalFooter>
       </CModal>
     );
+  } else if (callingComponent === 'SubscriberTable') {
+    return (
+      <CModal scrollable visible={visible} onClose={onClose} >   
+        <CModalHeader>
+          <CModalTitle style={{ color: '#56844B', fontWeight: 'bold', fontSize: '20px'}}>Confirm Deletion</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <p>Are you sure you want to remove this subscriber?</p>
+        </CModalBody>
+        <CModalFooter>
+          <CButton onClick={onConfirm} color="light">Confirm</CButton>
+          <CButton onClick={onClose} color="secondary">Cancel</CButton>
+        </CModalFooter>
+      </CModal>
+    )
   }
-  
+
   else {
     // Default fallback rendering
     return null;

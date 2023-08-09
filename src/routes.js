@@ -6,6 +6,9 @@ const EditProfile = React.lazy(() => import('./common/EditProfile'))
 
 //Sys admin
 const DashboardSystemAdmin = React.lazy(() => import('./system_admin_module/DashboardSystemAdmin'))
+const SubscriberTable = React.lazy(() => import('./system_admin_module/SubscriberTable'))
+const SelfPickUpRecordsTable = React.lazy(() => import('./system_admin_module/SelfPickUpRecordsTable'))
+const VehiclePickUpRecordsTable = React.lazy(() => import('./system_admin_module/VehiclePickUpRecordsTable'))
 const SchoolTable = React.lazy(() => import('./system_admin_module/SchoolTable'))
 const SchoolTableViewAdmins = React.lazy(() => import('./system_admin_module/SchoolTableViewAdmins'))
 const VendorTable = React.lazy(() => import('./system_admin_module/VendorTable'))
@@ -44,6 +47,9 @@ const routes = [
   { path: '/editprofile', exact: true, name: 'Edit Profile', element: EditProfile },
 
   { path: '/system-admin/dashboard', name: 'System Admin Dashboard', element: DashboardSystemAdmin },
+  { path: '/system-admin/managesubscribers', name: 'subscribertable', element: SubscriberTable },
+  { path: '/system-admin/selfpickuprecords', name: 'subscribertable', element: SelfPickUpRecordsTable },
+  { path: '/system-admin/vehiclepickuprecords', name: 'subscribertable', element: VehiclePickUpRecordsTable },
   { path: '/system-admin/school', name: 'SchoolTable', element: SchoolTable },
   { path: '/system-admin/school/viewadmins', name: 'SchoolTableViewAdmins', element: SchoolTableViewAdmins },
   { path: '/system-admin/vendor', name: 'VendorTable', element: VendorTable },

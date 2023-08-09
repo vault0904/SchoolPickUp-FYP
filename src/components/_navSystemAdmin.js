@@ -8,6 +8,7 @@ import {
   cilBusAlt,
   cilWalk,
   cilWindowMaximize,
+  cilGroup,
 } from '@coreui/icons'
 import { CNavItem, CNavGroup, CNavTitle } from '@coreui/react'
 
@@ -18,6 +19,12 @@ const _navSystemAdmin = [
     to: '/system-admin/dashboard',
     icon: <CIcon icon={cilWindowMaximize} customClassName="nav-icon" />,
   },
+  {
+    component: CNavItem,
+    name: 'Subscribers',
+    to: '/system-admin/managesubscribers',
+    icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
+  },
 
   {
     component: CNavTitle,
@@ -26,13 +33,13 @@ const _navSystemAdmin = [
   {
     component: CNavItem,
     name: 'Self pickups',
-    to: '/system-adm/selfpickupoverview',
+    to: '/system-admin/selfpickuprecords',
     icon: <CIcon icon={cilTouchApp} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Vehicle pickups',
-    to: '/system-adm/vehiclepickupoverview',
+    to: '/system-admin/vehiclepickuprecords',
     icon: <CIcon icon={cilBusAlt} customClassName="nav-icon" />,
   },
   // {
