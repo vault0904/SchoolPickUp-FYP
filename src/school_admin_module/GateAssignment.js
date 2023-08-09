@@ -30,7 +30,7 @@ export default function GateAssignment() {
   const [combinedData, setCombinedData] = useState([]);
 
   // Define combined data table header
-  const TABLE_HEAD = ["TEACHER ID", "FIRST NAME", "LAST NAME", "EMAIL", "CONTACT", "GATE ID","GATE NAME", "DATE ASSIGNED", ""];
+  const TABLE_HEAD = ["TEACHER ID", "NAME", "CONTACT", "GATE ID","GATE NAME", "DATE ASSIGNED", ""];
 
   // Get all gates and teachers associated with the school
   useEffect(() => {
@@ -126,12 +126,39 @@ export default function GateAssignment() {
   };
   // ASSIGN TEACHER END //
 
-  // EDIT ASSIGNMENT START //
-  const [editAssignmentModalVisible, setEditAssignmentModalVisble] = useState(false);
-  const [selectedEditTeacherId, setSelectedEditTeacherId] = useState('');
-  const [selectedEditGateId, setSelectedEditGateId] = useState('');
+  // DELETE ASSIGNMENT START //
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false)
+  const [deletingGateId, setDeletingGateId] = useState('')
+  const [deletingTeacherId, setDeletingTeacherId] = useState('')
+  const [deletingDatetime, setDeletingDatetime] = useState('')
 
-  // EDIT ASSIGNMENT END //
+  const showDeleteConfirmation = (gateid, teacherid, datetime) => {
+    setDeletingGateId(gateid)
+    setDeletingTeacherId(teacherid)
+    setDeletingDatetime(datetime)
+    setDeleteModalVisible(true)
+  }
+  
+  const handleDeleteGateAssignment = () => {
+    // alert(`${deletingGateId}, ${deletingTeacherId}, ${deletingDatetime}`)
+    axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deletegateassignment', {
+      dgi: deletingGateId,
+      dti: deletingTeacherId,
+      ddt: deletingDatetime,
+    })
+    .then(deleteRes => {
+      if (deleteRes.data.success) {
+        alert("Gate assignment has been successfully deleted")
+        window.location.reload()
+      } else {
+        alert(deleteRes.data.message)
+      }
+    })
+    .catch(err => {
+      console.error(err)
+    })
+  }
+  // DELETE ASSIGNMENT END //
 
   // Function to check if given date = todays date, used in filtering table
   const isToday = (date) => {
@@ -199,7 +226,7 @@ export default function GateAssignment() {
                 <option value="blankteacher">Select a teacher</option>
                 {teacherTable.map((teacher) => (
                 <option key={teacher.teacher_ID} value={teacher.teacher_ID}>
-                  {teacher.firstName} {teacher.lastName}
+                  ID: {teacher.teacher_ID} | Name: {teacher.firstName} {teacher.lastName}
                 </option>
                 ))}
               </CFormSelect>
@@ -208,7 +235,7 @@ export default function GateAssignment() {
                   <option value="blankgate">Select a gate</option>
                   {gateTable.map((gate) => (
                   <option key={gate.gate_ID} value={gate.gate_ID}>
-                  {gate.gate_Name}
+                  ID: {gate.gate_ID} | {gate.gate_Name}
                   </option>
                   ))}
                 </CFormSelect>
@@ -263,19 +290,19 @@ export default function GateAssignment() {
                         </td>
                         <td className={classes}>
                           <Typography variant="small" color="blue-gray" className="font-normal">
-                            {data.firstName}
+                            {data.firstName} {data.lastName}
                           </Typography>
                         </td>
-                        <td className={classes}>
+                        {/* <td className={classes}>
                           <Typography variant="small" color="blue-gray" className="font-normal">
                             {data.lastName}
                           </Typography>
-                        </td>
-                        <td className={classes}>
+                        </td> */}
+                        {/* <td className={classes}>
                           <Typography variant="small" color="blue-gray" className="font-normal">
                             {data.email}
                           </Typography>
-                        </td>
+                        </td> */}
                         <td className={classes}>
                           <Typography variant="small" color="blue-gray" className="font-normal">
                             {data.contactNo}
@@ -296,11 +323,18 @@ export default function GateAssignment() {
                             {data.datetime}
                           </Typography>
                         </td>
-                        <td className={classes}>
+                        {/* <td className={classes}>
                           <IconButton variant="text" color="blue-gray"
                             onClick={{}}>
                             <CIcon icon={cilPencil} />
                           </IconButton>
+                        </td> */}
+                        <td className={classes}>
+                          <Tooltip content="Delete">
+                            <IconButton variant="text" color="blue-gray" onClick={() => showDeleteConfirmation(data.gate_ID, data.teacher_ID, data.datetime)}>
+                              <TrashIcon className="h-4 w-4" />
+                            </IconButton>
+                          </Tooltip>
                         </td>
                       </tr>
                     );
@@ -308,6 +342,27 @@ export default function GateAssignment() {
                 </tbody>
               </table>
             )}
+
+            {/* Delete confirmation modal */}
+            <CModal scrollable visible={deleteModalVisible} onClose={() => setDeleteModalVisible(false)}>
+              <CModalHeader>
+                <CModalTitle style={{ color: '#56844B', fontWeight: 'bold', fontSize: '20px' }}>
+                  Confirm Deletion
+                </CModalTitle>
+              </CModalHeader>
+              <CModalBody>
+                <p>Are you sure you want to delete this gate assignment?</p>
+              </CModalBody>
+              <CModalFooter>
+                <CButton onClick={handleDeleteGateAssignment} color="light">
+                  Confirm
+                </CButton>
+                <CButton onClick={() => setDeleteModalVisible(false)} color="secondary">
+                  Cancel
+                </CButton>
+              </CModalFooter>
+            </CModal>
+
           </CardBody>
       </Card>
 
