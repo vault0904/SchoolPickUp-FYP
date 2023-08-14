@@ -34,95 +34,106 @@ export default function Login() {
   const API_WEBLOGIN = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/weblogin';
   
   const handleLogin = async () => {
-    try {
-      const response = await axios.post(API_WEBLOGIN, {
-        userid: userid,
-        password: password,
-        usertype: usertype,
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-  
-      if (response) {
-        // Get response returned by API
-        // Response returns either {success: true, userid: '123' usertype: 'sys-adm' etc} or {success: false}
-        const data = response.data;
-  
-        // If API returns false, meaning authentication failed
-        if (!data.success) {
-          // Inform user wrong login credentials
-          alert('Wrong userid or password')
-          window.location.reload();
-        } else {
-          // Else proceed to log user in to their dashboard
-          // However before that, we store the relevant user details in local storage, such as their names, so that we can use it to display in their dashboard for example
-  
-          // Get usertype from API response, store in local storage
-          const usertype = data.usertype;
-          localStorage.setItem('usertype', usertype)
-  
-          switch (data.usertype) {
-            case "sys-adm":
-              // Retrieve relevant details from API response
-              const sysadmid = data.userid;
-              const sysadmfirstname = data.firstName;
-              const sysadmlastname = data.lastName;
-              const sysadmimageuri = data.imageURI;
-              // Store relevant details
-              localStorage.setItem('userid', sysadmid)
-              localStorage.setItem('firstname', sysadmfirstname)
-              localStorage.setItem('lastname', sysadmlastname)
-              localStorage.setItem('image', sysadmimageuri)
-              // Navigate the user to their appropriate dashboard
-              navigate('/system-admin/dashboard');
-              break;
-  
-            case "sch-adm":
-              // Retrieve relevant details from API response
-              const schadmid = data.userid;
-              const schadmfirstname = data.firstName;
-              const schadmlastname = data.lastName;
-              const schadmschoolid = data.school_ID;
-              const schadmimageuri = data.imageURI;
-              // Store relevant details
-              localStorage.setItem('userid', schadmid)
-              localStorage.setItem('firstname', schadmfirstname)
-              localStorage.setItem('lastname', schadmlastname)
-              localStorage.setItem('schoolid', schadmschoolid)
-              localStorage.setItem('image', schadmimageuri)
-              // Navigate the user to their appropriate dashboard
-              navigate('/school-admin/dashboard');
-              break;
-  
-            case "ven":
-              // Retrieve relevant details from API response
-              const vendorid = data.userid;
-              const vendorname = data.vendor_Name;
-              const vendorimageuri = data.imageURI
-              // Find all the schools that are associated with the vendor (school_vendor table)
-              // axios get request 
-              axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-getassociatedschools/${vendorid}`)
-              .then (res => {
-                const venschoolids = res.data;
+    if (!userid || !password) {
+      alert('Enter all fields first')
+    } else {
+      try {
+        const response = await axios.post(API_WEBLOGIN, {
+          userid: userid,
+          password: password,
+          usertype: usertype,
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+    
+        if (response) {
+          // Get response returned by API
+          // Response returns either {success: true, userid: '123' usertype: 'sys-adm' etc} or {success: false}
+          const data = response.data;
+    
+          // If API returns false, meaning authentication failed
+          if (!data.success) {
+            // Inform user wrong login credentials
+            alert('Wrong userid or password')
+            window.location.reload();
+          } else {
+            // Else proceed to log user in to their dashboard
+            // However before that, we store the relevant user details in local storage, such as their names, so that we can use it to display in their dashboard for example
+    
+            // Get usertype from API response, store in local storage
+            const usertype = data.usertype;
+            localStorage.setItem('usertype', usertype)
+    
+            switch (data.usertype) {
+              case "sys-adm":
+                // Retrieve relevant details from API response
+                const sysadmid = data.userid;
+                const sysadmfirstname = data.firstName;
+                const sysadmlastname = data.lastName;
+                const sysadmimageuri = data.imageURI;
                 // Store relevant details
-                localStorage.setItem('userid', vendorid)
-                localStorage.setItem('vendorname', vendorname)
-                localStorage.setItem('assoc_schools', JSON.stringify(venschoolids))
-                localStorage.setItem('image', vendorimageuri)
-                navigate('/vendor/dashboard');
-              })
-              .catch (err => {
-                console.error(err)
-              })
-              break;
+                localStorage.setItem('userid', sysadmid)
+                localStorage.setItem('firstname', sysadmfirstname)
+                localStorage.setItem('lastname', sysadmlastname)
+                localStorage.setItem('image', sysadmimageuri)
+                // Navigate the user to their appropriate dashboard
+                navigate('/system-admin/dashboard');
+                break;
+    
+              case "sch-adm":
+                // Retrieve relevant details from API response
+                const schadmid = data.userid;
+                const schadmfirstname = data.firstName;
+                const schadmlastname = data.lastName;
+                const schadmschoolid = data.school_ID;
+                const schadmimageuri = data.imageURI;
+                // Store relevant details
+                localStorage.setItem('userid', schadmid)
+                localStorage.setItem('firstname', schadmfirstname)
+                localStorage.setItem('lastname', schadmlastname)
+                localStorage.setItem('schoolid', schadmschoolid)
+                localStorage.setItem('image', schadmimageuri)
+                // Navigate the user to their appropriate dashboard
+                navigate('/school-admin/dashboard');
+                break;
+    
+              case "ven":
+                // Retrieve relevant details from API response
+                const vendorid = data.userid;
+                const vendorname = data.vendor_Name;
+                const vendorimageuri = data.imageURI
+                // Find all the schools that are associated with the vendor (school_vendor table)
+                // axios get request 
+                axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-getassociatedschools/${vendorid}`)
+                .then (res => {
+                  const venschoolids = res.data;
+                  // Store relevant details
+                  localStorage.setItem('userid', vendorid)
+                  localStorage.setItem('vendorname', vendorname)
+                  localStorage.setItem('assoc_schools', JSON.stringify(venschoolids))
+                  localStorage.setItem('image', vendorimageuri)
+                  navigate('/vendor/dashboard');
+                })
+                .catch (err => {
+                  console.error(err)
+                })
+                break;
+            }
           }
         }
+      } catch (error) {
+        // Handle any post request errors
+        console.error('Error:', error);
       }
-    } catch (error) {
-      // Handle any post request errors
-      console.error('Error:', error);
+    }
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleLogin();
     }
   }
 
@@ -171,6 +182,7 @@ export default function Login() {
                         autoComplete="current-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        onKeyDown={handleKeyDown}
                       />
                     </CInputGroup>
 

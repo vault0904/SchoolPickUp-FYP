@@ -9,6 +9,7 @@ import {
   cilWalk,
   cilWindowMaximize,
   cilGroup,
+  cilTags,
 } from '@coreui/icons'
 import { CNavItem, CNavGroup, CNavTitle } from '@coreui/react'
 
@@ -24,6 +25,16 @@ const _navSystemAdmin = [
     name: 'Subscribers',
     to: '/system-admin/managesubscribers',
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
+    name: 'Assignments',
+  },
+  {
+    component: CNavItem,
+    name: 'School-Vendor',
+    to: '/system-admin/schoolvendorassignment',
+    icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
   },
 
   {

@@ -13,6 +13,7 @@ const SchoolTable = React.lazy(() => import('./system_admin_module/SchoolTable')
 const SchoolTableViewAdmins = React.lazy(() => import('./system_admin_module/SchoolTableViewAdmins'))
 const VendorTable = React.lazy(() => import('./system_admin_module/VendorTable'))
 const VendorTableViewDrivers = React.lazy(() => import('./system_admin_module/VendorTableViewDrivers'))
+const SchoolVendorAssignment = React.lazy(() => import('./system_admin_module/SchoolVendorAssignment'))
 
 //Sch admin
 const DashboardSchoolAdmin = React.lazy(() => import('./school_admin_module/DashboardSchoolAdmin'))
@@ -54,6 +55,7 @@ const routes = [
   { path: '/system-admin/school/viewadmins', name: 'SchoolTableViewAdmins', element: SchoolTableViewAdmins },
   { path: '/system-admin/vendor', name: 'VendorTable', element: VendorTable },
   { path: '/system-admin/vendor/viewdrivers', name: 'VendorTableViewDrivers', element: VendorTableViewDrivers },
+  { path: '/system-admin/schoolvendorassignment', name: 'School Vendor Assignment', element: SchoolVendorAssignment },
 
   { path: '/school-admin/dashboard', name: 'School Admin Dashboard', element: DashboardSchoolAdmin },
   { path: '/school-admin/announcements', name: 'Announcements', element: AnnouncementTable },
