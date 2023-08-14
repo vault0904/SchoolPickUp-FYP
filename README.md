@@ -10,3 +10,4 @@ Installs:
 2.	npm install -g @aws-amplify/cli
 3.	npm install aws-amplify
 4.  npm install papaparse
+5.  npm install chart.js
