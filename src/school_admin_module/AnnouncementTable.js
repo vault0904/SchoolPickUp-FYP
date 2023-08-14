@@ -23,7 +23,6 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import CIcon from '@coreui/icons-react';
 import { cilPencil } from "@coreui/icons";
 import '../css/defaultstyle.css';
-import { useNavigate } from 'react-router';
 
 export default function AnnouncementTable() {  
   // VIEW ANNOUNCEMENTS START //
@@ -193,8 +192,8 @@ export default function AnnouncementTable() {
     <>
       <div className="flex justify-between items-center mb-4">
         <p 
-          className="font-bold mx-auto text-lg"
-          style={{ fontSize: '20px', color: '#56844B', paddingLeft: '5%'}} >
+          className="font-bold text-lg"
+          style={{ fontSize: '20px', color: '#56844B'}} >
           School Announcements
         </p>
 

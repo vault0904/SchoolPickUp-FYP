@@ -6,7 +6,7 @@ export default function DashboardSchoolAdmin() {
 
   return( 
     <div>
-      <p style={{color: '#56844B', fontWeight: 'bold'}}>
+      <p style={{fontSize: '20px', color: '#56844B', fontWeight: 'bold'}}>
         Welcome, SCHOOL ADMIN {firstname} {lastname}
       </p> 
     </div>

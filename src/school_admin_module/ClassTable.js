@@ -2,8 +2,6 @@ import React from 'react'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { cilPencil } from "@coreui/icons"
-import CIcon from '@coreui/icons-react'
 import {
   CButton,
   CModal,
@@ -19,12 +17,9 @@ import '../css/defaultstyle.css'
 import {
   Card,
   CardBody,
-  CardFooter,
-  Button,
   Typography,
   Tooltip,
   IconButton,
-  Input,
 } from '@material-tailwind/react'
 import { TrashIcon } from "@heroicons/react/24/solid"
 
@@ -123,8 +118,8 @@ export default function ClassTable() {
       <div className="flex justify-between items-center mb-4">
         {/* Title */}
         <p 
-          className="font-bold mx-auto text-lg"
-          style={{ fontSize: '20px', color: '#56844B', paddingLeft: '23%'}} 
+          className="font-bold mr-auto text-lg"
+          style={{ fontSize: '20px', color: '#56844B'}} 
           >
           Class
         </p>

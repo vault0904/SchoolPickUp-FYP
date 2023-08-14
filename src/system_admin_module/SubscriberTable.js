@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { 
   Card, 
@@ -11,9 +10,6 @@ import {
   CardFooter,
   Button,
 } from "@material-tailwind/react";
-import CIcon from '@coreui/icons-react'
-import { cilPencil } from "@coreui/icons" 
-import { CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormLabel, CFormInput } from '@coreui/react';
 import { TrashIcon } from "@heroicons/react/24/solid";
 import '../css/defaultstyle.css';
 import ConfirmationModal from './ConfirmationModal';
@@ -78,14 +74,14 @@ export default function SubscriberTable() {
     <>
       <div className="flex justify-between items-center mb-4">
         <p 
-          className="font-bold mx-auto text-lg"
-          style={{ fontSize: '20px', color: '#56844B', paddingLeft: '5%'}} >
+          className="font-bold mr-auto text-lg"
+          style={{ fontSize: '20px', color: '#56844B'}} >
           Subscriber Accounts Management
         </p>        
       </div>
 
       {/* Search box */}       
-      <div className='px-5 py-3'>
+      <div className='py-4'>
         <Input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}

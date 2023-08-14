@@ -6,7 +6,6 @@ import CIcon from '@coreui/icons-react'
 import {
   CButton,
   CModal,
-  CContainer,
   CForm,
   CFormLabel,
   CFormInput,
@@ -239,8 +238,8 @@ export default function DriverTable() {
       <div className="flex justify-between items-center mb-4">
         {/* Title */}
         <p 
-          className="font-bold mx-auto text-lg"
-          style={{ fontSize: '20px', color: '#56844B', paddingLeft: '23%'}} 
+          className="font-bold mr-auto text-lg"
+          style={{ fontSize: '20px', color: '#56844B'}} 
         >
           Driver Account Management
         </p>
@@ -359,7 +358,7 @@ export default function DriverTable() {
       </div>
 
       {/* Search box */}
-      <div className='px-5 py-3'>
+      <div className='py-4'>
         <Input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}

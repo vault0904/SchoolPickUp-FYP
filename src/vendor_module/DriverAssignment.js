@@ -264,8 +264,8 @@ export default function DriverAssignment() {
     <>
       <div className="flex justify-between items-center mb-4">
         <p 
-          className="font-bold mx-auto text-lg"
-          style={{ fontSize: '20px', color: '#56844B', paddingLeft: '23%'}} >
+          className="font-bold mr-auto text-lg"
+          style={{ fontSize: '20px', color: '#56844B'}} >
           Vehicle Assignment for Today {todaysDate}
         </p>
 

@@ -156,8 +156,8 @@ export default function VendorTable() {
     <>
       <div className="flex justify-between items-center mb-4">
         <p 
-          className="font-bold mx-auto text-lg"
-          style={{ fontSize: '20px', color: '#56844B', paddingLeft: '5%'}} >
+          className="font-bold text-lg"
+          style={{ fontSize: '20px', color: '#56844B'}} >
           Vendor Account Management
         </p>
 
@@ -245,7 +245,7 @@ export default function VendorTable() {
       </div>
 
       {/* Search box */}
-      <div className='px-5 py-3'>
+      <div className='py-4'>
         <Input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}

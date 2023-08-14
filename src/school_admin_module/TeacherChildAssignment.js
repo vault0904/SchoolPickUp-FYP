@@ -4,31 +4,15 @@ import {
   Card,
   CardBody,
   Typography,
-  Tooltip,
-  IconButton,
-  Button,
 } from '@material-tailwind/react'
 import {
   CButton,
-  CModal,
   CForm,
-  CModalBody,
-  CModalHeader,
-  CModalTitle,
-  CModalFooter,
   CFormSelect,
-  CLink,
-  CNavLink,
-  CNav,
-  CNavItem,
 } from '@coreui/react'
-import { CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem, CDropdownDivider, } from '@coreui/react'
-import CIcon from '@coreui/icons-react';
-import { cilPencil } from "@coreui/icons";
-import { TrashIcon } from "@heroicons/react/24/solid"
 import '../scss/defaultstyle.scss'
 import '../css/defaultstyle.css'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default function TeacherChildAssignment() {
   const [teacherTable, setTeacherTable] = useState([]);

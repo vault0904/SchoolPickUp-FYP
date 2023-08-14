@@ -196,8 +196,8 @@ export default function SchoolTableViewAdmins() {
     <>
       <div className="flex justify-between items-center mb-4">
         <p 
-          className="font-bold mx-auto text-lg"
-          style={{ fontSize: '20px', color: '#56844B', paddingLeft: '5%'}} >
+          className="font-bold text-lg"
+          style={{ fontSize: '20px', color: '#56844B'}} >
           School Admin Account Management
         </p>
 

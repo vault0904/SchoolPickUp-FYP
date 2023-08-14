@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { 
   Card, 
   CardBody, 
-  Typography, 
-  Tooltip, 
+  Typography,  
   IconButton,
   Input,
   CardFooter,
   Button,
 } from "@material-tailwind/react";
-import { CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormLabel, CFormInput } from '@coreui/react';
-import { TrashIcon } from "@heroicons/react/24/solid";
 import '../css/defaultstyle.css';
-import ConfirmationModal from './ConfirmationModal';
 
 export default function VehiclePickUpRecordsTable() {
   const TABLE_HEAD = ["VPU JOB ID", "JOB CREATED", "TIMESLOT", "JOB ASSIGNED", "JOB FINISHED", "DROPOFF REGION", "PARENT ID", "CHILD ID", "VEHICLE PLATE", "DRIVER ID", "SCHOOL ID", "STATUS"];
@@ -47,14 +42,14 @@ export default function VehiclePickUpRecordsTable() {
     <>
       <div className="flex justify-between items-center mb-4">
         <p 
-          className="font-bold mx-auto text-lg"
-          style={{ fontSize: '20px', color: '#56844B', paddingLeft: '5%'}} >
+          className="font-bold mr-auto text-lg"
+          style={{ fontSize: '20px', color: '#56844B'}} >
           Vehicle Pick Up Records
         </p>        
       </div>
 
       {/* Search box */}       
-      <div className='px-5 py-3'>
+      <div className='py-4'>
         <Input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}

@@ -85,10 +85,10 @@ export default function SchoolVendorAssignment() {
 
   return (
     <>
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-between items-center mb-4">
         <p 
-          className="font-bold mx-auto text-lg"
-          style={{ fontSize: '20px', color: '#56844B', paddingLeft: '23%'}} >
+          className="font-bold text-lg"
+          style={{ fontSize: '20px', color: '#56844B' }} >
           School Vendor Assignments
         </p>
 

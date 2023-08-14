@@ -115,7 +115,7 @@ export default function UploadDriver() {
     <>
       <CContainer 
         className='px-5 py-4 pb-5' 
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        style={{ display: 'flex', flexDirection: 'column'}}>
         <h1 
           style={{ color: '#56844B', fontWeight: 'bold', marginBottom: '25px', fontSize: '20px'}}>
           Upload Driver Details
