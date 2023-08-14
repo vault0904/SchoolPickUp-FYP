@@ -17,12 +17,6 @@ import { CNavItem, CNavGroup, CNavTitle } from '@coreui/react'
 const _navSchoolAdmin = [
   {
     component: CNavItem,
-    name: 'Dashboard',
-    to: '/school-admin/dashboard',
-    icon: <CIcon icon={cilWindowMaximize} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
     name: 'Announcements',
     to: '/school-admin/announcements',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,

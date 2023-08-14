@@ -96,7 +96,7 @@ export default function Login() {
                 localStorage.setItem('schoolid', schadmschoolid)
                 localStorage.setItem('image', schadmimageuri)
                 // Navigate the user to their appropriate dashboard
-                navigate('/school-admin/dashboard');
+                navigate('/school-admin/announcements');
                 break;
     
               case "ven":
