@@ -194,11 +194,21 @@ export default function DriverAssignment() {
 
   // To get the jobs remaining for particular school in particular region for particular 
   const [jobsRemaining, setJobsRemaining] = useState('')
+
+  // IMPORTANT, datetime to-be inserted into DB must add 8 hours due to Singapore's timezone GMT +8 //
+  const datetime = new Date();
+  const year = datetime.getFullYear();
+  const month = datetime.getMonth()+1;
+  const date = datetime.getDate();
+  const formattedDatetime = year+"-"+month+"-"+date
+  // IMPORTANT //
+
   useEffect(()=>{
     axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-getvehiclepickupjobsremaining',{
       ssi: selectedSchoolIdForPickUpJob,
       sr: selectedRegionForPickUpJob,
       st: selectedTimeSlotForPickUpJob,
+      dt: formattedDatetime,
     })
     .then(res1 => {
       if (res1.data.success){
@@ -210,7 +220,7 @@ export default function DriverAssignment() {
       } 
     })
   }, [selectedSchoolIdForPickUpJob, selectedRegionForPickUpJob, selectedTimeSlotForPickUpJob])
-  // console.log(jobsRemaining)
+  console.log(formattedDatetime)
 
   const handlePickUpJobAssignment = async () => {
     // Basic validation, check if school or region not selected
