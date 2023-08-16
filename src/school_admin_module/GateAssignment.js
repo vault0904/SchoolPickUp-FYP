@@ -163,13 +163,14 @@ export default function GateAssignment() {
   // Function to check if given date = todays date, used in filtering table
   const isToday = (date) => {
     const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); 
+    const day = String(today.getDate()).padStart(2, '0'); 
+    const todayDate = `${year}-${month}-${day}`;
     const givenDate = new Date(date);
-        
-    // Compare the date parts (year, month, and day)
+    const formattedGivenDate = givenDate.toISOString().substring(0, 10);;
     return (
-      givenDate.getDate() === today.getDate() &&
-      givenDate.getMonth() === today.getMonth() &&
-      givenDate.getFullYear() === today.getFullYear()
+      formattedGivenDate === todayDate
     );
   };
 
