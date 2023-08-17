@@ -28,7 +28,6 @@ export default function SelfPickUpRecordsTable() {
         console.error(err);
       })
   }, []);
-  // console.log(selfPickUpRecordsTable)
 
   // Hooks for pagination
   const [currentPage, setCurrentPage] = useState(1);

@@ -28,7 +28,6 @@ export default function VehiclePickUpRecordsTable() {
         console.error(err);
       })
   }, []);
-  // console.log(vehiclePickUpRecordsTable)
 
   // Hooks for pagination
   const [currentPage, setCurrentPage] = useState(1);

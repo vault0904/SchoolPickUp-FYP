@@ -30,7 +30,6 @@ export default function SubscriberTable() {
         console.error(err);
       })
   }, []);
-  // console.log(subscriberTable)
 
   // Hooks for pagination
   const [currentPage, setCurrentPage] = useState(1);

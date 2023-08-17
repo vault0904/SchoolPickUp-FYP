@@ -135,11 +135,9 @@ export default function DriverAssignment() {
     const month = String(today.getMonth() + 1).padStart(2, '0'); // Pad with zero if necessary
     const day = String(today.getDate()).padStart(2, '0'); // Pad with zero if necessary
     const todayDate = `${year}-${month}-${day}`;
-    // console.log(1,todayDate)
     const givenDate = new Date(date);
     const formattedGivenDate = givenDate.toISOString().substring(0, 10);;
     
-    // console.log(2, formattedGivenDate)
     return (
       formattedGivenDate === todayDate
     );
@@ -220,7 +218,6 @@ export default function DriverAssignment() {
       } 
     })
   }, [selectedSchoolIdForPickUpJob, selectedRegionForPickUpJob, selectedTimeSlotForPickUpJob])
-  console.log(formattedDatetime)
 
   const handlePickUpJobAssignment = async () => {
     // Basic validation, check if school or region not selected
@@ -235,7 +232,7 @@ export default function DriverAssignment() {
       const formattedDatetime1 = datetime.toISOString();
       const formattedDatetime2 = datetime.toISOString().split('T')[0];
       // IMPORTANT
-      // console.log(selectedVehicleCapacityForPickUpJob)
+
       try{
         axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-assignvehiclepickupjobs',{
           ssi: selectedSchoolIdForPickUpJob,

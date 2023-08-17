@@ -47,6 +47,7 @@ export default function AnnouncementTable() {
   // VIEW ANNOUNCEMENTS END //
 
 
+
   // CREATE FUNCTION START //
   // Hook to toggle visibility of create announcement modal
   const [visible, setVisible] = useState(false)

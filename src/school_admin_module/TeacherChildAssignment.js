@@ -48,11 +48,9 @@ export default function TeacherChildAssignment() {
         const viewSelectedRes = await axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getteacherchildassignment/${selectedTeacherId}`);
         
         if (viewSelectedRes.data.outcome === 1) {
-          // alert('Found records')
           setTeacherChildTable(viewSelectedRes.data.r)
           setDisplayTable(true);
         } else if (viewSelectedRes.data.outcome === 2) {
-          // alert('No records found')
           setDisplayTable(true)
         }
         
@@ -107,16 +105,6 @@ export default function TeacherChildAssignment() {
             >
               View
             </CButton>
-
-            {/* <Button
-              onClick={handleViewTeacherChildAssignment}
-              color="blue"
-              ripple="light"
-              className="px-4"
-              disabled={selectedTeacherId === 'NIL'}
-            >
-              View
-            </Button> */}
           </div>
 
 

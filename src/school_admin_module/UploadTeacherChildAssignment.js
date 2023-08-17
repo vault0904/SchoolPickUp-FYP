@@ -106,7 +106,6 @@ export default function UploadTeacherChildAssignment() {
       })
     }
   }
-  // console.log(data)
   // UPLOAD FUNCTION END //
   
   return (

@@ -219,13 +219,6 @@ export default function VendorTable() {
                 onChange={(e) => setContactNo(e.target.value)}
                 className='mb-2'
               />
-              {/* <CFormLabel>Vendor Picture</CFormLabel>
-              <CFormInput 
-                type="file"
-                accept="image/jpeg, image/png"
-                className='mb-2'
-                onChange={handleFile} 
-              /> */}
             </CForm>
           </CModalBody>
           <CModalFooter className="d-flex justify-content-center">

@@ -140,7 +140,6 @@ export default function GateAssignment() {
   }
   
   const handleDeleteGateAssignment = () => {
-    // alert(`${deletingGateId}, ${deletingTeacherId}, ${deletingDatetime}`)
     axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-deletegateassignment', {
       dgi: deletingGateId,
       dti: deletingTeacherId,
