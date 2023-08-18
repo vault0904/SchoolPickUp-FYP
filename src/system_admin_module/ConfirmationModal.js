@@ -1,8 +1,9 @@
-// https://coreui.io/react/docs/components/modal/
 import React from 'react';
 import { CModal, CButton, CModalHeader, CModalTitle, CModalBody, CModalFooter} from '@coreui/react';
 
+// https://coreui.io/react/docs/components/modal/
 const ConfirmationModal = ({ visible, onClose, onConfirm, callingComponent }) => {
+  
   if (callingComponent === 'SchoolTable') {
     return (
       // Modal for SchoolTable

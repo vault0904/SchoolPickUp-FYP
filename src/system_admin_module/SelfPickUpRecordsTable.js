@@ -12,11 +12,10 @@ import {
 import '../css/defaultstyle.css';
 
 export default function SelfPickUpRecordsTable() {
+  // VIEW FUNCTION START //
   const TABLE_HEAD = ["SPU JOB ID", "JOB CREATED", "TIMESLOT", "JOB FINISHED", "PARENT ID", "CHILD ID", "GATE ID", "SCHOOL ID", "STATUS"];
-
   const [selfPickUpRecordsTable, setSelfPickUpRecordsTable] = useState([]);
 
-  // Get all self pick up records
   useEffect(() => {
     axios.get('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getselfpickuprecords')
       .then(res => {
@@ -28,6 +27,7 @@ export default function SelfPickUpRecordsTable() {
         console.error(err);
       })
   }, []);
+  // VIEW FUNCTION END //
 
   // Hooks for pagination
   const [currentPage, setCurrentPage] = useState(1);

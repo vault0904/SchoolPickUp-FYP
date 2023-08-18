@@ -7,7 +7,6 @@ import CIcon from '@coreui/icons-react'
 import {
   CButton,
   CModal,
-  CContainer,
   CForm,
   CFormLabel,
   CFormInput,
@@ -31,8 +30,7 @@ import {
 import { TrashIcon } from "@heroicons/react/24/solid";
 
 export default function ChildTable() {
-  //  VIEW CHILD START  // 
-  // Define table header
+  // VIEW FUNCTION START // 
   const TABLE_HEAD = ["CHILD ID", "FIRST NAME", "LAST NAME", "ADDRESS", "REGION", "PARENT", "CLASS ID", "CLASS NAME", "", ""];
 
   const [childData, setChildData] = useState([]);
@@ -76,20 +74,7 @@ export default function ChildTable() {
       setCombinedTable(combined);
     }
   }, [childData, classData]);
-  //  RETRIEVE CHILD DATA END  //
-
-
-  //  SEARCH BOX FUNCTION START  //
-  //
-    // Hooks for pagination
-    const [currentPage, setCurrentPage] = useState(1);
-    const rowsPerPage = 10;  // number of rows to display
-    const startIndex = (currentPage - 1) * rowsPerPage;
-
-    // Hook for search
-    const [searchQuery, setSearchQuery] = useState('');
-  //
-  // SEARCH BOX FUNCTION END  //
+  // VIEW FUNCTION END //
 
 
   // CREATE FUNCTION START //
@@ -141,7 +126,6 @@ export default function ChildTable() {
 
       const apiresult = res.data;
       if (apiresult.success) {
-        // Account successfully created
         alert('Account successfully created')
         handleClearForm();
         setCreateModalVisible(false);
@@ -156,7 +140,7 @@ export default function ChildTable() {
   // CREATE FUNCTION END //
 
 
-  //  UPDATE FUNCTION START  //
+  // UPDATE FUNCTION START //
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [updatedFirstname, setUpdatedFirstname] = useState('');
   const [updatedLastname, setUpdatedLastname] = useState('');
@@ -196,24 +180,20 @@ export default function ChildTable() {
       // Handle the response
       const apiResult = res.data;
       if (apiResult.success) {
-        // Account successfully updated
         alert('Account successfully updated');
-        // Close the update modal
         setUpdateModalVisible(false);
         window.location.reload();
       } else {
-        // View error
         alert(apiResult.errlog);
       }
     } catch (err) {
       console.error(err);
     }
   };
-//
-// UPDATE FUNCTION END  //
+  // UPDATE FUNCTION END  //
 
 
-  //  DELETE FUNCTION START  //
+  // DELETE FUNCTION START //
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState('');   
 
@@ -229,11 +209,9 @@ export default function ChildTable() {
 
       const apiResult = res.data;
       if (apiResult.success) {
-        // Announcement successfully deleted
         alert('Account successfully deleted');
         window.location.reload();
       } else {
-        // View error
         alert(apiResult.errlog);
       }
     } catch (err) {
@@ -242,19 +220,25 @@ export default function ChildTable() {
       setDeleteModalVisible(false);
     }
   };
-//
-//  DELETE FUNCTION END //
+  // DELETE FUNCTION END //
 
-  // NAVIGATE TO UPLOAD Child UI
+  // Navigate to upload child UI
   const navigate = useNavigate(); 
   const navigateToUploadChild = async () => {
     navigate('/school-admin/uploadchild')
   }
 
+  // Hooks for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;  // number of rows to display
+  const startIndex = (currentPage - 1) * rowsPerPage;
+
+  // Hook for search
+  const [searchQuery, setSearchQuery] = useState('');
+
   return (
     <>
       <div className="flex justify-between items-center mb-4">
-        {/* Title */}
         <p 
           className="font-bold mr-auto text-lg"
           style={{ fontSize: '20px', color: '#56844B'}} 
@@ -475,7 +459,6 @@ export default function ChildTable() {
                   );
                 })}
 
-                {/* IMPORTANT NOTE, modal code should be placed outside of the table map function */}
                 {/* Update child account modal */}
                 <CModal scrollable visible={updateModalVisible} onClose={() => setUpdateModalVisible(false)} backdrop='static'>
                   <CModalHeader>

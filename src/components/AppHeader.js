@@ -6,7 +6,6 @@ import {
   CHeaderBrand,
   CHeaderNav,
   CHeaderToggler,
-  CHeaderDivider,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilHamburgerMenu } from '@coreui/icons'
@@ -49,9 +48,6 @@ const AppHeader = () => {
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>
-      {/* <CHeaderDivider className="pl-16 pt-2 pb-4">
-      <Typography variant="">Logged in as {usertype}</Typography>        
-      </CHeaderDivider> */}
     </CHeader>
   )
 }

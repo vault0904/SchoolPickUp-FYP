@@ -15,10 +15,10 @@ import '../css/defaultstyle.css';
 import ConfirmationModal from './ConfirmationModal';
 
 export default function SubscriberTable() {
+  // VIEW FUNCTION START //
   const TABLE_HEAD = ["PARENT ID", "NAME", "EMAIL", "CONTACT NO", "ADDRESS", "SCHOOL ID", ""];
   const [subscriberTable, setSubscriberTable] = useState([]);
 
-  // Get all parents that are subscribers
   useEffect(() => {
     axios.get('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getsubscribers')
       .then(res => {
@@ -30,11 +30,7 @@ export default function SubscriberTable() {
         console.error(err);
       })
   }, []);
-
-  // Hooks for pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 25;  // number of rows to display
-  const startIndex = (currentPage - 1) * rowsPerPage;
+  // VIEW FUNCTION END //
 
   // REMOVE SUBSCRIBER START //
   const [deleteModalVisible, setDeleteModalVisible] = useState(false)
@@ -65,6 +61,11 @@ export default function SubscriberTable() {
     }
   }
   // REMOVE SUBSCRIBER END //
+
+  // Hooks for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 25;  // number of rows to display
+  const startIndex = (currentPage - 1) * rowsPerPage;
 
   // Hook for search
   const [searchQuery, setSearchQuery] = useState('');

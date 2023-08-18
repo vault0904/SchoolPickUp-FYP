@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from 'react'
-import { HashRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 import './scss/defaultstyle.scss'
 
 const loading = (

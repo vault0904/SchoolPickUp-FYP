@@ -18,9 +18,7 @@ import ConfirmationModal from './ConfirmationModal';
 
 export default function VendorTable() {
   //  VIEW FUNCTION START  //
-  // Define table header here
   const TABLE_HEAD = ["VENDOR ID", "VENDOR NAME", "ADDRESS", "EMAIL", "CONTACT NO", "SCHOOL PARTNERED WITH", "", ""];
-
   const [tableData, setTableData] = useState([]);
   const [schoolVendorAssoc, setSchoolVendorAssoc] = useState([]);
 
@@ -126,11 +124,9 @@ export default function VendorTable() {
  
       const apiResult = res.data;
       if (apiResult.success) {
-        // Vendor successfully deleted
         alert('Vendor successfully deleted');
         window.location.reload();
       } else {
-        // View error
         alert(apiResult.errlog);
       }
     } catch (err) {
@@ -142,7 +138,6 @@ export default function VendorTable() {
   // DELETE FUNCTION END  //
 
 
-  //  SEARCH BOX FUNCTION START  //
   // Hooks for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;  // number of rows to display
@@ -150,7 +145,6 @@ export default function VendorTable() {
 
   // Hook for search
   const [searchQuery, setSearchQuery] = useState('');
-  // SEARCH BOX FUNCTION END  //
 
   return (
     <>
@@ -323,7 +317,6 @@ export default function VendorTable() {
                 );
               })}
               
-              {/* IMPORTANT NOTE, modal code should be placed outside of the table map function */}
               {/* Delete confirmation modal */}
               <ConfirmationModal
                 visible={deleteModalVisible}

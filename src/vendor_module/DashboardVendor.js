@@ -13,6 +13,7 @@ import DefaultSchoolLogo from '../assets/images/schoollogo.jpg'
 import { useNavigate } from 'react-router';
 
 export default function DashboardVendor() {
+  // VIEW FUNCTION START //
   const [schoolData, setSchoolData] = useState([]);
 
   useEffect(() => {
@@ -42,10 +43,10 @@ export default function DashboardVendor() {
   const handleViewVehiclePickUpJobs = (school_ID) => {
     navigate(`/vendor/dashboard/viewvehiclepickupjobs?school_ID=${school_ID}`)
   }
+  // VIEW FUNCTION END //
   
   return (
     <>
-      {/* Intro message */}
       <div>
         <p style={{color: '#56844B', fontWeight: 'bold', fontSize: '20px'}}>
           Welcome, VENDOR {localStorage.getItem('vendorname')}

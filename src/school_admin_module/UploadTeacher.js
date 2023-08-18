@@ -167,7 +167,7 @@ export default function UploadTeacher() {
 
         <CardHeader color="blue-gray" className="pb-2">
           <img
-            src={TeacherCsvExample}  // link the png from assets here
+            src={TeacherCsvExample}
             alt="Teacher CSV sample image"
           />
         </CardHeader>

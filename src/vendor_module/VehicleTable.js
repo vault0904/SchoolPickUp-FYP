@@ -29,18 +29,11 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from 'react-router';
 
 export default function VehicleTable() {
-  //  VIEW VEHICLES START  //
-  // Define table header
+  // VIEW VEHICLES START  //
   const TABLE_HEAD = ["VEHICLE PLATE", "VEHICLE TYPE", "CAPACITY", "", ""];
-
-  // Declare hook, which will be used to set vehicle data, after getting the data from API below
   const [tableData, setTableData] = useState([]);
-
-  // Retrieve vendor ID from localstorage
-  // So that we can use it to find all vehicle related to the vendor
   const vendorid = localStorage.getItem('userid');
 
-  // Axios post request, which we will get all announcement data
   useEffect(() => {
     axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-getvehicles/${vendorid}`)
       .then(res => {
@@ -51,19 +44,6 @@ export default function VehicleTable() {
       })
   }, []);
   //  VIEW VEHICLES END  //
-
-
-  //  SEARCH BOX FUNCTION START  //
-  //
-  // Hooks for pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;  // number of rows to display
-  const startIndex = (currentPage - 1) * rowsPerPage;
-
-  // Hook for search
-  const [searchQuery, setSearchQuery] = useState('');
-  //
-  // SEARCH BOX FUNCTION END  //
 
 
   // CREATE FUNCTION START //
@@ -98,7 +78,6 @@ export default function VehicleTable() {
 
       const apiresult = res.data;
       if (apiresult.success) {
-        // Vehicle successfully created
         alert('Vehicle successfully created')
         handleClearForm();
         setCreateModalVisible(false);
@@ -114,7 +93,6 @@ export default function VehicleTable() {
 
 
   //  UPDATE FUNCTION START  //
-  //
   // Variables that will be used in the update vehicle modal
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [updatedVehicletype, setUpdatedVehicletype] = useState('');
@@ -149,9 +127,7 @@ export default function VehicleTable() {
       // Handle the response
       const apiResult = res.data;
       if (apiResult.success) {
-        // Vehicle successfully updated
         alert('Vehicle successfully updated');
-        // Close the update modal
         setUpdateModalVisible(false);
         window.location.reload();
       } else {
@@ -182,11 +158,9 @@ export default function VehicleTable() {
 
       const apiResult = res.data;
       if (apiResult.success) {
-        // Vehicle successfully deleted
         alert('Vehicle successfully deleted');
         window.location.reload();
       } else {
-        // View error
         alert(apiResult.errlog);
       }
     } catch (err) {
@@ -197,16 +171,25 @@ export default function VehicleTable() {
   };
   //  DELETE FUNCTION END //
 
+
   // UPLOAD BUTTON NAVIGATION //
   const navigate = useNavigate('')
   const navigateToUploadVehicle = () => {
     navigate('/vendor/uploadvehicle')
   }
 
+
+  // Hooks for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5;  // number of rows to display
+  const startIndex = (currentPage - 1) * rowsPerPage;
+
+  // Hook for search
+  const [searchQuery, setSearchQuery] = useState('');
+
   return (
     <>
       <div className="flex justify-between items-center mb-4">
-        {/* Title */}
         <p 
           className="font-bold mr-auto text-lg"
           style={{ fontSize: '20px', color: '#56844B'}} 
@@ -369,7 +352,6 @@ export default function VehicleTable() {
                   );
                 })}
 
-                {/* IMPORTANT NOTE, modal code should be placed outside of the table map function */}
                 {/* Update vehicle modal */}
                 <CModal backdrop='static' scrollable visible={updateModalVisible} onClose={() => setUpdateModalVisible(false)}>
                   <CModalHeader>

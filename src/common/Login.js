@@ -29,16 +29,13 @@ export default function Login() {
   useEffect(() => {
     localStorage.clear();
   }, []);
-
-  // API URL for login
-  const API_WEBLOGIN = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/weblogin';
   
   const handleLogin = async () => {
     if (!userid || !password) {
       alert('Enter all fields first')
     } else {
       try {
-        const response = await axios.post(API_WEBLOGIN, {
+        const response = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/weblogin', {
           userid: userid,
           password: password,
           usertype: usertype,
@@ -49,20 +46,14 @@ export default function Login() {
         });
     
         if (response) {
-          // Get response returned by API
-          // Response returns either {success: true, userid: '123' usertype: 'sys-adm' etc} or {success: false}
           const data = response.data;
-    
-          // If API returns false, meaning authentication failed
+
           if (!data.success) {
             // Inform user wrong login credentials
             alert('Wrong userid or password')
             window.location.reload();
           } else {
             // Else proceed to log user in to their dashboard
-            // However before that, we store the relevant user details in local storage, such as their names, so that we can use it to display in their dashboard for example
-    
-            // Get usertype from API response, store in local storage
             const usertype = data.usertype;
             localStorage.setItem('usertype', usertype)
     
@@ -78,7 +69,7 @@ export default function Login() {
                 localStorage.setItem('firstname', sysadmfirstname)
                 localStorage.setItem('lastname', sysadmlastname)
                 localStorage.setItem('image', sysadmimageuri)
-                // Navigate the user to their appropriate dashboard
+                // Navigate
                 navigate('/system-admin/dashboard');
                 break;
     
@@ -95,7 +86,7 @@ export default function Login() {
                 localStorage.setItem('lastname', schadmlastname)
                 localStorage.setItem('schoolid', schadmschoolid)
                 localStorage.setItem('image', schadmimageuri)
-                // Navigate the user to their appropriate dashboard
+                // Navigate
                 navigate('/school-admin/announcements');
                 break;
     
@@ -105,7 +96,6 @@ export default function Login() {
                 const vendorname = data.vendor_Name;
                 const vendorimageuri = data.imageURI
                 // Find all the schools that are associated with the vendor (school_vendor table)
-                // axios get request 
                 axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-getassociatedschools/${vendorid}`)
                 .then (res => {
                   const venschoolids = res.data;
@@ -114,6 +104,7 @@ export default function Login() {
                   localStorage.setItem('vendorname', vendorname)
                   localStorage.setItem('assoc_schools', JSON.stringify(venschoolids))
                   localStorage.setItem('image', vendorimageuri)
+                  // Navigate
                   navigate('/vendor/dashboard');
                 })
                 .catch (err => {
@@ -124,12 +115,12 @@ export default function Login() {
           }
         }
       } catch (error) {
-        // Handle any post request errors
         console.error('Error:', error);
       }
     }
   }
 
+  // Function enables user to press enter right after entering password
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();

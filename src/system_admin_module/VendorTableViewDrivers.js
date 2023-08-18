@@ -26,12 +26,11 @@ import '../css/defaultstyle.css';
 import ConfirmationModal from './ConfirmationModal';
 
 export default function VendorTableViewDrivers() {  
-  // VIEW DRIVER DATA START //
-  // Define table header
+  // VIEW FUNCTION START //
   const TABLE_HEAD = ["DRIVER ID", "FIRST NAME", "LAST NAME", "EMAIL", "CONTACT NO" , "ADDRESS", "LICENSE", "", ""];
-
   const [tableData, setTableData] = useState([]);
 
+  // Get vendor ID from URL
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const vendor_ID = searchParams.get('vendor_ID');
@@ -45,7 +44,7 @@ export default function VendorTableViewDrivers() {
         console.error(err);
       })
   }, []);
-  // VIEW DRIVER DATA END //
+  // VIEW FUNCTION END //
 
 
   // CREATE FUNCTION START //
@@ -87,7 +86,6 @@ export default function VendorTableViewDrivers() {
 
       const apiresult = res.data;
       if (apiresult.success) {
-        // Account successfully created
         alert('Account successfully created')
         handleClearForm();
         window.location.reload();
@@ -137,7 +135,6 @@ export default function VendorTableViewDrivers() {
         return;
       }
 
-      // Perform the update API request using axios
       const res = await axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-updatedriveraccount', {
         ui: userId,
         ufn: updatedFirstname,
@@ -151,13 +148,10 @@ export default function VendorTableViewDrivers() {
       // Handle the response
       const apiResult = res.data;
       if (apiResult.success) {
-        // Account successfully updated
         alert('Account successfully updated');
-        // Close the update modal
         setUpdateModalVisible(false);
         window.location.reload();
       } else {
-        // View error
         alert(apiResult.errlog);
       }
     } catch (err) {
@@ -183,18 +177,15 @@ export default function VendorTableViewDrivers() {
 
       const apiResult = res.data;
       if (apiResult.success) {
-        // Account successfully deleted
         alert('Account successfully deleted');
         window.location.reload();
       } else {
-        // View error
         alert(apiResult.errlog);
       }
     } catch (err) {
       console.error(err);
     } finally {
       setDeleteModalVisible(false);
-      // refresh page
       window.location.reload();
     }
   };
@@ -388,7 +379,6 @@ export default function VendorTableViewDrivers() {
                   );
                 })}
 
-                {/* IMPORTANT NOTE, modal code should be placed outside of the table map function */}
                 {/* Update driver modal */}
                 <CModal backdrop='static' scrollable visible={updateModalVisible} onClose={() => setUpdateModalVisible(false)}>
                   <CModalHeader>

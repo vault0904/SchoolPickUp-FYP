@@ -17,14 +17,10 @@ import '../css/defaultstyle.css';
 import ConfirmationModal from './ConfirmationModal';
 
 export default function SchoolTable() {
-
   //  VIEW FUNCTION START  //
-  // Define table header here
   const TABLE_HEAD = ["SCHOOL ID", "SCHOOL NAME", "SCHOOL ADDRESS", "CONTACT NO", "SCHOOL TYPE", "", ""];
-
   const [tableData, setTableData] = useState([]);
 
-  // Axios get request to get all school data from db
   useEffect(() => {
     axios.get('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getschool')
       .then(res => {
@@ -178,15 +174,13 @@ export default function SchoolTable() {
   }
   // DELETE FUNCTION END  //
 
-  //  SEARCH BOX FUNCTION START  //
-  // Hooks for pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 15;  // number of rows to display
-  const startIndex = (currentPage - 1) * rowsPerPage;
-
   // Hook for search
   const [searchQuery, setSearchQuery] = useState('');
-  // SEARCH BOX FUNCTION END  //
+
+  // Hooks for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;  // number of rows to display
+  const startIndex = (currentPage - 1) * rowsPerPage;
 
   return (
     <>
@@ -351,7 +345,6 @@ export default function SchoolTable() {
                 );
               })}
               
-              {/* IMPORTANT NOTE, modal code should be placed outside of the table map function */}
               {/* Delete confirmation modal */}
               <ConfirmationModal
                 visible={deleteModalVisible}

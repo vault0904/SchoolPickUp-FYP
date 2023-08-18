@@ -24,13 +24,11 @@ import { useNavigate } from 'react-router';
 
 export default function SchoolSchedule() {
   // VIEW SCHEDULE START //
-  // Define table header
   const TABLE_HEAD = ["SCHEDULE ID", "SCHEDULE DESCRIPTION", "YEAR", "POSTED BY", "", ""];
 
   const [scheduleTable, setScheduleTable] = useState([]);
   const schoolid = localStorage.getItem('schoolid');
 
-  // Axios post request
   useEffect(() => {
     axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getschedule/${schoolid}`)
       .then(res => {
@@ -41,29 +39,6 @@ export default function SchoolSchedule() {
       })
   }, []);
   // VIEW SCHEDULE END //
-
-
-  //  SEARCH BOX FUNCTION START  //
-  //
-    // Hooks for pagination
-    const [currentPage, setCurrentPage] = useState(1);
-    const rowsPerPage = 5;  // number of rows to display
-    const startIndex = (currentPage - 1) * rowsPerPage;
-
-    // Hook for search
-    const [searchQuery, setSearchQuery] = useState('');
-  //
-  // SEARCH BOX FUNCTION END  //
-
-
-  // UPLOAD FUNCTION START //
-  // NAVIGATE TO UPLOAD TEACHER UI
-  const navigate = useNavigate(); 
-  const navigateToUploadSchedule = async () => {
-    navigate('/school-admin/uploadschedule')
-  }
-
-  // UPLOAD FUNCTION END //
 
 
   // DELETE FUNCTION START //
@@ -81,11 +56,9 @@ export default function SchoolSchedule() {
       
       const apiResult = res.data;
       if (apiResult.success) {
-        // Schedule successfully deleted
         alert('Schedule successfully deleted');
         window.location.reload();
       } else {
-        // View error
         alert(apiResult.errlog);
       }
     } catch(err) {
@@ -93,6 +66,21 @@ export default function SchoolSchedule() {
     }
   }
   // DELETE FUNCTION END //
+
+
+  // NAVIGATE TO UPLOAD TEACHER UI
+  const navigate = useNavigate(); 
+  const navigateToUploadSchedule = async () => {
+    navigate('/school-admin/uploadschedule')
+  }
+
+  // Hooks for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5;  // number of rows to display
+  const startIndex = (currentPage - 1) * rowsPerPage;
+
+  // Hook for search
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <>
@@ -195,7 +183,6 @@ export default function SchoolSchedule() {
                   );
                 })}
 
-                {/* IMPORTANT NOTE, modal code should be placed outside of the table map function */}
                 {/* Delete confirmation modal */}
                 <CModal scrollable visible={deleteModalVisible} onClose={() => setDeleteModalVisible(false)}>
                   <CModalHeader>

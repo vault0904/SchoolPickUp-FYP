@@ -18,6 +18,7 @@ import {
 import '../css/defaultstyle.css'
 
 export default function SchoolVendorAssignment() {
+  // VIEW FUNCTION START //
   const TABLE_HEAD = ["VENDOR ID", "SCHOOL ID"]
   const [schoolVendorTable, setSchoolVendorTable] = useState([])
   useEffect(() => {
@@ -30,6 +31,7 @@ export default function SchoolVendorAssignment() {
       }
     })
   }, [])
+  // VIEW FUNCTION END //
   
   // ASSIGN FUNCTION START //
   const [assignModalVisible, setAssignModalVisble] = useState(false)

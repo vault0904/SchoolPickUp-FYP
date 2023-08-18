@@ -147,7 +147,7 @@ export default function UploadGate() {
 
         <CardHeader color="blue-gray" className="pb-2">
           <img
-            src={GateCsvExample}  // link the png from assets here
+            src={GateCsvExample}
             alt="Gate CSV sample image"
           />
         </CardHeader>

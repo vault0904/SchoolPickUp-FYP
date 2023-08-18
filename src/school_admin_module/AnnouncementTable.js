@@ -26,24 +26,29 @@ import '../css/defaultstyle.css';
 
 export default function AnnouncementTable() {  
   // VIEW ANNOUNCEMENTS START //
-  // Define table header
   const TABLE_HEAD = ["ANNOUNCEMENT ID", "MESSAGE", "POSTED BY", "DATE POSTED","LAST UPDATED", "", ""];
 
-  // Declare hook, which will be used to set announcement data, after getting the data from API below
   const [tableData, setTableData] = useState([]);
 
-  // Axios post request, which we will get all announcement data
   useEffect(() => {
     axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getschoolannouncement', { schadmid: localStorage.getItem('userid') })
       .then(res => {
-        // Set in the hook declared earlier
-        // We can now use the tableData.map function to map out the data
         setTableData(res.data)
       })
       .catch(err => {
         console.error(err);
       })
   }, []);
+
+  // View announcement modal
+  const [ viewModalVisible, setViewModalVisible ] = useState(false);
+  const [ viewMessage, setViewMessage ] = useState('');
+
+  const handleViewAnnouncement = ( message ) => {
+    setViewMessage(message);
+    setViewModalVisible(true);
+  };
+
   // VIEW ANNOUNCEMENTS END //
 
 
@@ -73,40 +78,26 @@ export default function AnnouncementTable() {
         alert('Announcement message is empty! Write your message before posting')
         return;
       }
-      // get the userid of poster
+
       const userid = localStorage.getItem('userid')
 
-      // post request and send their userid and message
       const res = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createannouncement', 
       { message, formattedCurrentDate, userid });
 
       const apiresult = res.data;
       if (apiresult.success) {
-        // Announcement successfully created
         alert('Announcement successfully created')
         handleClearForm();
         setVisible(false);
         window.location.reload();
       } else {
-        // Announcement was not created
         alert(apiresult.errlog);
       }
     } catch (err) {
       console.error(err);
     }
   };
-// CREATE FUNCTION END //
-
-
-  //  VIEW FUNCTION //
-  const [ viewModalVisible, setViewModalVisible ] = useState(false);
-  const [ viewMessage, setViewMessage ] = useState('');
-
-  const handleViewAnnouncement = ( message ) => {
-    setViewMessage(message);
-    setViewModalVisible(true);
-  };
-  // VIEW FUNCTION END //
+  // CREATE FUNCTION END //
 
 
   //  UPDATE FUNCTION START  //
@@ -142,13 +133,10 @@ export default function AnnouncementTable() {
   
       const apiResult = res.data;
       if (apiResult.success) {
-        // Announcement message succesfully updated
         alert('Announcement message successfully updated');
-        // Close the update modal
         setUpdateModalVisible(false);
         window.location.reload();
       } else {
-        // View error
         alert(apiResult.errlog);
       }
     } catch (err) {
@@ -158,7 +146,7 @@ export default function AnnouncementTable() {
   // UPDATE FUNCTION END  //
 
 
-  //  DELETE FUNCTION START  //
+  // DELETE FUNCTION START //
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingAnnId, setDeletingAnnId] = useState('');   
 
@@ -174,11 +162,9 @@ export default function AnnouncementTable() {
 
       const apiResult = res.data;
       if (apiResult.success) {
-        // Announcement successfully deleted
         alert('Announcement successfully deleted');
         window.location.reload();
       } else {
-        // View error
         alert(apiResult.errlog);
       }
     } catch (err) {
@@ -187,7 +173,7 @@ export default function AnnouncementTable() {
       setDeleteModalVisible(false);
     }
   };
-// DELETE FUNCTION END //
+  // DELETE FUNCTION END //
 
   return (
     <>
@@ -218,7 +204,6 @@ export default function AnnouncementTable() {
             <CModalTitle style={{ color: '#56844B', fontWeight: 'bold', fontSize: '20px'}}>Create Announcement</CModalTitle>
           </CModalHeader>
           <CModalBody>
-            {/* https://coreui.io/react/docs/forms/form-control/ */}
             <CForm className='overflow-auto'>
               <CFormLabel>Announcement message</CFormLabel>
               <CFormTextarea
@@ -316,7 +301,6 @@ export default function AnnouncementTable() {
                   );
                 })}
 
-                {/* IMPORTANT NOTE, modal code should be placed outside of the table map function */}
                 {/* View announcement modal */}
                 <CModal 
                   backdrop='static' 

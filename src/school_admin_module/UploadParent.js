@@ -162,7 +162,7 @@ export default function UploadParent() {
 
         <CardHeader color="blue-gray" className="pb-2">
           <img
-            src={ParentCsvExample}  // link the png from assets here
+            src={ParentCsvExample}
             alt="Parent CSV sample image"
           />
         </CardHeader>

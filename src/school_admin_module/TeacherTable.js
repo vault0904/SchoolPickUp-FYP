@@ -30,8 +30,7 @@ import {
 import { TrashIcon } from "@heroicons/react/24/solid"
 
 export default function TeacherTable() {
-  //  RETRIEVE TEACHER DATA START  //
-  // Define table header
+  //  VIEW FUNCTION START  //
   const TABLE_HEAD = ["USER ID", "FIRST NAME", "LAST NAME", "EMAIL", "ADDRESS", "CONTACT NO", "FORM CLASS", "", ""];
 
   const [tableData, setTableData] = useState([]);
@@ -46,18 +45,10 @@ export default function TeacherTable() {
         console.error(err);
       })
   }, []);
-  //  RETRIEVE TEACHER DATA END  //
+  //  VIEW FUNCTION END  //
 
 
-  //  SEARCH BOX FUNCTION START  //
-  // Hooks for pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;  // number of rows to display
-  const startIndex = (currentPage - 1) * rowsPerPage;
 
-  // Hook for search
-  const [searchQuery, setSearchQuery] = useState('');
-  // SEARCH BOX FUNCTION END  //
 
 
   // CREATE FUNCTION START //
@@ -73,7 +64,6 @@ export default function TeacherTable() {
         console.error(err)
       })
   }, [tableData])
-
 
   // Hooks which will save the inputs in the create teacher modal,
   // The inputs will then be submitted to the post request API later
@@ -109,12 +99,10 @@ export default function TeacherTable() {
       }
       
       // Else proceed with post request
-      // Post the request to API
       const res = await axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-createteacher', { ui: userId, p: password, fn: firstName, ln: lastName, e: email, a: address, cn: contactno, fc: formClass, si: schoolid });
 
       // Handle response
       if (res.data.success) {
-        // Account successfully created
         alert('Account successfully created')
         handleClearForm();
         setCreateModalVisible(false);
@@ -167,14 +155,12 @@ export default function TeacherTable() {
         return;
       }
 
-      // Perform the update API request using axios
       const res = await axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updateteacher', { 
         ui: userId, ufn: updatedFirstname, uln: updatedLastname, ue: updatedEmail, ua: updatedAddress, ucn: updatedContactNo, ufc: updatedFormclass, si: schoolid 
       });
       // Handle the response
       if (res.data.success) {
         alert('Account successfully updated');
-        // Close the update modal
         setUpdateModalVisible(false);
         window.location.reload();
       } else {
@@ -184,12 +170,10 @@ export default function TeacherTable() {
       console.error(err);
     }
   };
-//
-// UPDATE FUNCTION END  //
+  // UPDATE FUNCTION END  //
 
 
-//  DELETE FUNCTION START  //
-//
+  //  DELETE FUNCTION START  //
   // Hook to toggle visibility of delete teacher modal, and to store the user id that was selected by user
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState('');   
@@ -206,7 +190,6 @@ export default function TeacherTable() {
 
       //Handle response
       if (res.data.success) {
-        // Announcement successfully deleted
         alert('Account successfully deleted');
         window.location.reload();
       } else {
@@ -218,8 +201,7 @@ export default function TeacherTable() {
       setDeleteModalVisible(false);
     }
   };
-//
-//  DELETE FUNCTION END //
+  //  DELETE FUNCTION END //
 
 
   // NAVIGATE TO UPLOAD TEACHER UI
@@ -227,6 +209,14 @@ export default function TeacherTable() {
   const navigateToUploadteacher = async () => {
     navigate('/school-admin/uploadteacher')
   }
+
+  // Hooks for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;  // number of rows to display
+  const startIndex = (currentPage - 1) * rowsPerPage;
+
+  // Hook for search
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <>
@@ -445,7 +435,6 @@ export default function TeacherTable() {
                   );
                 })}
 
-                {/* IMPORTANT NOTE, modal code should be placed outside of the table map function */}
                 {/* Update teacher account modal */}
                 <CModal backdrop='static' scrollable visible={updateModalVisible} onClose={() => setUpdateModalVisible(false)}>
                   <CModalHeader>

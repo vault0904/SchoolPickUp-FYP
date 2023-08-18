@@ -1,52 +1,49 @@
-// !Important! Import this at the start when creating new scss file
-// Note to self: check back if this import is important afterall, because base on current understanding, this import is for general website layout / wrappers styling, not sure what will happen if not imported. Technically has been imported once in App.js before already so not sure if it is needed here.
 @import 'defaultstyle';
 
+// "min-vh-100 d-flex flex-row align-items-center"
 .maindiv {
-  // "min-vh-100 d-flex flex-row align-items-center"
   min-height: 100vh;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
+// "justify-content-center"
 .crow {
-  // "justify-content-center"
   justify-content: center;
 }
 
+// style={{ transform: 'scale(1.2)' }}
 .ccardgrp {
-  // style={{ transform: 'scale(1.2)' }}
   transform: scale(1.2);
 }
 
+// style={{ borderWidth: 0 }}
+// "p-4"
 .ccard {
-  // style={{ borderWidth: 0 }}
-  // "p-4"
   border-width: 0px;
   padding: 16px;
 }
 
+// style={{ color: '#56844B', fontWeight: 'bold', textAlign: 'center' }}
 .h1 {
-  // style={{ color: '#56844B', fontWeight: 'bold', textAlign: 'center' }}
   color: #56844B;
   font-weight: bold;
   text-align: center;
 }
 
+// "mb-3"
 .cinputgrp {
-  // "mb-3"
   margin-bottom: 12px;
   margin-top: 12px;
 }
 
+// style={{ backgroundColor: '#56844B', fontWeight: 'bold' }}
+// className="px-4 mt-5"
 .cbtn {
-  // style={{ backgroundColor: '#56844B', fontWeight: 'bold' }}
-  // className="px-4 mt-5"
   background-color: #56844B;
   font-weight: bold;
   padding-left: 16px;
   padding-right: 16px;
   margin-top: 20px;
 }
-

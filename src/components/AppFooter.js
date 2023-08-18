@@ -5,7 +5,7 @@ const AppFooter = () => {
   return (
     <CFooter>
       <div className="ms-auto px-2">
-        <p>FYP 2023</p>
+        <p>FYP-23-S2-14</p>
       </div>
     </CFooter>
   )

@@ -25,7 +25,6 @@ import { TrashIcon } from "@heroicons/react/24/solid"
 
 export default function ClassTable() {
   // VIEW CLASS DATA START //
-  // Define table header
   const TABLE_HEAD = ["CLASS ID", "CLASS NAME", ""];
 
   const [classData, setClassData] = useState([]);
@@ -116,7 +115,6 @@ export default function ClassTable() {
   return (
     <>
       <div className="flex justify-between items-center mb-4">
-        {/* Title */}
         <p 
           className="font-bold mr-auto text-lg"
           style={{ fontSize: '20px', color: '#56844B'}} 
@@ -210,8 +208,6 @@ export default function ClassTable() {
               </thead>
               <tbody>
                 {classData
-                  // .filter((row) => row.child_ID.toLowerCase().includes(searchQuery.toLowerCase()))  // .filter for real time search query
-                  // .slice(startIndex, startIndex + rowsPerPage)  // .slice for pagination
                   .map(( data, index ) => {
                   const isLast = index === data.length - 1;
                   const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";

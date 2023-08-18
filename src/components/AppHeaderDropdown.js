@@ -10,8 +10,6 @@ import {
 } from '@coreui/react'
 import {
   cilPenAlt,
-  cilSettings,
-  cilEnvelopeOpen,
   cilAccountLogout,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
@@ -50,10 +48,6 @@ const AppHeaderDropdown = () => {
             <CIcon icon={cilPenAlt} className="me-2" />
             Edit Profile
           </CDropdownItem>
-          {/* <CDropdownItem>
-            <CIcon icon={cilEnvelopeOpen} className="me-2" />
-            Messages (Chat function)
-          </CDropdownItem> */}
           <CDropdownDivider />
           <CDropdownItem onClick={handleSignOut}>
             <CIcon icon={cilAccountLogout} className="me-2" />

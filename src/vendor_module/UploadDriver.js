@@ -156,7 +156,7 @@ export default function UploadDriver() {
 
         <CardHeader color="blue-gray" className="pb-2">
           <img
-            src={DriverCsvExample}  // link the png from assets here
+            src={DriverCsvExample}
             alt="Driver CSV sample image"
           />
         </CardHeader>

@@ -169,7 +169,7 @@ export default function UploadChild() {
 
         <CardHeader color="blue-gray" className="pb-2">
           <img
-            src={ChildCsvExample}  // link the png from assets here
+            src={ChildCsvExample} 
             alt="Child CSV sample image"
           />
         </CardHeader>

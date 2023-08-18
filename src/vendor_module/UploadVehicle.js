@@ -156,7 +156,7 @@ export default function UploadVehicle() {
 
         <CardHeader color="blue-gray" className="pb-2">
           <img
-            src={VehicleCsvExample}  // link the png from assets here
+            src={VehicleCsvExample}
             alt="Vehicle CSV sample image"
           />
         </CardHeader>

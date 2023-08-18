@@ -29,16 +29,10 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from 'react-router';
 
 export default function DriverTable() {
-  //  RETRIEVE DRIVER DATA START  //
-  //
-  // Define table header
+  //  VIEW FUNCTION START  //
   const TABLE_HEAD = ["DRIVER ID", "FIRST NAME", "LAST NAME", "EMAIL", "CONTACT NO", "ADDRESS", "LICENSE", "", ""];
 
-  // Declare hook, which will be used to set drivers data, after getting the data from API below
   const [tableData, setTableData] = useState([]);
-
-  // Retrieve vendor ID from localstorage
-  // So that we can use it to find all drivers related to vendor
   const vendorid = localStorage.getItem('userid');
 
   useEffect(() => {
@@ -50,30 +44,14 @@ export default function DriverTable() {
         console.error(err);
       })
   }, []);
-  //
-  //  RETRIEVE DRIVER DATA END  //
-
-
-  //  SEARCH BOX FUNCTION START  //
-  //
-  // Hooks for pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;  // number of rows to display
-  const startIndex = (currentPage - 1) * rowsPerPage;
-
-  // Hook for search
-  const [searchQuery, setSearchQuery] = useState('');
-  //
-  // SEARCH BOX FUNCTION END  //
+  //  VIEW FUNCTION END //
 
 
   // CREATE FUNCTION START //
-  //
   // Hook to toggle visibility of create driver modal
   const [createModalVisible, setCreateModalVisible] = useState(false)
 
-  // Hooks which will save the inputs in the create driver modal,
-  // The inputs will then be submitted to the post request API later
+  // Hooks which will save the inputs in the create driver modal
   const [ userId, setUserId ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ firstName, setFirstName ] = useState('');
@@ -110,7 +88,6 @@ export default function DriverTable() {
 
       const apiresult = res.data;
       if (apiresult.success) {
-        // Account successfully created
         alert('Account successfully created')
         handleClearForm();
         setCreateModalVisible(false);
@@ -122,12 +99,10 @@ export default function DriverTable() {
       console.error(err);
     }
   };
-  //
   // CREATE FUNCTION END //
 
 
   //  UPDATE FUNCTION START  //
-  //
   // Variables that will be used in the update driver modal
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [updatedFirstname, setUpdatedFirstname] = useState('');
@@ -164,7 +139,6 @@ export default function DriverTable() {
         return;
       }
 
-      // Perform the update API request using axios
       const res = await axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/ven-updatedriveraccount', { 
         ui: userId, ufn: updatedFirstname, uln: updatedLastname, ue: updatedEmail, ucn: updatedContactno, ua: updatedAddress, ul: updatedLicense 
       });
@@ -172,31 +146,24 @@ export default function DriverTable() {
       // Handle the response
       const apiResult = res.data;
       if (apiResult.success) {
-        // Account successfully updated
         alert('Account successfully updated');
-        // Close the update modal
         setUpdateModalVisible(false);
         window.location.reload();
       } else {
-        // View error
         alert(apiResult.errlog);
       }
     } catch (err) {
       console.error(err);
     }
   };
-  //
   // UPDATE FUNCTION END  //
 
 
   //  DELETE FUNCTION START  //
-  //
   // Hook to toggle visibility of delete driver modal, and to store the user id that was selected by user
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState('');   
 
-  // Show the delete confirmation modal
-  // When user click on the delete button, they will trigger this const, and pass the user id in the parameter
   const showDeleteConfirmation = (userid) => {
     setDeleteModalVisible(true);
     setDeletingUserId(userid);
@@ -209,11 +176,9 @@ export default function DriverTable() {
 
       const apiResult = res.data;
       if (apiResult.success) {
-        // Announcement successfully deleted
         alert('Account successfully deleted');
         window.location.reload();
       } else {
-        // View error
         alert(apiResult.errlog);
       }
     } catch (err) {
@@ -223,7 +188,6 @@ export default function DriverTable() {
       window.location.reload();
     }
   };
-  //
   //  DELETE FUNCTION END //
 
 
@@ -232,6 +196,14 @@ export default function DriverTable() {
   const navigateToUploadDriver = () => {
     navigate('/vendor/uploaddriver')
   }
+
+  // Hooks for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;  // number of rows to display
+  const startIndex = (currentPage - 1) * rowsPerPage;
+
+  // Hook for search
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <>
@@ -448,7 +420,6 @@ export default function DriverTable() {
                   );
                 })}
 
-                {/* IMPORTANT NOTE, modal code should be placed outside of the table map function */}
                 {/* Update driver account modal */}
                 <CModal backdrop='static' scrollable visible={updateModalVisible} onClose={() => setUpdateModalVisible(false)}>
                   <CModalHeader>

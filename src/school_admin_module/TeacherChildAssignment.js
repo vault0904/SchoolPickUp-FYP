@@ -15,11 +15,10 @@ import '../css/defaultstyle.css'
 import { useNavigate } from 'react-router-dom'
 
 export default function TeacherChildAssignment() {
+  // Retrieve teachers associated with the school for dropdown option box
   const [teacherTable, setTeacherTable] = useState([]);
-  // const [teacherChildTable, setTeacherChildTable] = useState([]);
   const schoolid = localStorage.getItem('schoolid') || 'defaultSchoolId';
 
-  // Get all teachers associated with school
   useEffect(() => {
     axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-getteachers/${schoolid}`)
       .then(teacherRes => {
@@ -30,16 +29,16 @@ export default function TeacherChildAssignment() {
       });
   }, [schoolid]);
 
+  // VIEW FUNCTION START //
   const [teacherChildTable, setTeacherChildTable] = useState([])
   const TABLE_HEAD = ['CHILD ID', "", ""]
   const [displayTable, setDisplayTable] = useState(false)
 
   const [selectedTeacherId, setSelectedTeacherId] = useState('NIL')
   const handleViewTeacherChildAssignment = async () => {
-    // 'Reset' //
+    // 'Reset' states
     setTeacherChildTable([])
     setDisplayTable(false)
-    // 'Reset' //
 
     try {
       if (selectedTeacherId === 'NIL') {
@@ -59,6 +58,7 @@ export default function TeacherChildAssignment() {
       console.error(err);
     }
   };
+  // VIEW FUNCTION END //
   
   // Navigate user to upload csv of teacher child assignment
   const navigate = useNavigate();

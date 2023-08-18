@@ -24,11 +24,7 @@ export default function EditProfile() {
   const id = searchParams.get('id');
   const type = searchParams.get('type');
 
-  // API to get back user details (id, f/l names, email)
-  const API_GETPROFILEDETAILS = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/webgetprofiledetails'
-
   // Declare state for the details we would be receiving
-  // Store state as array
   const [ profileDetails, setProfileDetails ] = useState({
     id: '',
     vendor_Name: '',
@@ -39,9 +35,10 @@ export default function EditProfile() {
     password: '',
   });
 
-  // API
   useEffect(() => {
-    axios.post(API_GETPROFILEDETAILS, {type, id})
+    axios.post('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/webgetprofiledetails', {
+      type, id
+    })
       .then(res => {
         setProfileDetails(res.data);
       })
@@ -52,9 +49,8 @@ export default function EditProfile() {
   // RETRIEVE DETAILS END //
 
 
-
   // EDIT DETAILS START //
-  // Profile picture edits //
+  // Edit profile picture //
   const [editModalVisible, setEditModalVisible] = useState(false)
   const [file, setFile] = useState(null);
   const handleFile = (e) => {
@@ -123,9 +119,8 @@ export default function EditProfile() {
       alert("Upload a profile picture first")
     }
   }
-  // Profile picture edits end //
 
-  // States for Toggling editing mode
+  // State for Toggling editing mode
   const [ disableEdit, setDisableEdit ] = useState(true)
   const toggleEditMode = () => {
     if (type == "ven") {
@@ -201,10 +196,7 @@ export default function EditProfile() {
       return;
     } 
 
-    // Proceed to send API to change pw
-    const API_CHANGEPASSWORD = 'https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/webchangepassword'
-
-    axios.put(API_CHANGEPASSWORD, {
+    axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/webchangepassword', {
      type,
      id: profileDetails.id,
      pw: newPassword, 

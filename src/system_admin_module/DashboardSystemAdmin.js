@@ -113,7 +113,6 @@ export default function DashboardSystemAdmin() {
           </div>
         ))
       }
-
     </>
   );
 }

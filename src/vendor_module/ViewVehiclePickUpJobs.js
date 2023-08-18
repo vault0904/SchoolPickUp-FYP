@@ -9,6 +9,7 @@ import {
 import '../css/defaultstyle.css';
 
 export default function ViewVehiclePickUpJobs() {
+  // VIEW FUNCTION START //
   // Get the school_ID which the vendor click in the DashboardVendor page
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -117,6 +118,7 @@ export default function ViewVehiclePickUpJobs() {
     })
     setPickUpJobsTodayTS2(matchPickUpJobsTodayTS2);
   }, [retrievePickUpJobsTS2])
+  // VIEW FUNCTION END //
 
   const calculateCapacitySum = (array) => {
     return array.reduce((sum, item) => sum + item.Capacity, 0);

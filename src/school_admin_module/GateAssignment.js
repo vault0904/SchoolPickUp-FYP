@@ -17,8 +17,6 @@ import {
   CModalFooter,
   CFormSelect,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react';
-import { cilPencil } from "@coreui/icons";
 import { TrashIcon } from "@heroicons/react/24/solid"
 import '../css/defaultstyle.css'
 
@@ -29,7 +27,6 @@ export default function GateAssignment() {
   const [gateAssignments, setGateAssignments] = useState([]);
   const [combinedData, setCombinedData] = useState([]);
 
-  // Define combined data table header
   const TABLE_HEAD = ["TEACHER ID", "NAME", "CONTACT", "GATE ID","GATE NAME", "DATE ASSIGNED", ""];
 
   // Get all gates and teachers associated with the school
@@ -89,6 +86,7 @@ export default function GateAssignment() {
   }, [teacherTable, gateTable, gateAssignments]);
   // VIEW ASSIGNMENT END //
 
+
   // ASSIGN TEACHER START //
   const [assignTeacherModalVisible, setAssignTeacherModalVisble] = useState(false);
   const [selectedTeacherId, setSelectedTeacherId] = useState('');
@@ -125,6 +123,7 @@ export default function GateAssignment() {
       });
   };
   // ASSIGN TEACHER END //
+
 
   // DELETE ASSIGNMENT START //
   const [deleteModalVisible, setDeleteModalVisible] = useState(false)
@@ -293,16 +292,6 @@ export default function GateAssignment() {
                             {data.firstName} {data.lastName}
                           </Typography>
                         </td>
-                        {/* <td className={classes}>
-                          <Typography variant="small" color="blue-gray" className="font-normal">
-                            {data.lastName}
-                          </Typography>
-                        </td> */}
-                        {/* <td className={classes}>
-                          <Typography variant="small" color="blue-gray" className="font-normal">
-                            {data.email}
-                          </Typography>
-                        </td> */}
                         <td className={classes}>
                           <Typography variant="small" color="blue-gray" className="font-normal">
                             {data.contactNo}
@@ -323,12 +312,6 @@ export default function GateAssignment() {
                             {data.datetime}
                           </Typography>
                         </td>
-                        {/* <td className={classes}>
-                          <IconButton variant="text" color="blue-gray"
-                            onClick={{}}>
-                            <CIcon icon={cilPencil} />
-                          </IconButton>
-                        </td> */}
                         <td className={classes}>
                           <Tooltip content="Delete">
                             <IconButton variant="text" color="blue-gray" onClick={() => showDeleteConfirmation(data.gate_ID, data.teacher_ID, data.datetime)}>

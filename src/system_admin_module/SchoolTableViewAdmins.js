@@ -27,9 +27,7 @@ import ConfirmationModal from './ConfirmationModal';
 
 export default function SchoolTableViewAdmins() {  
   // VIEW SCHOOL ADMIN DATA START //
-  // Define table header
   const TABLE_HEAD = ["SCHOOL ADMIN ID", "FIRST NAME", "LAST NAME", "EMAIL", "CONTACT NO", "ADDRESS", "", ""];
-
   const [tableData, setTableData] = useState([]);
 
   // Hooks to get the school_ID, from website URL, to include in API post request body
@@ -37,7 +35,6 @@ export default function SchoolTableViewAdmins() {
   const searchParams = new URLSearchParams(location.search);
   const school_ID = searchParams.get('school_ID');
 
-  // Axios post request, which we will get all the school admin data
   useEffect(() => {
     axios.get(`https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/sysadm-getschooladmin/${school_ID}`)
       .then(res => {
@@ -369,7 +366,6 @@ export default function SchoolTableViewAdmins() {
                   );
                 })}
 
-                {/* IMPORTANT NOTE, modal code should be placed outside of the table map function */}
                 {/* Update school admin modal */}
                 <CModal backdrop='static' scrollable visible={updateModalVisible} onClose={() => setUpdateModalVisible(false)}>
                   <CModalHeader>

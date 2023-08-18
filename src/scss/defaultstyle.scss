@@ -1,10 +1,5 @@
-// Import CoreUI for React components library
 @import "@coreui/coreui/scss/coreui"; 
 
-//Styles an element to have full width, 
-//Adjusts the left-side padding based on the text direction, 
-//Allows potential property changes,
-//Adds animation effect to the padding
 .wrapper {
   width: 100%;
   @include ltr-rtl("padding-left", var(--cui-sidebar-occupy-start, 0));

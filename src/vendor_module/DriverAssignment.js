@@ -25,7 +25,6 @@ export default function DriverAssignment() {
   const [vehicleAssignments, setVehicleAssignments] = useState([]);
   const [combinedData, setCombinedData] = useState([]);
 
-  // Define combined data table header
   const TABLE_HEAD = ["DRIVER ID", "NAME", "VEHICLE PLATE","VEHICLE TYPE", "CAPACITY", "DATE ASSIGNED", ""];
 
   const vendorid = localStorage.getItem('userid');
@@ -85,10 +84,10 @@ export default function DriverAssignment() {
     setCombinedData(combinedDataArray);
     
   }, [driverTable, vehicleTable, vehicleAssignments]);
-  
   // VIEW ASSIGNMENT END //
 
-  // ASSIGN DRIVER START //
+
+  // ASSIGN DRIVER TO VEHICLE START //
   const [assignDriverModalVisible, setAssignDriverModalVisble] = useState(false);
   const [selectedDriverId, setSelectedDriverId] = useState('');
   const [selectedVehicleId, setSelectedVehicleId] = useState('');
@@ -116,7 +115,6 @@ export default function DriverAssignment() {
           window.location.reload();
         } else {
           alert(res.data.errlog)
-          // alert("Assignment unsuccessful, the driver you selected has been already assigned to a vehicle today.");
         }
       })
       .catch(err => {
@@ -124,39 +122,7 @@ export default function DriverAssignment() {
         alert("An error occurred while assigning the driver to the vehicle. Please try again later.");
       });
   };
-  // ASSIGN DRIVER END //
-
-
-  // Function to check if given date = todays date, used in filtering table
-  const isToday = (date) => {
-    
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Pad with zero if necessary
-    const day = String(today.getDate()).padStart(2, '0'); // Pad with zero if necessary
-    const todayDate = `${year}-${month}-${day}`;
-    const givenDate = new Date(date);
-    const formattedGivenDate = givenDate.toISOString().substring(0, 10);;
-    
-    return (
-      formattedGivenDate === todayDate
-    );
-  };
-
-  // Function to format the date as "30 July 2023"
-  const [todaysDate, setTodaysDate] = useState('');
-  useEffect(() => {
-    const formatDate = (date) => {
-      const options = { day: 'numeric', month: 'long', year: 'numeric' };
-      return new Intl.DateTimeFormat('en-US', options).format(date);
-    };
-    // Get today's date
-    const today = new Date();
-    // Format today's date
-    const formattedDate = formatDate(today);
-    // Set the formatted date in the state
-    setTodaysDate(formattedDate);
-  }, []);
+  // ASSIGN DRIVER TO VEHICLE END //
 
 
   // ASSIGN TO PICKUP JOBS FUNCTION START //
@@ -258,6 +224,37 @@ export default function DriverAssignment() {
     }
   }
   // ASSIGN TO PICKUP JOBS FUNCTION END //
+
+
+  // Function to check if given date = todays date, used in filtering table
+  const isToday = (date) => {
+    
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Pad with zero if necessary
+    const day = String(today.getDate()).padStart(2, '0'); // Pad with zero if necessary
+    const todayDate = `${year}-${month}-${day}`;
+    const givenDate = new Date(date);
+    const formattedGivenDate = givenDate.toISOString().substring(0, 10);;
+    
+    return (
+      formattedGivenDate === todayDate
+    );
+  };
+
+  // Function to format the date to something like "30 July 2023"
+  const [todaysDate, setTodaysDate] = useState('');
+  useEffect(() => {
+    const formatDate = (date) => {
+      const options = { day: 'numeric', month: 'long', year: 'numeric' };
+      return new Intl.DateTimeFormat('en-US', options).format(date);
+    };
+
+    const today = new Date();
+    const formattedDate = formatDate(today);
+
+    setTodaysDate(formattedDate);
+  }, []);
 
   // Function to calculate the difference between jobsRemaining and selectedVehicleCapacityForPickUpJob
   const calculateRemainingCapacity = () => {

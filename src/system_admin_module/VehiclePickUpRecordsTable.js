@@ -12,8 +12,8 @@ import {
 import '../css/defaultstyle.css';
 
 export default function VehiclePickUpRecordsTable() {
+  // VIEW FUNCTION START //
   const TABLE_HEAD = ["VPU JOB ID", "JOB CREATED", "TIMESLOT", "JOB ASSIGNED", "JOB FINISHED", "DROPOFF REGION", "PARENT ID", "CHILD ID", "VEHICLE PLATE", "DRIVER ID", "SCHOOL ID", "STATUS"];
-
   const [vehiclePickUpRecordsTable, setVehiclePickUpRecordsTable] = useState([]);
 
   // Get all vehicle pick up records
@@ -28,6 +28,7 @@ export default function VehiclePickUpRecordsTable() {
         console.error(err);
       })
   }, []);
+  // VIEW FUNCTION END //
 
   // Hooks for pagination
   const [currentPage, setCurrentPage] = useState(1);

@@ -30,7 +30,6 @@ import { TrashIcon } from "@heroicons/react/24/solid"
 
 export default function ParentTable() {
   //  VIEW PARENT DATA START  //
-  // Define table header
   const TABLE_HEAD = ["PARENT ID", "FIRST NAME", "LAST NAME", "EMAIL", "CONTACT NO", "ADDRESS", "SUBSCRIPTION", "", ""];
 
   const [tableData, setTableData] = useState([]);
@@ -48,19 +47,6 @@ export default function ParentTable() {
   //  VIEW PARENT DATA END  //
 
 
-//  SEARCH BOX FUNCTION START  //
-//
-  // Hooks for pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;  // number of rows to display
-  const startIndex = (currentPage - 1) * rowsPerPage;
-
-  // Hook for search
-  const [searchQuery, setSearchQuery] = useState('');
-//
-// SEARCH BOX FUNCTION END  //
-
-
   // CREATE FUNCTION START //
   const [createModalVisible, setCreateModalVisible] = useState(false)
   const [ userId, setUserId ] = useState('');
@@ -71,7 +57,6 @@ export default function ParentTable() {
   const [ contactno, setContactno ] = useState('');
   const [ address, setAddress ] = useState('');
   const [ subscription, setSubscription ] = useState('Normal'); // By default, parents have 'Normal' status untill they personally subscribe
-  
 
   // Method to clear the create parent inputs
   const handleClearForm = () => {
@@ -99,7 +84,6 @@ export default function ParentTable() {
 
       // Handle response
       if (res.data.success) {
-        // Account successfully created
         alert('Account successfully created')
         handleClearForm();
         setCreateModalVisible(false);
@@ -148,14 +132,12 @@ export default function ParentTable() {
         return;
       }
 
-      // Perform the update API request using axios
       const res = await axios.put('https://lagj9paot7.execute-api.ap-southeast-1.amazonaws.com/dev/api/schadm-updateparent', { 
         ui: userId, ufn: updatedFirstname, uln: updatedLastname, ue: updatedEmail, ucn: updatedContactNo, ua: updatedAddress
       });
       // Handle the response
       if (res.data.success) {
         alert('Account successfully updated');
-        // Close the update modal
         setUpdateModalVisible(false);
         window.location.reload();
       } else {
@@ -185,7 +167,6 @@ export default function ParentTable() {
 
       //Handle response
       if (res.data.success) {
-        // Announcement successfully deleted
         alert('Account successfully deleted');
         window.location.reload();
       } else {
@@ -197,8 +178,7 @@ export default function ParentTable() {
       setDeleteModalVisible(false);
     }
   };
-//
-//  DELETE FUNCTION END //
+  //  DELETE FUNCTION END //
 
 
   // NAVIGATE TO UPLOAD PARENT UI
@@ -206,6 +186,14 @@ export default function ParentTable() {
   const navigateToUploadparent = async () => {
     navigate('/school-admin/uploadparent')
   }
+
+  // Hooks for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;  // number of rows to display
+  const startIndex = (currentPage - 1) * rowsPerPage;
+
+  // Hook for search
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <>
@@ -421,7 +409,6 @@ export default function ParentTable() {
                   );
                 })}
 
-                {/* IMPORTANT NOTE, modal code should be placed outside of the table map function */}
                 {/* Update parent account modal */}
                 <CModal backdrop='static' scrollable visible={updateModalVisible} onClose={() => setUpdateModalVisible(false)}>
                   <CModalHeader>
