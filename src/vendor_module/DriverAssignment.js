@@ -256,14 +256,6 @@ export default function DriverAssignment() {
     setTodaysDate(formattedDate);
   }, []);
 
-  // // Function to calculate the difference between jobsRemaining and selectedVehicleCapacityForPickUpJob
-  // const calculateRemainingCapacity = () => {
-  //   if (jobsRemaining !== '' && selectedVehicleCapacityForPickUpJob !== '') {
-  //     const remainingCapacity = parseInt(jobsRemaining) - parseInt(selectedVehicleCapacityForPickUpJob);
-  //     return remainingCapacity
-  //   }
-  // };
-
   // Function to calculate the difference between jobsRemaining and selectedVehicleCapacityForPickUpJob
   const calculateRemainingCapacity = () => {
     if (jobsRemaining !== '' && selectedVehicleCapacityForPickUpJob !== '') {
